@@ -1,10 +1,11 @@
-import calculatorImg from "./assets/calculator.png"
-import convertImg1 from "./assets/converter 1.png"
-import convertImg2 from "./assets/converter 2.png"
-import cookiesImg from "./assets/fortune cookies.png"
-import todoImg from "./assets/todo.png"
+import calculatorImg from "./assets/png/calculator.png"
+import convertImg1 from "./assets/png/converter 1.png"
+import convertImg2 from "./assets/png/converter 2.png"
+import cookiesImg from "./assets/png/fortune cookies.png"
+import todoImg from "./assets/png/todo.png"
 import { useState } from "react"
 import Calculator from "./calcuator/Calculator"
+import Todo_List from "./todo-list/Todo_List"
 
 function App() {
   const  [activePage, setActivePage] = useState("calculator")
@@ -47,9 +48,8 @@ function App() {
         </div>
 
         <div className="">
-          {menuItems.find(el => el.id === activePage)?.id === "calculator" &&
-            <Calculator />
-          }
+          { activePage  === "calculator" && <Calculator /> }
+          { activePage === "todo" && <Todo_List  />} 
         </div>
         
       </main>
