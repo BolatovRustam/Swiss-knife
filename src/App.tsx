@@ -47,7 +47,7 @@ function App() {
           <h2 className="text-2xl font-semibold">{menuItems.find(el => el.id === activePage)?.label}</h2>
         </div>
 
-        <div className="">
+        <div>
           { activePage  === "calculator" && <Calculator /> }
           { activePage === "todo" && <Todo_List  />} 
         </div>
