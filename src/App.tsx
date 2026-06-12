@@ -20,7 +20,7 @@ function App() {
 
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       <aside className="w-82 border-r-2 border-[#777777] bg-[#F4F4F4]">
         <div className="border-b-2 border-[#777777] pl-7 py-7">
           <h1 className="text-[22px] text-[#4D4E51] font-bold">SWISS KNIFE</h1>
@@ -42,12 +42,12 @@ function App() {
         </div>
       </aside>
 
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col overflow-hidden">
         <div className="border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
           <h2 className="text-2xl font-semibold">{menuItems.find(el => el.id === activePage)?.label}</h2>
         </div>
 
-        <div>
+        <div className="flex-1 overflow-hidden">
           { activePage  === "calculator" && <Calculator /> }
           { activePage === "todo" && <Todo_List  />} 
         </div>

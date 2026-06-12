@@ -6,7 +6,7 @@ function Calculator() {
     const [currentVar, setCurrentVar] = useState("default")
 
     return (
-        <div className="flex flex-col items-center gap-6.5 pt-10">
+        <div className="flex h-screen flex-col items-center gap-6.5 pt-10">
             <div className="flex gap-4">
                 <button 
                     className={`${currentVar === 'default' ? 'bg-[#575757]' : 'bg-[#7C7C7C] hover:bg-[#BABABA]'} text-white font-medium rounded-lg py-2 px-2.5 cursor-pointer select-none`}
