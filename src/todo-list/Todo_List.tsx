@@ -24,7 +24,7 @@ function Todo_List() {
         {id: crypto.randomUUID(), completed: false, title: "Отремонтировать", priority: "Низкий", date: "24.05.2024"},
     ])
 
-    const [currentData, setCurrentData] = useState({title: "", priority: ""})
+    const [currentData, setCurrentData] = useState({title: "", priority: "Низкий"})
     const [filter, setFilter] = useState<"all" | "active" | "completed">("all")
 
     const filtetedData = data.filter(el => {
@@ -59,7 +59,7 @@ function Todo_List() {
 
 
     return (
-        <div className="flex justify-between h-full flex-col pt-12.75 px-21.5">
+        <div className="flex justify-between h-full flex-col pt-12.75 pb-12 px-21.5">
 
             {/* Верхняя часть */}
             <div className="flex flex-col gap-7">
@@ -80,12 +80,13 @@ function Todo_List() {
                         >
                             <option value="Высокий">Высокий</option>
                             <option value="Средний">Средний</option>
-                            <option value="Низкий">Низкий</option>
+                            <option selected value="Низкий" >Низкий</option>
                         </select>
 
                     
                     <button 
                         className="h-15 px-10 rounded-lg flex items-center gap-5 text-white text-xl font-semibold cursor-pointer"
+                        /* Надо добавить через enter */
                         style={{ backgroundImage: `url(${todoImg})` }}
                         onClick={handleCreate}
                     >
@@ -121,7 +122,7 @@ function Todo_List() {
                 </div>
 
                 {/* Список задач */}
-                <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-[462px] overflow-auto">
+                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-[462px] overflow-auto">
                     <table className="w-full bg-white border-collapse overflow-scroll">
                         <tbody>
                             {filtetedData.map((obj, i)=> (
@@ -173,12 +174,12 @@ function Todo_List() {
                             ))}
                         </tbody>
                     </table>
-                </div>
+                </div> }
 
             </div>
 
             {/* Нижняя панель */}
-            <div className="flex w-full h-15 mb-12 justify-between">
+            <div className="flex w-full h-15 justify-between">
 
                 <div className="flex h-full px-8 items-center gap-9 bg-[#EFF4EF] outline outline-1 outline-[#C3D9C3] rounded-2xl">
                     <p className="flex gap-5 text-[20px] text-[#385538]">

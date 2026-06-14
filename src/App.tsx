@@ -6,6 +6,9 @@ import todoImg from "./assets/png/todo.png"
 import { useState } from "react"
 import Calculator from "./calcuator/Calculator"
 import Todo_List from "./todo-list/Todo_List"
+import Unit_Converter from "./unit-converter/Unit_Сonverter"
+import Currency_Converter from "./currency-converter/Currency_Сonverter"
+import Cookies from "./cookies/Cookies"
 
 function App() {
   const  [activePage, setActivePage] = useState("calculator")
@@ -49,7 +52,10 @@ function App() {
 
         <div className="flex-1 overflow-hidden">
           { activePage  === "calculator" && <Calculator /> }
-          { activePage === "todo" && <Todo_List  />} 
+          { activePage === "todo" && <Todo_List  /> }
+          { activePage === "converter1" && <Unit_Converter /> }
+          { activePage === "converter2" && <Currency_Converter /> } 
+          { activePage === "cookies" && <Cookies /> } 
         </div>
         
       </main>
