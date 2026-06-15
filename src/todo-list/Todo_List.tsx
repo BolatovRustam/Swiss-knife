@@ -1,12 +1,16 @@
 import plus from "../assets/icons/plus.svg"
-import list from "../assets/icons/list.svg"
 import delet from "../assets/icons/delete.svg"
-import checkboxOn from "../assets/icons/checkbox-on.svg"
-import checkboxOff from "../assets/icons/checkbox-off.svg"
 import todoImg from "../assets/png/todoPngButton.png"
 import cross from "../assets/icons/cross.svg"
 import calendar from "../assets/icons/calendar.svg"
+import Select from "../components/Select"
 import { useState } from "react"
+import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
+import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
+import List from "../assets/icons/list.svg?react"
+import RectangleCheckboxOn from "../assets/icons/rectangle_checkbox-on.svg?react"
+import RectangleCheckboxOff from "../assets/icons/rectangle_checkbox-off.svg?react"
+
 
 type Task = {
     id: string,
@@ -67,25 +71,25 @@ function Todo_List() {
                 {/* Инпут + селект + кнопка */}
                 <div className="flex w-full gap-7">
                         <input 
-                            className="flex-10 h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] outline outline-1 outline-neutral-500/40 placeholder-stone-300 text-xl" 
+                            className="flex-10 h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] outline-1 outline-neutral-500/40 placeholder-stone-300 text-xl" 
                             type="text" 
                             placeholder="Новая задача..." 
                             value={currentData.title}
-                            onChange={(e) => setCurrentData({...currentData, title: e.target.value})}
+                            onChange={(e) => {
+                              if (e.target.value.length <= 30) {
+                                setCurrentData({...currentData, title: e.target.value})
+                                }
+                            }}
+                            onKeyDown={(e) => e.key === "Enter" && handleCreate()}
                         />
 
-                        <select 
-                            className="h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] outline outline-1 outline-neutral-500/40 text-xl flex-1 cursor-pointer"
-                            onChange={(e)=> setCurrentData({...currentData, priority: e.target.value})}
-                        >
-                            <option value="Высокий">Высокий</option>
-                            <option value="Средний">Средний</option>
-                            <option selected value="Низкий" >Низкий</option>
-                        </select>
+                        <Select 
+                            value={currentData.priority} 
+                            onChange={(val) => setCurrentData({...currentData, priority: val})}
+                        />
 
-                    
                     <button 
-                        className="h-15 px-10 rounded-lg flex items-center gap-5 text-white text-xl font-semibold cursor-pointer"
+                        className="h-15 px-10 rounded-lg flex items-center gap-5 hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer"
                         /* Надо добавить через enter */
                         style={{ backgroundImage: `url(${todoImg})` }}
                         onClick={handleCreate}
@@ -98,31 +102,33 @@ function Todo_List() {
                 {/* Фильтры */}
                 <div className="h-10 flex gap-5 text-[18px]">
                     <button 
-                        className="flex items-center h-full px-6 gap-2.5 rounded-lg text-white"
-                        style={{ backgroundImage: `url(${todoImg})` }}
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "all" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} `}
+                        style={filter === "all" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("all")}
                     >
-                        <img className="invert" src={list} alt="img" />
+                        <List className={filter==="all" ?"fill-" : "fill-[#4C4C4C]"} />
                         Все
                     </button>
                     <button 
-                        className="flex items-center h-full px-6 gap-2.5 rounded-lg bg-white/40 text-[#4C4C4C] outline outline-1 outline-neutral-500/40"
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "active" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
+                        style={filter === "active" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("active")}
                     >
-                        <img src={checkboxOff} alt="img" />
+                        <CheckboxOff className={filter==="active" ?"stroke-white" : "stroke-[#4C4C4C]"} />
                         Активные
                     </button>
                     <button 
-                        className="flex items-center h-full px-6 gap-2.5 rounded-lg bg-white/40 text-[#4C4C4C] outline outline-1 outline-neutral-500/40"
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "completed" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
+                        style={filter === "completed" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("completed")}
                     >
-                        <img src={checkboxOn} alt="img" />
+                        <CheckboxOn className={filter==="completed" ?"stroke-white" : "stroke-[#4C4C4C]"} />
                         Выполненные
                     </button>
                 </div>
 
                 {/* Список задач */}
-                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-[462px] overflow-auto">
+                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-[462px]">
                     <table className="w-full bg-white border-collapse overflow-scroll">
                         <tbody>
                             {filtetedData.map((obj, i)=> (
@@ -132,12 +138,20 @@ function Todo_List() {
                                 >
                                     <td>
                                         <div className="flex gap-3 items-center">
-                                            <input 
+                                            <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
+                                                {
+                                                    obj.completed 
+                                                    ? <RectangleCheckboxOn />
+                                                    : <RectangleCheckboxOff />
+                                                }
+
+                                            </div>
+                                            {/* <input 
                                                 type="checkbox" 
                                                 className="cursor-pointer w-5 h-5" 
                                                 checked={obj.completed}
                                                 onChange={() => handleCompleted(obj.id)}
-                                            />
+                                            /> */}
                                             {obj.title}
                                         </div>
                                     </td>
@@ -161,9 +175,9 @@ function Todo_List() {
                                         </div>
                                     </td>
 
-                                    <td className="px-4">
+                                    <td className="px-2">
                                         <button 
-                                            className="cursor-pointer"
+                                            className="flex cursor-pointer "
                                             onClick={() => handleDelete(obj.id)}
                                         > 
                                             <img src={cross} alt="img" />
@@ -181,7 +195,9 @@ function Todo_List() {
             {/* Нижняя панель */}
             <div className="flex w-full h-15 justify-between">
 
-                <div className="flex h-full px-8 items-center gap-9 bg-[#EFF4EF] outline outline-1 outline-[#C3D9C3] rounded-2xl">
+                <div className="flex h-full px-8 items-center gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl">
+                    <List className="fill-amber-600"/>
+
                     <p className="flex gap-5 text-[20px] text-[#385538]">
                         <p>Всего: <span className="font-bold text-black">{data.length}</span></p>
                         <p>Активных: <span className="font-bold text-black">{data.filter(el=> !el.completed).length}</span></p>
@@ -190,7 +206,7 @@ function Todo_List() {
                 </div>
 
                 <button 
-                    className="flex h-full px-8 items-center gap-5 bg-[#FDEDE8] text-[#8E381D] text-[20px] font-semibold outline outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
+                    className="flex h-full px-8 items-center gap-5 bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
                     onClick={handleAllDelete}
                 >
                     <img src={delet} alt="img" />
