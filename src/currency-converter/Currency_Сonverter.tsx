@@ -29,10 +29,18 @@ function Currency_Converter () {
         </div>
 
         {/* Блок с популярными преобразованиями */}
-        <div className="flex-2 gap-4.5">
+        <div className="flex flex-2 flex-col gap-4.5">
             <p className="text-[18px] font-bold">Популярные пары</p>
-            <div className="flex">
-
+            <div className="flex gap-4">
+                 {popular_conversions.map( obj => (
+                    <div className="flex w-full px-4 py-5.5 bg-white/40 rounded-[10px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] font-medium justify-center items-center gap-2">
+                        <div className="flex gap-2">
+                            <img src={obj.country1} alt="img" className="h-6 w-6" />
+                            <img src={obj.country2} alt="img" className="h-6 w-6" />
+                        </div>
+                        <p className="whitespace-nowrap select-none">{obj.title}</p>
+                    </div>
+                ))}
             </div>
         </div>
 

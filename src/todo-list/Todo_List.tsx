@@ -128,7 +128,7 @@ function Todo_List() {
                 </div>
 
                 {/* Список задач */}
-                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-[462px]">
+                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-115.5">
                     <table className="w-full bg-white border-collapse overflow-scroll">
                         <tbody>
                             {filtetedData.map((obj, i)=> (
