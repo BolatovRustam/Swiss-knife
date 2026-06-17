@@ -89,7 +89,7 @@ function Todo_List() {
                         />
 
                     <button 
-                        className="h-15 px-10 rounded-lg flex items-center gap-5 hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer"
+                        className="h-15 px-10 rounded-lg flex items-center gap-5 transition hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer"
                         /* Надо добавить через enter */
                         style={{ backgroundImage: `url(${todoImg})` }}
                         onClick={handleCreate}
@@ -102,7 +102,7 @@ function Todo_List() {
                 {/* Фильтры */}
                 <div className="h-10 flex gap-5 text-[18px]">
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "all" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} `}
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "all" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} `}
                         style={filter === "all" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("all")}
                     >
@@ -110,7 +110,7 @@ function Todo_List() {
                         Все
                     </button>
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "active" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "active" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
                         style={filter === "active" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("active")}
                     >
@@ -118,7 +118,7 @@ function Todo_List() {
                         Активные
                     </button>
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer ${filter=== "completed" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
+                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "completed" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
                         style={filter === "completed" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("completed")}
                     >
@@ -129,12 +129,12 @@ function Todo_List() {
 
                 {/* Список задач */}
                 { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-115.5">
-                    <table className="w-full bg-white border-collapse overflow-scroll">
+                    <table className="w-full bg-white border-collapse overflow-scroll transform ">
                         <tbody>
                             {filtetedData.map((obj, i)=> (
                                 <tr 
                                     key={obj.id}
-                                    className={`[&>td:not(:last-child)]:px-9 [&>td]:py-6 text-neutral-700 text-xl ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}`}
+                                    className={`[&>td:not(:last-child)]:px-9 [&>td]:py-6 animate-fade-slide-in text-neutral-700 text-xl ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}`}
                                 >
                                     <td>
                                         <div className="flex gap-3 items-center">
@@ -146,12 +146,6 @@ function Todo_List() {
                                                 }
 
                                             </div>
-                                            {/* <input 
-                                                type="checkbox" 
-                                                className="cursor-pointer w-5 h-5" 
-                                                checked={obj.completed}
-                                                onChange={() => handleCompleted(obj.id)}
-                                            /> */}
                                             {obj.title}
                                         </div>
                                     </td>
@@ -206,7 +200,7 @@ function Todo_List() {
                 </div>
 
                 <button 
-                    className="flex h-full px-8 items-center gap-5 bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
+                    className="flex h-full px-8 items-center gap-5 transition bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
                     onClick={handleAllDelete}
                 >
                     <img src={delet} alt="img" />

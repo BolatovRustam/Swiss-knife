@@ -26,7 +26,7 @@ function Select ({value, onChange}:SelectProps) {
             </button>
 
             {open && (
-                <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-white rounded-2xl shadow-[0px_4px_10px_2px_rgba(0,0,0,0.25)] outline-1 outline-neutral-500/40 overflow-hidden z-10">
+                <div className="absolute top-[calc(100%+8px)] left-0 w-full transi bg-white rounded-2xl shadow-[0px_4px_10px_2px_rgba(0,0,0,0.25)] outline-1 outline-neutral-500/40 overflow-hidden z-10">
                     {options.map(opt => (
                         <div
                             key={opt.value}
