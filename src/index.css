@@ -14,6 +14,19 @@
   animation: fadeSlideIn 0.25s ease-out
 }
 
+@layer base {
+  /* Для Chrome, Safari, Edge */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    @apply appearance-none m-0;
+  }
+
+  /* Для Firefox */
+  input[type=number] {
+    @apply [appearance:textfield];
+  }
+}
+
 
 :root {
   background-color: #FAF9F5;

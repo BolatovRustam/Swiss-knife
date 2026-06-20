@@ -8,6 +8,7 @@ import pressure from "../assets/icons/pressure.svg"
 import time from "../assets/icons/time.svg"
 import button from "../assets/icons/change button.svg"
 import change from "../assets/icons/change.svg"
+import eraser from "../assets/icons/eraser.svg"
 import Info from "../assets/icons/info.svg?react"
 import unitConvPng from "../assets/png/unitConverterPng.png"
 import { useMemo, useState } from "react"
@@ -56,6 +57,11 @@ function Unit_Converter () {
         setResult(res)
     }
 
+    const handleClearInput = () => {
+        setInputValue("")
+        setResult("")
+    }
+
     const handleCategoryChange = (cat: CategoryName) => {
         setActiveCategory(cat)
         setInputValue("")
@@ -76,6 +82,7 @@ function Unit_Converter () {
         setFromUnit(toUnit)
         setToUnit(fromUnit)
         setInputValue(result)
+        setResult(inputValue)
     }
 
     const infoText = useMemo(() => {
@@ -130,7 +137,12 @@ function Unit_Converter () {
 
                 {/* Кнопка посередине */}
                 <button 
-                    className="h-11 mx-7.5 mb-5.5 p-2.5 shrink-0 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 justify-center items-center cursor-pointer"
+                    className={`
+                        h-11 mx-7.5 mb-5.5 p-2.5 shrink-0 bg-white  hover:bg-[#F9F9F9]
+                        rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 
+                        active:bg-white active:outline-2 active:outline-indigo-400
+                        transition duration-200 ease-in-out
+                        justify-center items-center cursor-pointer`}
                     onClick={() => handleClick()}
                 >
                     <img src={button} alt="img" />
@@ -138,22 +150,32 @@ function Unit_Converter () {
 
                 {/* В */}
                 <div className="flex flex-1 flex-col gap-6.5"> 
-                    <p className="flex items-end justify-between text-[18px] font-semibold">
+                    <div className="flex items-end justify-between text-[18px] font-semibold">
                         <span>В</span>
-                        <button 
-                            className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
-                            onClick={() => handleSwap()}
-                        >
-                            <img src={change} alt="img" />
-                        </button>
-                    </p>
+                        <div className="flex gap-3">
+                            <button 
+                                className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                onClick={() => handleClearInput()}
+                            >
+                                <img src={eraser} alt="img" />
+                            </button>
+
+                            <button 
+                                className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                onClick={() => handleSwap()}
+                            >
+                                <img src={change} alt="img" />
+                            </button>
+                        </div>
+
+                    </div>
 
                     <div className="flex items-center h-[95px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40">
                             <input 
                                 type="text"
                                 value={result} 
                                 placeholder="Результат" 
-                                className="flex-3 rounded-2xl outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
+                                className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
                                 readOnly
                             />
                             <select 
@@ -184,7 +206,7 @@ function Unit_Converter () {
                         <div
                             key={obj.title} 
                             onClick={() => handleCategoryChange(obj.title as CategoryName)}
-                            className={`relative flex w-full px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center transition cursor-pointer
+                            className={`relative flex w-full px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center transition select-none cursor-pointer
                                 ${obj.title === activeCategory 
                                     ? "outline-indigo-400 outline-2 shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
                                     : "bg-[#ECECEC]/25 hover:bg-[#ECECEC]/5  outline-[1.5px] outline-neutral-500/40"} `}
@@ -194,12 +216,14 @@ function Unit_Converter () {
                                     src={unitConvPng} 
                                     alt="" 
                                     className="absolute inset-0 w-full h-full object-cover opacity-20"
+                                    draggable = "false"
                                 />
                             )}
                             <img 
                                 src={obj.img} 
                                 alt="img" 
                                 className="relative z-10 w-7.5 h-7.5"
+                                draggable="false"
                             />
                             <p className="relative z-10 whitespace-nowrap select-none">{obj.title}</p>
                         </div>
@@ -212,14 +236,26 @@ function Unit_Converter () {
         {/* Блок с популярными преобразованиями */}
         <div className="flex flex-col mb-13 gap-4.5">
             <p className="text-[18px] font-bold">Популярные преобразования</p>
-            <div className="flex font-medium gap-4.5">
+            <div 
+                className="flex font-medium gap-4.5"
+                draggable = "false"
+            >
                 {popular_conversions.map( obj => (
                     <div 
-                        className="flex w-full gap-2 px-4 py-3 bg-white/40 rounded-[10px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] transition hover:-translate-y-2.5 active:translate-y-0 justify-center items-center cursor-pointer"
+                        key={obj.title}
+                        className={`
+                            flex w-full gap-2 px-4 py-3 bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
+                            transition hover:-translate-y-2.5 active:translate-y-0 active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)] 
+                            justify-center items-center cursor-pointer
+                        `}
                         onClick={() => handlePopularCategory(obj.category as CategoryName, obj.from, obj.to)}
+                        draggable = "false"
                     >
-                        <div className="flex items-center justify-center h-10 w-10 rounded-4xl bg-[#ECECFD]">
-                            <img src={obj.img} alt="img" />
+                        <div 
+                            className="flex items-center justify-center h-10 w-10 rounded-4xl bg-[#ECECFD] group-active:bg-transparent group-active:transition"
+                            draggable = "false"
+                        >
+                            <img src={obj.img} alt="img" className="select-none" draggable="false" />
                         </div>
                         <p className="whitespace-nowrap select-none">{obj.title}</p>
                     </div>

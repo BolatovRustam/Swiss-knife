@@ -3,14 +3,13 @@ import delet from "../assets/icons/delete.svg"
 import todoImg from "../assets/png/todoPngButton.png"
 import cross from "../assets/icons/cross.svg"
 import calendar from "../assets/icons/calendar.svg"
-import Select from "../components/Select"
+import Select, { type Option } from "../components/Select"
 import { useState } from "react"
 import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
 import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
 import List from "../assets/icons/list.svg?react"
 import RectangleCheckboxOn from "../assets/icons/rectangle_checkbox-on.svg?react"
 import RectangleCheckboxOff from "../assets/icons/rectangle_checkbox-off.svg?react"
-
 
 type Task = {
     id: string,
@@ -19,6 +18,12 @@ type Task = {
     priority: string,
     date: string
 }
+
+const options: Option[] = [
+    {value: "Высокий", label: "Высокий"},
+    {value: "Средний", label: "Средний"},
+    {value: "Низкий", label: "Низкий"},
+]
 
 
 function Todo_List() {
@@ -84,8 +89,9 @@ function Todo_List() {
                         />
 
                         <Select 
-                            value={currentData.priority} 
-                            onChange={(val) => setCurrentData({...currentData, priority: val})}
+                            value={ options.find(o => o.value === currentData.priority) ?? options[0]} 
+                            options={options}
+                            onChange={(val) => setCurrentData({...currentData, priority: val.value})}
                         />
 
                     <button 

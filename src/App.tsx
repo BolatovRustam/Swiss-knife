@@ -24,7 +24,8 @@ function App() {
 
   return (
     <div className="flex h-screen">
-      <aside className="w-82 border-r-2 border-[#777777] bg-[#F4F4F4]">
+      <aside 
+        className="w-82 border-r-2 border-[#777777] bg-[#F4F4F4] select-none">
         <div className="border-b-2 border-[#777777] pl-7 py-7">
           <h1 className="text-[22px] text-[#4D4E51] font-bold">SWISS KNIFE</h1>
           <p className="text-lg text-[#76787B] font-medium">{menuItems.length} инструментов</p>
@@ -38,7 +39,10 @@ function App() {
             className={`cursor-pointer flex items-center py-5 ${activePage === el.id ? 'bg-[#DDDDDD]' : 'hover:bg-[#EEEEEE]'}`}
             >
               <div className={`w-1.5 h-10 rounded-r mr-5 ${activePage === el.id ? 'bg-[#7F77DD]' : ''}`}></div>
-              <img className="w-8 h-8" src={el.img} alt="img" />
+              <img 
+                className="w-8 h-8" src={el.img} alt="img" 
+                draggable="false"
+              />
               <span className="ml-4 text-lg font-medium">{el.label}</span>
             </div>
           ))}
