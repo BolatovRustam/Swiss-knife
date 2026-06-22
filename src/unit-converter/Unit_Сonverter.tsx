@@ -9,12 +9,15 @@ import time from "../assets/icons/time.svg"
 import button from "../assets/icons/change button.svg"
 import change from "../assets/icons/change.svg"
 import eraser from "../assets/icons/eraser.svg"
+import recent from "../assets/icons/recent.svg"
+import checkbox from "../assets/icons/checkbox-on ( var 2 ).svg"
+import Delete from "../assets/icons/delete.svg?react"
 import Info from "../assets/icons/info.svg?react"
 import unitConvPng from "../assets/png/unitConverterPng.png"
+import Select, { type Option } from "../components/Select"
 import { useMemo, useState } from "react"
 import { unitCategories, type CategoryName } from "../types/units"
 import { convertor } from "../utils/converter"
-
 
 const categories = [
     { img: length, title: "Длина" },
@@ -37,12 +40,20 @@ const popular_conversions = [
     { img: square, title: "м² → км²", category: "Площадь", from: "m2", to: "km2" },
 ]
 
+type Data = {
+    id: string
+    title: string
+    time: string  
+}
+
 function Unit_Converter () {
     const [ activeCategory, setActiveCategory ] = useState<CategoryName>("Длина")
     const [ inputValue, setInputValue ] = useState("")
     const [ fromUnit, setFromUnit ] = useState<string>( unitCategories["Длина"][0].value )
     const [ toUnit, setToUnit ] = useState<string>( unitCategories["Длина"][1].value )
     const [ result, setResult ] = useState("")
+
+    const [data, setData] = useState<Data[]>([])
 
     const units = unitCategories[activeCategory]
 
@@ -55,11 +66,29 @@ function Unit_Converter () {
         const res = parseFloat(converted.toPrecision(8)).toString()
 
         setResult(res)
+
+        const time = new Date().toLocaleString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+
+        setData(prev => [...prev, {
+            id:crypto.randomUUID(),
+            title: `${inputValue} ${fromUnit} → ${res} ${toUnit}`,
+            time
+        }])
     }
 
     const handleClearInput = () => {
         setInputValue("")
         setResult("")
+    }
+
+    const handleDataClear = () => {
+        setData([])
     }
 
     const handleCategoryChange = (cat: CategoryName) => {
@@ -101,10 +130,10 @@ function Unit_Converter () {
 
 
     return (
-    <div className="flex h-full flex-col pt-12.75 pb-12.25 px-21.5"> 
+    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-21.5"> 
 
         {/* Верхняя часть */}
-        <div className="flex flex-col h-[490px] mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+        <div className="flex flex-col h-[490px]  mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
             
             {/* Инпуты и кнопка */}
             <div className="flex items-end">
@@ -112,7 +141,7 @@ function Unit_Converter () {
                 {/* Из */}
                 <div className="flex flex-1 flex-col gap-6.5">
                     <p className="text-[18px] font-semibold">Из</p>
-                    <div className="flex items-center h-[95px] px-4  bg-white/10 rounded-2xl outline-[1.5px]  outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]">
+                    <div className="flex items-center h-[90px] px-4  bg-white/10 rounded-2xl outline-[1.5px]  outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]">
                         <input 
                             type="number" 
                             value={inputValue}
@@ -170,7 +199,7 @@ function Unit_Converter () {
 
                     </div>
 
-                    <div className="flex items-center h-[95px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40">
+                    <div className="flex items-center h-[90px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40">
                             <input 
                                 type="text"
                                 value={result} 
@@ -193,7 +222,7 @@ function Unit_Converter () {
             </div>
 
             {/* Информация */}
-            <div className="flex h-18 px-4 gap-2.5 items-center bg-[#F1F2FB] rounded-2xl">
+            <div className="flex h-18 text-[16px] px-4 gap-2.5 items-center bg-[#F1F2FB] rounded-2xl">
                 <Info className="stroke-[#5885EA]"/>
                 <span>{infoText}</span>
             </div>
@@ -265,8 +294,37 @@ function Unit_Converter () {
 
 
         {/* История конверсии */}
-        <div className="flex h-58 px-8 pt-3 pb-1 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] flex-col justify-center items-center">
+        <div className="flex flex-col px-8 pt-3 pb-2 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
+                <div 
+                    className={`
+                        flex w-full py-4 px-3.5 justify-between items-start 
+                        ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
+                        `}
+                    >
+                    <p className="flex gap-2.5 text-[18px] font-bold">
+                        <img src={recent} alt="img" className="h-6 w-6" />
+                        <span>Недавние конверсии</span>
+                    </p>
+                    <Delete 
+                    className="fill-black cursor-pointer" 
+                    onClick={() => handleDataClear()}
+                    />
+                </div>
 
+                <div className="w-full">
+                    {data.map((obj, i) => (
+                        <div
+                            key={obj.id}
+                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                        >
+                            <div className="flex items-center gap-2.5 font-medium">
+                                <img src={checkbox} alt="img" className="h-6 w-6" />
+                                <span>{obj.title}</span>
+                            </div>
+                            <span className="text-[#777777]/80 text-[16px] font-medium">{obj.time}</span>
+                        </div>
+                    ))}
+                </div>
         </div>
     </div>
     )

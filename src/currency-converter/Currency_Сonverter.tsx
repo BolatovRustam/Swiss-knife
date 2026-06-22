@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from "react"
 import change from "../assets/icons/change.svg"
 import button from "../assets/icons/change button.svg"
 import eraser from "../assets/icons/eraser.svg"
+import recent from "../assets/icons/recent.svg"
 import Info from "../assets/icons/info.svg?react"
+import Delete from "../assets/icons/delete.svg?react"
 import Select, { type Option } from "../components/Select"
 import { currencies } from "../data/currencies"
 import { type Currency } from "../data/currencies"
@@ -17,6 +19,13 @@ const popular_conversions = [
     { from: "KZT", to: "GBP" },
 ]
 
+type Data = {
+    id: string
+    title: string
+    time: string
+    infoText: string
+}
+
 function Currency_Converter () {
     const [fromCurrency, setFromCurrency] = useState<Currency>(currencies[0])
     const [toCurrency, setToCurrency] = useState<Currency>(currencies[1])
@@ -24,6 +33,13 @@ function Currency_Converter () {
     const [result, setResult] = useState("")
     const [rate, setRate] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
+
+    const [data, setData] = useState<Data[]>([])
+
+    const infoText = rate !== null
+        ? `1 ${fromCurrency.value} = ${parseFloat(rate.toPrecision(4))} ${toCurrency.value}`
+        : "Загрузка..."
+
 
     const fetchRate = useCallback(async () => {
         
@@ -62,14 +78,33 @@ function Currency_Converter () {
             return
         }
 
-        const res = parseFloat((num * rate).toPrecision(8)).toString()
+        const res = parseFloat((num * rate).toFixed(2)).toString()
 
         setResult(res)
+
+        const time = new Date().toLocaleString('ru-RU', {
+            day: '2-digit',
+            month: '2-digit', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+
+        setData(prev => [...prev, { 
+            id: crypto.randomUUID(),
+            title: `${inputValue} ${fromCurrency.value} → ${res} ${toCurrency.value}`,
+            time,
+            infoText
+         }])
     }
 
     const handleClearInput = () => {
         setInputValue("")
         setResult("")
+    }
+
+    const handleDataClear = () => {
+        setData([])
     }
 
 
@@ -86,10 +121,6 @@ function Currency_Converter () {
             setInputValue("")
             setResult("")
     }
-
-    const infoText = rate !== null
-        ? `1 ${fromCurrency.value} = ${parseFloat(rate.toPrecision(6))} ${toCurrency.value}`
-        : "Загрузка..."
 
     const renderButton = (opt: Option) => (
         <div className="flex items-center gap-3">
@@ -113,9 +144,9 @@ function Currency_Converter () {
 
     return (
 
-        <div className="flex justify-between h-full flex-col pt-12.75 pb-12.25 px-21.5 gap-13"> 
+        <div className="flex max-h-full overflow-y-auto flex-col pt-12.5 pb-11 px-21.5 gap-8"> 
 
-            {/* Верхеяя часть */}
+            {/* Верхняя часть */}
             <div className="flex flex-col px-8 py-7 gap-6.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
             
                 {/* Инпуты и кнопка */}
@@ -130,7 +161,7 @@ function Currency_Converter () {
                                 value={inputValue}
                                 placeholder="Введите значение" 
                                 className={`
-                                    flex items-center h-[95px] px-4 bg-white/10 rounded-2xl outline-[1.5px] 
+                                    flex items-center h-[90px] px-4 bg-white/10 rounded-2xl outline-[1.5px] 
                                     outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 
                                     focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]
                                     text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]
@@ -147,7 +178,7 @@ function Currency_Converter () {
                                 options={currencies}
                                 renderButton={renderButton}
                                 renderOption={renderOption}
-                                buttonClassName="w-full h-[95px] rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
+                                buttonClassName="w-full h-[90px] rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
                             />
                         </div>
                     </div>
@@ -192,7 +223,7 @@ function Currency_Converter () {
                                 value={result} 
                                 placeholder="Результат" 
                                 className={`
-                                    flex items-center h-[95px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40
+                                    flex items-center h-[90px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40
                                     text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]
                                     `}
                                 readOnly
@@ -204,7 +235,7 @@ function Currency_Converter () {
                                 options={currencies}
                                 renderButton={renderButton}
                                 renderOption={renderOption}
-                                buttonClassName="w-full h-[95px] rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
+                                buttonClassName="w-full h-[90px] rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
                             />
                         </div>
                     </div>
@@ -220,7 +251,7 @@ function Currency_Converter () {
             </div>
 
             {/* Блок с популярными преобразованиями */}
-            <div className="flex flex-2 flex-col gap-4.5">
+            <div className="flex mb-5 flex-col gap-4.5">
                 <p className="text-[18px] font-bold">Популярные пары</p>
                 <div className="flex gap-4">
                     {popular_conversions.map( obj => {  
@@ -252,9 +283,42 @@ function Currency_Converter () {
 
 
             {/* История конверсии */}
-            <div className="flex flex-1 px-8 pt-3 pb-1 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] flex-col justify-center items-center">
+            <div className="flex  flex-col px-8 pt-3 pb-1 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
+                <div 
+                    className={`
+                        flex w-full py-4 px-3.5 justify-between items-start 
+                        ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
+                        `}
+                    >
+                    <p className="flex gap-2.5 text-[18px] font-bold">
+                        <img src={recent} alt="img" className="h-6 w-6" />
+                        <span>Недавние конверсии</span>
+                    </p>
+                    <Delete 
+                    className="fill-black cursor-pointer" 
+                    onClick={() => handleDataClear()}
+                    />
+                </div>
 
-            </div>
+                <div className="w-full">
+                    {data.map((obj, i) => (
+                        <div
+                            key={obj.id}
+                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                        >
+                            <div className="flex gap-2.5 font-medium">
+                                <div className="w-2 h-2 mt-2 rounded-full bg-[#C4C4C4]"></div>
+                                <p className="flex flex-col gap-2">
+                                    <span>{obj.title}</span>
+                                    <span className="text-[#919191]">{obj.time}</span>
+                                </p>
+
+                            </div>
+                            <span className="text-black text-[16px] font-medium">{obj.infoText}</span>
+                        </div>
+                    ))}
+                </div>
+        </div>
         </div>
     )
 }

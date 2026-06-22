@@ -1,5 +1,4 @@
 import plus from "../assets/icons/plus.svg"
-import delet from "../assets/icons/delete.svg"
 import todoImg from "../assets/png/todoPngButton.png"
 import cross from "../assets/icons/cross.svg"
 import calendar from "../assets/icons/calendar.svg"
@@ -7,6 +6,7 @@ import Select, { type Option } from "../components/Select"
 import { useState } from "react"
 import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
 import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
+import Delete from "../assets/icons/delete.svg?react"
 import List from "../assets/icons/list.svg?react"
 import RectangleCheckboxOn from "../assets/icons/rectangle_checkbox-on.svg?react"
 import RectangleCheckboxOff from "../assets/icons/rectangle_checkbox-off.svg?react"
@@ -68,7 +68,7 @@ function Todo_List() {
 
 
     return (
-        <div className="flex justify-between h-full flex-col pt-12.75 pb-12 px-21.5">
+        <div className="flex justify-between h-full flex-col pt-12.5 pb-12 px-21.5">
 
             {/* Верхняя часть */}
             <div className="flex flex-col gap-7">
@@ -112,7 +112,7 @@ function Todo_List() {
                         style={filter === "all" ? { backgroundImage: `url(${todoImg})`}: {}}
                         onClick={() => setFilter("all")}
                     >
-                        <List className={filter==="all" ?"fill-" : "fill-[#4C4C4C]"} />
+                        <List className={filter==="all" ?"fill-white" : "fill-[#4C4C4C]"} />
                         Все
                     </button>
                     <button 
@@ -209,7 +209,7 @@ function Todo_List() {
                     className="flex h-full px-8 items-center gap-5 transition bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
                     onClick={handleAllDelete}
                 >
-                    <img src={delet} alt="img" />
+                    <Delete className="fill-[#8E381D]" />
                     <p>Очистить список</p>
                 </button>
             </div>
