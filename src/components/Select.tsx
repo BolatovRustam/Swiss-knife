@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import down from "../assets/icons/down.svg"
 
 export type Option = {
@@ -21,9 +21,23 @@ type SelectProps = {
 
 function Select ({value, onChange, options, renderButton, renderOption, buttonClassName, menuClassName, optionClassName}:SelectProps) {
     const [open, setOpen] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            
+            console.log("click", ref.current?.contains(e.target as Node))
+            if (ref.current && !ref.current.contains(e.target as Node)) {
+                setOpen(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [])
 
     return (
-        <div className="relative">
+        <div className="relative" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
                 className={`
