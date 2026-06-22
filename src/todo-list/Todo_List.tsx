@@ -96,8 +96,11 @@ function Todo_List() {
 
                     <button 
                         className="h-15 px-10 rounded-lg flex items-center gap-5 transition hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer"
-                        /* Надо добавить через enter */
-                        style={{ backgroundImage: `url(${todoImg})` }}
+                        style={{ 
+                            backgroundImage: `url(${todoImg})`,
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                        }}
                         onClick={handleCreate}
                     >
                         <span>Добавить</span>
@@ -109,7 +112,12 @@ function Todo_List() {
                 <div className="h-10 flex gap-5 text-[18px]">
                     <button 
                         className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "all" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} `}
-                        style={filter === "all" ? { backgroundImage: `url(${todoImg})`}: {}}
+                        style={filter === "all" 
+                            ? { backgroundImage: `url(${todoImg})`,
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat", }
+                            : {}
+                        }
                         onClick={() => setFilter("all")}
                     >
                         <List className={filter==="all" ?"fill-" : "fill-[#4C4C4C]"} />
@@ -117,7 +125,12 @@ function Todo_List() {
                     </button>
                     <button 
                         className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "active" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
-                        style={filter === "active" ? { backgroundImage: `url(${todoImg})`}: {}}
+                        style={filter === "active" 
+                            ? { backgroundImage: `url(${todoImg})`,
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat", }
+                            : {}
+                        }
                         onClick={() => setFilter("active")}
                     >
                         <CheckboxOff className={filter==="active" ?"stroke-white" : "stroke-[#4C4C4C]"} />
@@ -125,7 +138,12 @@ function Todo_List() {
                     </button>
                     <button 
                         className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "completed" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
-                        style={filter === "completed" ? { backgroundImage: `url(${todoImg})`}: {}}
+                        style={filter === "completed" 
+                            ? { backgroundImage: `url(${todoImg})`,
+                                backgroundSize: "cover",
+                                backgroundRepeat: "no-repeat", }
+                            : {}
+                        }
                         onClick={() => setFilter("completed")}
                     >
                         <CheckboxOn className={filter==="completed" ?"stroke-white" : "stroke-[#4C4C4C]"} />
@@ -143,7 +161,7 @@ function Todo_List() {
                                     className={`[&>td:not(:last-child)]:px-9 [&>td]:py-6 animate-fade-slide-in text-neutral-700 text-xl ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}`}
                                 >
                                     <td>
-                                        <div className="flex gap-3 items-center">
+                                        <div className={`flex gap-3 items-center ${obj.completed && "line-through"}`}>
                                             <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
                                                 {
                                                     obj.completed 

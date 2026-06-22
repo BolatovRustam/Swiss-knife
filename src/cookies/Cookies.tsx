@@ -1,8 +1,72 @@
+import cookie from "../assets/icons/cookies.svg"
+import arrow from "../assets/icons/arrow.svg"
+import glithers from "../assets/icons/glitter (var 2).svg"
+import cookiePng from "../assets/png/cookies.png"
+import cookieButton from "../assets/png/cookieButtonPng.png"
+import cookiePaper from "../assets/png/cookiesPaper.svg"
+import predictions from "./predictions"
+import React, { useState } from "react"
+
+
 function Cookies () {
+    const [prediction, setPrediction] = useState<string|null>(null)
+
+    const openCookie = () => {
+
+        const random = Math.floor(Math.random() * predictions.length)
+
+        setPrediction(predictions[random])
+    }
+
     return (
-        <div className="flex flex-col h-full px-56.5 pt-21 pb-12 gap-14.5">
-            <div className="bg-gray-500"></div>
-            <div className="bg-gray-500"></div>
+        <div className="flex flex-col items-center h-full px-56.5 pt-12.75 pb-12 gap-3.5">
+
+            <div className="flex flex-col items-center py-6 w-full gap-6 rounded-[15px] outline-2 outline-[#777777]/40 ">
+                <img src={cookiePng} alt="img" className="h-[340px] w-[710px]" />
+                <div className="flex flex-col gap-3.5 items-center">
+                    <span className="text-[#919191] font-semibold">Нажмите на кнопку, что бы узнать свое предсказание</span>
+                    <button 
+                        className="flex gap-2 rounded-[10px] p-3.5 text-white font-bold cursor-pointer transition hover:brightness-110 active:brightness-85"
+                        style={{ 
+                            backgroundImage: `url(${cookieButton})`,
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat", 
+                        }}
+                        onClick={() => openCookie()}
+                    >
+                        <img src={cookie} alt="img" />
+                        <span>Открыть печенье</span>
+                    </button>
+                </div>
+            </div>
+
+            {prediction && (
+                <React.Fragment key={prediction}>
+                    <img 
+                        src={arrow} 
+                        alt="img" 
+                        className="w-8 h-8 rotate-90 arrow-anim" 
+                    />
+
+                    <div 
+                    className="flex flex-col h-[204px] w-[670px] px-[74px] py-[24px] gap-4.5 rounded-[15px] outline-2 outline-[#777777]/40 animate-unfold">
+
+                        <p className="flex items-center justify-center gap-3.5 text-[#CE9638] font-bold">
+                            <img src={glithers} alt="img" className="w-8 h-8" />
+                            <span>Ваше предсказание</span>
+                        </p>
+
+                        <div className="flex  relative justify-center items-center text-center text-[18px] text-[#77655B] font-medium">
+                            <img src={cookiePaper} alt="img" />
+                            <p className="absolute max-w-[345px]">{prediction}</p>
+                        </div>
+                    
+                    </div>
+                </React.Fragment>
+            )}
+            
+                
+
         </div>
     )
 }
