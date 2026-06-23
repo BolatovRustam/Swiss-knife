@@ -3,7 +3,7 @@ import todoImg from "../assets/png/todoPngButton.png"
 import cross from "../assets/icons/cross.svg"
 import calendar from "../assets/icons/calendar.svg"
 import Select, { type Option } from "../components/Select"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
 import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
 import Delete from "../assets/icons/delete.svg?react"
@@ -27,14 +27,22 @@ const options: Option[] = [
 
 
 function Todo_List() {
-    const [data, setData] = useState<Task[]>([
+    const [data, setData] = useState<Task[]>(() => {
+       const saved = localStorage.getItem("todoData")  
+       return saved 
+       ? JSON.parse(saved) 
+       : [
         {id: crypto.randomUUID(), completed: false, title: "Подготовить презентацию", priority: "Высокий", date: "24.05.2024"},
         {id: crypto.randomUUID(), completed: true, title: "Сделать покупку", priority: "Средний", date: "24.05.2024"},
         {id: crypto.randomUUID(), completed: false, title: "Отремонтировать", priority: "Низкий", date: "24.05.2024"},
-    ])
-
+    ]
+    })
     const [currentData, setCurrentData] = useState({title: "", priority: "Низкий"})
     const [filter, setFilter] = useState<"all" | "active" | "completed">("all")
+
+    useEffect(() =>{
+        localStorage.setItem("todoData", JSON.stringify(data))
+    }, [data])
 
     const filtetedData = data.filter(el => {
         if (filter === "active") return !el.completed
@@ -120,7 +128,7 @@ function Todo_List() {
                         }
                         onClick={() => setFilter("all")}
                     >
-                        <List className={filter==="all" ?"fill-white" : "fill-[#4C4C4C]"} />
+                        <List className={filter==="all" ?"text-white" : "text-[#4C4C4C]"} />
                         Все
                     </button>
                     <button 
@@ -133,7 +141,7 @@ function Todo_List() {
                         }
                         onClick={() => setFilter("active")}
                     >
-                        <CheckboxOff className={filter==="active" ?"stroke-white" : "stroke-[#4C4C4C]"} />
+                        <CheckboxOff className={filter==="active" ?"text-white" : "text-[#4C4C4C]"} />
                         Активные
                     </button>
                     <button 
@@ -146,7 +154,7 @@ function Todo_List() {
                         }
                         onClick={() => setFilter("completed")}
                     >
-                        <CheckboxOn className={filter==="completed" ?"stroke-white" : "stroke-[#4C4C4C]"} />
+                        <CheckboxOn className={filter==="completed" ?"text-white" : "text-[#4C4C4C]"} />
                         Выполненные
                     </button>
                 </div>
@@ -214,7 +222,7 @@ function Todo_List() {
             <div className="flex w-full h-15 justify-between">
 
                 <div className="flex h-full px-8 items-center gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl">
-                    <List className="fill-amber-600"/>
+                    <List className="text-[#5F915F]"/>
 
                     <p className="flex gap-5 text-[20px] text-[#385538]">
                         <p>Всего: <span className="font-bold text-black">{data.length}</span></p>

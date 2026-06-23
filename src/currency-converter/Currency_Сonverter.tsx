@@ -34,7 +34,14 @@ function Currency_Converter () {
     const [rate, setRate] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
 
-    const [data, setData] = useState<Data[]>([])
+    const [data, setData] = useState<Data[]>(() => {
+        const saved = localStorage.getItem("currencyData")
+        return saved ? JSON.parse(saved) : []
+    })
+
+    useEffect(() => {
+        localStorage.setItem("currencyData", JSON.stringify(data))
+    }, [data])
 
     const infoText = rate !== null
         ? `1 ${fromCurrency.value} = ${parseFloat(rate.toPrecision(4))} ${toCurrency.value}`
@@ -290,12 +297,12 @@ function Currency_Converter () {
                         ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
                         `}
                     >
-                    <p className="flex gap-2.5 text-[18px] font-bold">
+                    <p className="flex gap-2.5 text-[18px] font-bold select-none">
                         <img src={recent} alt="img" className="h-6 w-6" />
                         <span>Недавние конверсии</span>
                     </p>
                     <Delete 
-                    className="fill-black cursor-pointer" 
+                    className="text-[#777777] cursor-pointer transition hover:text-[#E84545] active:text-[#9A1F1F]" 
                     onClick={() => handleDataClear()}
                     />
                 </div>

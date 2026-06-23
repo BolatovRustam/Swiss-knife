@@ -10,9 +10,6 @@ import Unit_Converter from "./unit-converter/Unit_Сonverter"
 import Currency_Converter from "./currency-converter/Currency_Сonverter"
 import Cookies from "./cookies/Cookies"
 
-function App() {
-  const  [activePage, setActivePage] = useState("calculator")
-
   const menuItems = [
     { id: 'calculator', label: 'Калькулятор', img: calculatorImg },
     { id: 'todo', label: 'Todo-лист', img: todoImg },
@@ -21,6 +18,16 @@ function App() {
     { id: 'cookies', label: 'Предсказания', img: cookiesImg },
   ]
 
+
+function App() {
+  const  [activePage, setActivePage] = useState(() => {
+    return localStorage.getItem("activePage") ?? "calculator"
+  })
+
+  const handlePageChange = (id:string) => {
+    setActivePage(id)
+    localStorage.setItem("activePage", id)
+  }
 
   return (
     <div className="flex h-screen">
@@ -35,7 +42,7 @@ function App() {
           {menuItems.map(el => (
             <div
             key={el.id}
-            onClick={() => setActivePage(el.id)}
+            onClick={() => handlePageChange(el.id)}
             className={`cursor-pointer flex items-center py-5 ${activePage === el.id ? 'bg-[#DDDDDD]' : 'hover:bg-[#EEEEEE]'}`}
             >
               <div className={`w-1.5 h-10 rounded-r mr-5 ${activePage === el.id ? 'bg-[#7F77DD]' : ''}`}></div>
@@ -47,7 +54,7 @@ function App() {
             </div>
           ))}
         </div>
-      </aside>
+      </aside>  
 
       <main className="flex-1 flex flex-col overflow-hidden">
         <div className="border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">

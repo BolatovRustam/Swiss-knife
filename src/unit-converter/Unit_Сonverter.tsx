@@ -15,7 +15,7 @@ import Delete from "../assets/icons/delete.svg?react"
 import Info from "../assets/icons/info.svg?react"
 import unitConvPng from "../assets/png/unitConverterPng.png"
 import Select, { type Option } from "../components/Select"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { unitCategories, type CategoryName } from "../types/units"
 import { convertor } from "../utils/converter"
 
@@ -53,7 +53,14 @@ function Unit_Converter () {
     const [ toUnit, setToUnit ] = useState<string>( unitCategories["Длина"][1].value )
     const [ result, setResult ] = useState("")
 
-    const [data, setData] = useState<Data[]>([])
+    const [data, setData] = useState<Data[]>(() => {
+        const saved = localStorage.getItem("unitData")
+        return saved ? JSON.parse(saved) : []
+    })
+
+    useEffect(() => {
+        localStorage.setItem("unitData", JSON.stringify(data))
+    }, [data])
 
     const units = unitCategories[activeCategory]
 
@@ -223,7 +230,7 @@ function Unit_Converter () {
 
             {/* Информация */}
             <div className="flex h-18 text-[16px] px-4 gap-2.5 items-center bg-[#F1F2FB] rounded-2xl">
-                <Info className="stroke-[#5885EA]"/>
+                <Info className="text-[#5885EA]"/>
                 <span>{infoText}</span>
             </div>
 
@@ -301,12 +308,12 @@ function Unit_Converter () {
                         ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
                         `}
                     >
-                    <p className="flex gap-2.5 text-[18px] font-bold">
+                    <p className="flex gap-2.5 text-[18px] font-bold select-none">
                         <img src={recent} alt="img" className="h-6 w-6" />
                         <span>Недавние конверсии</span>
                     </p>
                     <Delete 
-                    className="fill-black cursor-pointer" 
+                    className="text-[#777777] cursor-pointer transition hover:text-[#E84545] active:text-[#9A1F1F]" 
                     onClick={() => handleDataClear()}
                     />
                 </div>
