@@ -1,4 +1,4 @@
-import { unitCategories, type CategoryName } from "../types/units"
+import { unitCategories, type CategoryName } from "../unit-converter/data/units"
 
 function convertTemperature(value: number, from: string, to:string): number {
 

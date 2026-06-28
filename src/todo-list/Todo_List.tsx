@@ -1,29 +1,19 @@
-import plus from "../assets/icons/plus.svg"
-import todoImg from "../assets/png/todoPngButton.png"
-import cross from "../assets/icons/cross.svg"
-import calendar from "../assets/icons/calendar.svg"
-import Select, { type Option } from "../components/Select"
 import { useEffect, useState } from "react"
+import type { Task } from "./types"
+import Select from "../components/Select"
+import { options, defaultTasks } from "./constants"
+
+
 import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
 import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
 import Delete from "../assets/icons/delete.svg?react"
 import List from "../assets/icons/list.svg?react"
 import RectangleCheckboxOn from "../assets/icons/rectangle_checkbox-on.svg?react"
 import RectangleCheckboxOff from "../assets/icons/rectangle_checkbox-off.svg?react"
-
-type Task = {
-    id: string,
-    completed: boolean,
-    title: string,
-    priority: string,
-    date: string
-}
-
-const options: Option[] = [
-    {value: "Высокий", label: "Высокий"},
-    {value: "Средний", label: "Средний"},
-    {value: "Низкий", label: "Низкий"},
-]
+import plus from "../assets/icons/plus.svg"
+import todoImg from "../assets/png/todoPngButton.png"
+import cross from "../assets/icons/cross.svg"
+import calendar from "../assets/icons/calendar.svg"
 
 
 function Todo_List() {
@@ -31,11 +21,7 @@ function Todo_List() {
        const saved = localStorage.getItem("todoData")  
        return saved 
        ? JSON.parse(saved) 
-       : [
-        {id: crypto.randomUUID(), completed: false, title: "Подготовить презентацию", priority: "Высокий", date: "24.05.2024"},
-        {id: crypto.randomUUID(), completed: true, title: "Сделать покупку", priority: "Средний", date: "24.05.2024"},
-        {id: crypto.randomUUID(), completed: false, title: "Отремонтировать", priority: "Низкий", date: "24.05.2024"},
-    ]
+       : defaultTasks
     })
     const [currentData, setCurrentData] = useState({title: "", priority: "Низкий"})
     const [filter, setFilter] = useState<"all" | "active" | "completed">("all")

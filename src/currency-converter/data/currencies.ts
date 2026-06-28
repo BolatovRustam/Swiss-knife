@@ -1,11 +1,11 @@
-import USA from "../assets/flags/USA.svg"
-import Eur from "../assets/flags/European Union.svg"
-import Russia from "../assets/flags/Russia.svg"
-import Kazakhstan from "../assets/flags/Kazakhstan.svg"
-import Britan from "../assets/flags/Britan.svg"
-import Japan from "../assets/flags/Japan.svg"
-import Argentina from "../assets/flags/Argentina.svg"
-import Czech from "../assets/flags/Czech Republic.svg"
+import USA from "../../assets/flags/USA.svg"
+import Eur from "../../assets/flags/European Union.svg"
+import Russia from "../../assets/flags/Russia.svg"
+import Kazakhstan from "../../assets/flags/Kazakhstan.svg"
+import Britan from "../../assets/flags/Britan.svg"
+import Japan from "../../assets/flags/Japan.svg"
+import Argentina from "../../assets/flags/Argentina.svg"
+import Czech from "../../assets/flags/Czech Republic.svg"
 
 export type Currency = {
     value: string

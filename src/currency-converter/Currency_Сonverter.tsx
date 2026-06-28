@@ -1,23 +1,17 @@
 import { useCallback, useEffect, useState } from "react"
+import { popular_conversions } from "./data/constant"
+import { currencies } from "./data/currencies"
+import { type Currency } from "./data/currencies"
+import Select, { type Option } from "../components/Select"
+
 import change from "../assets/icons/change.svg"
 import button from "../assets/icons/change button.svg"
 import eraser from "../assets/icons/eraser.svg"
 import recent from "../assets/icons/recent.svg"
 import Info from "../assets/icons/info.svg?react"
 import Delete from "../assets/icons/delete.svg?react"
-import Select, { type Option } from "../components/Select"
-import { currencies } from "../data/currencies"
-import { type Currency } from "../data/currencies"
 
-const popular_conversions = [
-    { from: "USD", to: "EUR" },
-    { from: "USD", to: "RUB" },
-    { from: "RUB", to: "KZT" },
-    { from: "EUR", to: "USD" },
-    { from: "USD", to: "KZT" },
-    { from: "GBP", to: "EUR" },
-    { from: "KZT", to: "GBP" },
-]
+
 
 type Data = {
     id: string

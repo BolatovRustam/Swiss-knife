@@ -18,7 +18,7 @@ const buttons = [
     {label: "2", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "shadow-[0_5px_0_#B7B7B7]" },
     {label: "3", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "shadow-[0_5px_0_#B7B7B7]" },
     {label: "+", bg: "bg-[#F55353]", text: "text-white", span: "row-span-2", shadow: "shadow-[0_5px_0_#C24343]" },
-    {label: ".", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "shadow-[0_5px_0_#B7B7B7]" },
+    {label: ".", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "sha dow-[0_5px_0_#B7B7B7]" },
     {label: "0", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "shadow-[0_5px_0_#B7B7B7]" },
     {label: "=", bg: "bg-[#EBEBEB]", text: "text-[#343434]", span: "h-13", shadow: "shadow-[0_5px_0_#B7B7B7]" },
 ]
@@ -120,7 +120,7 @@ function SegmentedCalculator() {
                       <div className="absolute inset-0 bg-[#4A4A4A] rounded-xl"></div>
                       <div className="absolute flex pr-2 inset-0 mt-1 mb-3 mx-1 bg-[#BBD0BF] font-['DSEG7_Classic'] text-[48px]  rounded-xl shadow-[0_5px_0_#96AE9E,0_-5px_0_#96AE9E] overflow-hidden">
                         <div className="relative w-full flex justify-end">
-                          <span className="absolute font-['DSEG7_Classic'] text-[#688271] opacity-30">88888888</span>
+                          <span className="absolute font-['DSEG7_Classic'] text-[#688271] opacity-30 select-none">88888888</span>
                           <span className="absolute right-0 font-['DSEG7_Classic']">{display}</span>
                         </div>
                       </div>

@@ -1,5 +1,5 @@
 import DefaultCalculator from "./var/DefaultCalculator"
-import SegmentedCalculator from "./var/segmentedCalculator"
+import SegmentedCalculator from "./var/SegmentedCalculator"
 import { useState } from "react"
 
 function Calculator() {
