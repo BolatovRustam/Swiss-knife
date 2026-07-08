@@ -1,9 +1,12 @@
 import { useState } from "react"
+import { useAuthStore } from "./store/authStore"
+import { supabase } from "./lib/supabase"
 import Calculator from "./calculator"
 import Todo_List from "./todo-list"
 import Unit_Converter from "./unit-converter"
 import Currency_Converter from "./currency-converter"
 import Cookies from "./cookies"
+import { Loader2 } from "lucide-react"
 
 import calculatorImg from "./assets/png/calculator.png"
 import convertImg1 from "./assets/png/converter 1.png"
@@ -26,9 +29,18 @@ function MainApp() {
     return localStorage.getItem("activePage") ?? "calculator"
   })
 
+  const { session } = useAuthStore()
+  const [loggingOut, setLoggingOut] = useState(false)
+
   const handlePageChange = (id:string) => {
     setActivePage(id)
     localStorage.setItem("activePage", id)
+  }
+
+  const handleLogOut = async () => {
+    setLoggingOut(true)
+    await new Promise(resolve => setTimeout(resolve, 800))
+    await supabase.auth.signOut()
   }
 
   const activeTool = tools.find(t => t.id === activePage)
@@ -61,8 +73,28 @@ function MainApp() {
       </aside>  
 
       <main className="flex-1 flex flex-col overflow-hidden">
-        <div className="border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
+        <div className="flex items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
           <h2 className="text-2xl font-semibold">{activeTool?.label}</h2>
+          <div className="flex items-center gap-4.5 font-medium">
+            <p>Добро пожаловать {session?.user?.user_metadata?.name}!</p>
+            <button 
+              className={`
+                flex items-center gap-2 px-2.5 py-2  
+                ${loggingOut ? "bg-[#F55252] outline-none text-white" : "bg-white hover:bg-[#EDEDED]"}
+                rounded-lg outline outline-black cursor-pointer transition-colors duration-300
+              `}
+              onClick={handleLogOut}
+            >
+              { loggingOut ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin"/>
+                  Выходим...
+                </>
+              ): (
+                'Выйти'
+              )}
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-hidden">

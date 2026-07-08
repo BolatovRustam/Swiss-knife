@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { categories, popular_conversions } from "./data/constants"
 import { unitCategories, type CategoryName } from "./data/units"
+import { useAuthStore } from "../store/authStore"
+import { supabase } from "../lib/supabase"
 import { convertor } from "../utils/converter"
 
 import button from "../assets/icons/change button.svg"
@@ -14,29 +16,42 @@ import unitConvPng from "../assets/png/unitConverterPng.png"
 
 type Data = {
     id: string
+    user_id: string
     title: string
     time: string  
 }
 
 function Unit_Converter () {
+    const { session } = useAuthStore()
     const [ activeCategory, setActiveCategory ] = useState<CategoryName>("Длина")
     const [ inputValue, setInputValue ] = useState("")
     const [ fromUnit, setFromUnit ] = useState<string>( unitCategories["Длина"][0].value )
     const [ toUnit, setToUnit ] = useState<string>( unitCategories["Длина"][1].value )
     const [ result, setResult ] = useState("")
 
-    const [data, setData] = useState<Data[]>(() => {
-        const saved = localStorage.getItem("unitData")
-        return saved ? JSON.parse(saved) : []
-    })
+    const [data, setData] = useState<Data[]>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        localStorage.setItem("unitData", JSON.stringify(data))
-    }, [data])
+        const fetchUnit = async () => {
+            const { data: unit, error } = await supabase
+                .from('unit-conversions')
+                .select('*')
+                .order('created_at', { ascending: true })
+
+            if (error) console.error('Ошибка загрузки', error) 
+            else setData(unit as Data[]) 
+            setLoading(false)
+        }
+
+        fetchUnit()
+        
+    }, [])
 
     const units = unitCategories[activeCategory]
 
-    const handleClick = () => {
+    const handleClick = async () => {
+
         const num = parseFloat(inputValue)
 
         if (isNaN(num) || inputValue === "") return ""
@@ -54,11 +69,22 @@ function Unit_Converter () {
             minute: '2-digit'
         })
 
-        setData(prev => [...prev, {
-            id:crypto.randomUUID(),
-            title: `${inputValue} ${fromUnit} → ${res} ${toUnit}`,
-            time
-        }])
+        const { data: newUnitTask, error } = await supabase
+            .from('unit-conversions')
+            .insert({
+                title: `${inputValue} ${fromUnit} → ${res} ${toUnit}`,
+                time,   
+                user_id: session?.user.id
+            })
+            .select()
+            .single()
+
+            if (error) {
+                console.error('Ошибка добавения', error)
+                return
+            } 
+
+        setData(prev => [...prev, newUnitTask as Data])
     }
 
     const handleClearInput = () => {
@@ -66,7 +92,19 @@ function Unit_Converter () {
         setResult("")
     }
 
-    const handleDataClear = () => {
+    const handleDataClear = async () => {
+        if (!session) return
+
+        const { error } = await supabase
+            .from('unit-conversions')
+            .delete()
+            .eq('user_id', session.user.id)
+
+        if ( error ) {
+            console.error('Ошибка очистки истории', error)
+        }
+    
+
         setData([])
     }
 
@@ -104,6 +142,7 @@ function Unit_Converter () {
         return `1 ${f.label} = ${parseFloat(rate.toPrecision(6))} ${t.label}`
     }, [fromUnit, toUnit, activeCategory, units])
 
+    if (loading) return <div className="flex items-center justify-center h-full" >Загрузка..</div>
 
     return (
     <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-21.5"> 

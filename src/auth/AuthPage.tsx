@@ -36,16 +36,16 @@ function AuthPage () {
                   </div>
 
                   {/* Табы */}
-                  <div className="flex mb-1.5 border-b border-gray-200">
+                  <div className="flex mb-1.5 border-b border-gray-200 hover:border-gray-300">
                     <button
                       onClick={() => setIsLogin(true)}
-                      className={`flex-1 pb-2 text-sm font-medium transition-colors cursor-pointer ${isLogin ? 'border-b-2 border-[#2E86FA] text-[#2E86FA]' : 'text-gray-400'}`}
+                      className={`flex-1 pb-2 text-sm font-medium transition-colors cursor-pointer ${isLogin ? 'border-b-2 border-[#2E86FA] text-[#2E86FA]' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       Вход
                     </button>
                     <button
                       onClick={() => setIsLogin(false)}
-                      className={`flex-1 pb-2 text-sm font-medium transition-colors cursor-pointer ${!isLogin ? 'border-b-2 border-[#2E86FA] text-[#2E86FA]' : 'text-gray-400'}`}
+                      className={`flex-1 pb-2 text-sm font-medium transition-colors cursor-pointer ${!isLogin ? 'border-b-2 border-[#2E86FA] text-[#2E86FA]' : 'text-gray-400 hover:text-gray-600'}`}
                     >
                       Регистрация
                     </button>

@@ -26,7 +26,6 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             
-            console.log("click", ref.current?.contains(e.target as Node))
             if (ref.current && !ref.current.contains(e.target as Node)) {
                 setOpen(false)
             }

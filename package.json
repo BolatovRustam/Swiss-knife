@@ -11,13 +11,18 @@
   },
   "dependencies": {
     "@fontsource/dseg7-classic": "^5.2.5",
+    "@hookform/resolvers": "^5.4.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.3.0",
+    "lucide-react": "^1.22.0",
     "mathjs": "^15.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
+    "react-hook-form": "^7.80.0",
     "react-router-dom": "^7.18.0",
-    "vite-plugin-svgr": "^5.2.0"
+    "vite-plugin-svgr": "^5.2.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
