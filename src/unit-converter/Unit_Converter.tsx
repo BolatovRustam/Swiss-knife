@@ -103,7 +103,6 @@ function Unit_Converter () {
         if ( error ) {
             console.error('Ошибка очистки истории', error)
         }
-    
 
         setData([])
     }

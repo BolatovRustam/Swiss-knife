@@ -10,7 +10,8 @@ import eraser from "../assets/icons/eraser.svg"
 import recent from "../assets/icons/recent.svg"
 import Info from "../assets/icons/info.svg?react"
 import Delete from "../assets/icons/delete.svg?react"
-
+import { useAuthStore } from "../store/authStore"
+import { supabase } from "../lib/supabase"
 
 
 type Data = {
@@ -21,6 +22,7 @@ type Data = {
 }
 
 function Currency_Converter () {
+    const { session } = useAuthStore()
     const [fromCurrency, setFromCurrency] = useState<Currency>(currencies[0])
     const [toCurrency, setToCurrency] = useState<Currency>(currencies[1])
     const [inputValue, setInputValue] = useState("")
@@ -28,14 +30,22 @@ function Currency_Converter () {
     const [rate, setRate] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
 
-    const [data, setData] = useState<Data[]>(() => {
-        const saved = localStorage.getItem("currencyData")
-        return saved ? JSON.parse(saved) : []
-    })
+    const [data, setData] = useState<Data[]>([])
 
     useEffect(() => {
-        localStorage.setItem("currencyData", JSON.stringify(data))
-    }, [data])
+        const fetchCurren = async () => {
+            const { data: currency, error } = await supabase
+                .from('currency-conversions')
+                .select('*')
+                .order('created_at', { ascending: true })
+            if (error) console.error('Ошибка загрузки', error)
+            else setData(currency)
+            setLoading(false)
+        }
+
+        fetchCurren()
+
+    }, [])
 
     const infoText = rate !== null
         ? `1 ${fromCurrency.value} = ${parseFloat(rate.toPrecision(4))} ${toCurrency.value}`
@@ -72,7 +82,7 @@ function Currency_Converter () {
         fetchRate()
     }, [fetchRate])
 
-   const handleClick = () => {
+   const handleClick = async () => {
         const num = parseFloat(inputValue)
         if (isNaN(num) || inputValue === "" || rate === null) {
             setResult("")
@@ -91,12 +101,22 @@ function Currency_Converter () {
             minute: '2-digit'
         })
 
-        setData(prev => [...prev, { 
-            id: crypto.randomUUID(),
-            title: `${inputValue} ${fromCurrency.value} → ${res} ${toCurrency.value}`,
-            time,
-            infoText
-         }])
+        const { data: newCurrencyTask, error } = await supabase
+            .from('currency-conversions')
+            .insert({
+                title: `${inputValue} ${fromCurrency.value} → ${res} ${toCurrency.value}`,
+                time,
+                user_id: session?.user.id
+            })
+            .select()
+            .single()
+
+            if (error) {
+                console.error('Ошибка добавления', error)
+                return
+            }
+
+        setData(prev => [ ...prev, newCurrencyTask])
     }
 
     const handleClearInput = () => {
@@ -104,7 +124,17 @@ function Currency_Converter () {
         setResult("")
     }
 
-    const handleDataClear = () => {
+    const handleDataClear = async () => {
+        const { error } = await supabase
+            .from('currency-conversions')
+            .delete()
+            .eq('user_id', session?.user.id)
+
+        if (error) {
+            console.error('Ошибка очистки истории', error)
+            return
+        }
+
         setData([])
     }
 
