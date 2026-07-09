@@ -1,25 +1,44 @@
 import { useCallback, useEffect, useState } from "react"
-import { popular_conversions } from "./data/constant"
-import { currencies } from "./data/currencies"
-import { type Currency } from "./data/currencies"
-import Select, { type Option } from "../components/Select"
-
-import change from "../assets/icons/change.svg"
-import button from "../assets/icons/change button.svg"
-import eraser from "../assets/icons/eraser.svg"
-import recent from "../assets/icons/recent.svg"
-import Info from "../assets/icons/info.svg?react"
-import Delete from "../assets/icons/delete.svg?react"
 import { useAuthStore } from "../store/authStore"
 import { supabase } from "../lib/supabase"
+import { popular_conversions } from "./data/constant"
+import { type Currency } from "./data/currencies"
+import { currencies } from "./data/currencies"
+import Select, { type Option } from "../components/Select"
+import { Loader2 } from 'lucide-react'
+
+
+import { Info, Delete, change, button, eraser, recent } from "@/assets/icons"
 
 
 type Data = {
     id: string
+    user_id: string
     title: string
     time: string
-    infoText: string
+    info_text: string
 }
+
+const renderButton = (opt: Option) => (
+    <div className="flex items-center gap-3">
+        <img src={opt.img} alt={opt.value} className="w-9 h-9 rounded-full object-cover shrink-0" />
+        <div className="flex flex-col items-start">
+            <span className="text-[20px] font-semibold">{opt.value}</span>
+            <span className="text-[13px] text-gray-400">{opt.label}</span>
+        </div>
+    </div>
+)
+
+const renderOption = (opt: Option) => (
+    <div className="flex items-center gap-3">
+        <img src={opt.img} alt={opt.value} className="w-7 h-7 rounded-full object-cover shrink-0" />
+        <div className="flex flex-col">
+            <span className="text-[16px] font-semibold">{opt.value}</span>
+            <span className="text-[12px] text-gray-400">{opt.label}</span>
+        </div>
+    </div>
+)
+
 
 function Currency_Converter () {
     const { session } = useAuthStore()
@@ -31,6 +50,7 @@ function Currency_Converter () {
     const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState<Data[]>([])
+    const [historyLoading, setHistoryLoading] = useState(true)
 
     useEffect(() => {
         const fetchCurren = async () => {
@@ -40,7 +60,7 @@ function Currency_Converter () {
                 .order('created_at', { ascending: true })
             if (error) console.error('Ошибка загрузки', error)
             else setData(currency)
-            setLoading(false)
+            setHistoryLoading(false)
         }
 
         fetchCurren()
@@ -83,6 +103,8 @@ function Currency_Converter () {
     }, [fetchRate])
 
    const handleClick = async () => {
+        if ( !session ) return
+
         const num = parseFloat(inputValue)
         if (isNaN(num) || inputValue === "" || rate === null) {
             setResult("")
@@ -90,6 +112,7 @@ function Currency_Converter () {
         }
 
         const res = parseFloat((num * rate).toFixed(2)).toString()
+        const title = `${inputValue} ${fromCurrency.value} → ${res} ${toCurrency.value}`
 
         setResult(res)
 
@@ -101,22 +124,31 @@ function Currency_Converter () {
             minute: '2-digit'
         })
 
-        const { data: newCurrencyTask, error } = await supabase
+        const tempCurrencyTask: Data = {
+            id: crypto.randomUUID(),
+            user_id: session?.user.id,
+            title,
+            time,
+            info_text: infoText
+        }
+
+        setData(prev => [...prev, tempCurrencyTask])
+
+        const { data:newCurrencyTask, error } = await supabase
             .from('currency-conversions')
             .insert({
-                title: `${inputValue} ${fromCurrency.value} → ${res} ${toCurrency.value}`,
+                title,
                 time,
-                user_id: session?.user.id
+                user_id: session?.user.id,
+                info_text: infoText
             })
             .select()
             .single()
 
             if (error) {
                 console.error('Ошибка добавления', error)
-                return
+                setData(prev => prev.filter(el => el.id !== tempCurrencyTask.id))
             }
-
-        setData(prev => [ ...prev, newCurrencyTask])
     }
 
     const handleClearInput = () => {
@@ -125,6 +157,10 @@ function Currency_Converter () {
     }
 
     const handleDataClear = async () => {
+        const prevData = data
+
+        setData([])
+
         const { error } = await supabase
             .from('currency-conversions')
             .delete()
@@ -132,10 +168,8 @@ function Currency_Converter () {
 
         if (error) {
             console.error('Ошибка очистки истории', error)
-            return
+            setData(prevData)
         }
-
-        setData([])
     }
 
 
@@ -153,25 +187,6 @@ function Currency_Converter () {
             setResult("")
     }
 
-    const renderButton = (opt: Option) => (
-        <div className="flex items-center gap-3">
-            <img src={opt.img} alt={opt.value} className="w-9 h-9 rounded-full object-cover shrink-0" />
-            <div className="flex flex-col items-start">
-                <span className="text-[20px] font-semibold">{opt.value}</span>
-                <span className="text-[13px] text-gray-400">{opt.label}</span>
-            </div>
-        </div>
-    )
-
-    const renderOption = (opt: Option) => (
-        <div className="flex items-center gap-3">
-            <img src={opt.img} alt={opt.value} className="w-7 h-7 rounded-full object-cover shrink-0" />
-            <div className="flex flex-col">
-                <span className="text-[16px] font-semibold">{opt.value}</span>
-                <span className="text-[12px] text-gray-400">{opt.label}</span>
-            </div>
-        </div>
-    )
 
     return (
 
@@ -332,7 +347,13 @@ function Currency_Converter () {
                 </div>
 
                 <div className="w-full">
-                    {data.map((obj, i) => (
+                    { historyLoading 
+                    ? 
+                        <div className="flex justify-center items-center">
+                            <Loader2 className="w-7 h-7 animate-spin text-gray-400" />
+                        </div>
+
+                    : data.map((obj, i) => (
                         <div
                             key={obj.id}
                             className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
@@ -345,7 +366,7 @@ function Currency_Converter () {
                                 </p>
 
                             </div>
-                            <span className="text-black text-[16px] font-medium">{obj.infoText}</span>
+                            <span className="text-black text-[16px] font-medium">{obj.info_text}</span>
                         </div>
                     ))}
                 </div>

@@ -1,11 +1,8 @@
-import cookie from "../assets/icons/cookies.svg"
-import arrow from "../assets/icons/arrow.svg"
-import glithers from "../assets/icons/glitter (var 2).svg"
-import cookiePng from "../assets/png/cookies.png"
-import cookieButton from "../assets/png/cookieButtonPng.png"
-import cookiePaper from "../assets/png/cookiesPaper.svg"
 import predictions from "./predictions"
 import React, { useState } from "react"
+
+import { cookie, arrow, glithers } from "@/assets/icons"
+import { cookiePng, cookiePaper } from "@/assets/png"
 
 
 function Cookies () {
@@ -26,12 +23,7 @@ function Cookies () {
                 <div className="flex flex-col gap-3.5 items-center">
                     <span className="text-[#919191] font-semibold">Нажмите на кнопку, что бы узнать свое предсказание</span>
                     <button 
-                        className="flex gap-2 rounded-[10px] p-3.5 text-white font-bold cursor-pointer transition hover:brightness-110 active:brightness-85"
-                        style={{ 
-                            backgroundImage: `url(${cookieButton})`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat", 
-                        }}
+                        className="flex gap-2 rounded-[10px] p-3.5 text-white font-bold cursor-pointer transition hover:brightness-110 active:brightness-85 gradient-btn-orange"
                         onClick={() => openCookie()}
                     >
                         <img src={cookie} alt="img" />

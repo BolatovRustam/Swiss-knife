@@ -1,0 +1,7 @@
+export { default as calculatorImg } from "./calculator.png"
+export { default as convertImg1 } from "./converter 1.png"
+export { default as convertImg2 } from "./converter 2.png"
+export { default as cookiesImg } from "./fortune cookies.png"
+export { default as todoImg } from "./todo.png"
+export { default as cookiePng } from "./cookies.png"
+export { default as cookiePaper } from "./cookiesPaper.svg"

@@ -57,6 +57,46 @@
   animation: gradient 6s ease infinite;
 }
 
+@keyframes waveShift {
+  0% { background-position: 0% 0%, 100% 0%, 50% 100%, 0% 50%; }
+  50% { background-position: 100% 50%, 0% 100%, 0% 0%, 100% 100%; }
+  100% { background-position: 0% 0%, 100% 0%, 50% 100%, 0% 50%; }
+}
+
+.gradient-btn-green {
+  background-color: #4CAE85;
+  background-image: 
+    radial-gradient(at 20% 30%, #5FC79A 0%, transparent 50%),
+    radial-gradient(at 80% 20%, #3E9C74 0%, transparent 50%),
+    radial-gradient(at 50% 80%, #6BD4A3 0%, transparent 50%),
+    radial-gradient(at 10% 90%, #2E8A63 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: waveShift 4s linear infinite;
+}
+
+.gradient-btn-purple {
+  background-color: #d6d6ff;
+  background-image: 
+    radial-gradient(at 20% 30%, #F2F2FE 0%, transparent 50%),
+    radial-gradient(at 80% 20%, #E4E4FD 0%, transparent 50%),
+    radial-gradient(at 50% 80%, #F5F5FF 0%, transparent 50%),
+    radial-gradient(at 10% 90%, #DEDEFC 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: waveShift 4s linear infinite;
+}
+
+.gradient-btn-orange {
+  background-color: #E8A857;
+  background-image: 
+    radial-gradient(at 20% 30%, #F0C177 0%, transparent 50%),
+    radial-gradient(at 80% 20%, #EFCB6E 0%, transparent 50%),
+    radial-gradient(at 50% 80%, #E89A4A 0%, transparent 50%),
+    radial-gradient(at 10% 90%, #D98C3F 0%, transparent 50%);
+  background-size: 200% 200%;
+  animation: waveShift 3s linear infinite;
+}
+
+
 :root {
   background-color: #FAF9F5;
 }

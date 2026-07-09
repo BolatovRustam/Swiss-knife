@@ -8,11 +8,7 @@ import Currency_Converter from "./currency-converter"
 import Cookies from "./cookies"
 import { Loader2 } from "lucide-react"
 
-import calculatorImg from "./assets/png/calculator.png"
-import convertImg1 from "./assets/png/converter 1.png"
-import convertImg2 from "./assets/png/converter 2.png"
-import cookiesImg from "./assets/png/fortune cookies.png"
-import todoImg from "./assets/png/todo.png"
+import { calculatorImg, convertImg1, convertImg2, cookiesImg, todoImg } from "@/assets/png"
 
 
   const tools = [

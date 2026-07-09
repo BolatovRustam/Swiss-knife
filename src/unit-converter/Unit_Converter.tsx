@@ -1,18 +1,13 @@
 import { useEffect, useMemo, useState } from "react"
+import { useAuthStore } from "../store/authStore"
 import { categories, popular_conversions } from "./data/constants"
 import { unitCategories, type CategoryName } from "./data/units"
-import { useAuthStore } from "../store/authStore"
 import { supabase } from "../lib/supabase"
 import { convertor } from "../utils/converter"
+import { Loader2 } from 'lucide-react'
 
-import button from "../assets/icons/change button.svg"
-import change from "../assets/icons/change.svg"
-import eraser from "../assets/icons/eraser.svg"
-import recent from "../assets/icons/recent.svg"
-import checkbox from "../assets/icons/checkbox-on ( var 2 ).svg"
-import Delete from "../assets/icons/delete.svg?react"
-import Info from "../assets/icons/info.svg?react"
-import unitConvPng from "../assets/png/unitConverterPng.png"
+import { Delete, Info, button, change, eraser, recent, checkbox } from "@/assets/icons"
+
 
 type Data = {
     id: string
@@ -51,6 +46,7 @@ function Unit_Converter () {
     const units = unitCategories[activeCategory]
 
     const handleClick = async () => {
+        if (!session) return
 
         const num = parseFloat(inputValue)
 
@@ -69,22 +65,31 @@ function Unit_Converter () {
             minute: '2-digit'
         })
 
+        const title = `${inputValue} ${fromUnit} → ${res} ${toUnit}`
+
+        const tempUnitTask: Data = {
+            id: crypto.randomUUID(),
+            user_id: session?.user.id,
+            title,
+            time
+        }
+
+        setData(prev => [...prev, tempUnitTask])
+
         const { data: newUnitTask, error } = await supabase
             .from('unit-conversions')
             .insert({
-                title: `${inputValue} ${fromUnit} → ${res} ${toUnit}`,
-                time,   
-                user_id: session?.user.id
+                user_id: session?.user.id,
+                title,
+                time 
             })
             .select()
             .single()
 
             if (error) {
                 console.error('Ошибка добавения', error)
-                return
+                setData(prev => prev.filter(el => el.id !== tempUnitTask.id))
             } 
-
-        setData(prev => [...prev, newUnitTask as Data])
     }
 
     const handleClearInput = () => {
@@ -94,6 +99,8 @@ function Unit_Converter () {
 
     const handleDataClear = async () => {
         if (!session) return
+        const prevData = data
+        setData([])
 
         const { error } = await supabase
             .from('unit-conversions')
@@ -102,9 +109,8 @@ function Unit_Converter () {
 
         if ( error ) {
             console.error('Ошибка очистки истории', error)
+            setData(prevData)
         }
-
-        setData([])
     }
 
     const handleCategoryChange = (cat: CategoryName) => {
@@ -140,8 +146,7 @@ function Unit_Converter () {
 
         return `1 ${f.label} = ${parseFloat(rate.toPrecision(6))} ${t.label}`
     }, [fromUnit, toUnit, activeCategory, units])
-
-    if (loading) return <div className="flex items-center justify-center h-full" >Загрузка..</div>
+    
 
     return (
     <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-21.5"> 
@@ -251,17 +256,17 @@ function Unit_Converter () {
                             onClick={() => handleCategoryChange(obj.title as CategoryName)}
                             className={`relative flex w-full px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center transition select-none cursor-pointer
                                 ${obj.title === activeCategory 
-                                    ? "outline-indigo-400 outline-2 shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
+                                    ? "outline-indigo-400 outline-2 gradient-btn-purple shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
                                     : "bg-[#ECECEC]/25 hover:bg-[#ECECEC]/5  outline-[1.5px] outline-neutral-500/40"} `}
                         >
-                            {obj.title === activeCategory && (
+                            {/* {obj.title === activeCategory && (
                                 <img 
                                     src={unitConvPng} 
                                     alt="" 
                                     className="absolute inset-0 w-full h-full object-cover opacity-20"
                                     draggable = "false"
                                 />
-                            )}
+                            )} */}
                             <img 
                                 src={obj.img} 
                                 alt="img" 
@@ -326,7 +331,13 @@ function Unit_Converter () {
                 </div>
 
                 <div className="w-full">
-                    {data.map((obj, i) => (
+                    { loading 
+                    ? 
+                        <div className="flex justify-center items-center">
+                            <Loader2 className="w-7 h-7 animate-spin text-gray-400" />
+                        </div>
+                        
+                    : data.map((obj, i) => (
                         <div
                             key={obj.id}
                             className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}

@@ -1,0 +1,8 @@
+export { default as USA } from "./USA.svg"
+export { default as Eur } from "./European Union.svg"
+export { default as Russia } from "./Russia.svg"
+export { default as Kazakhstan } from "./Kazakhstan.svg"
+export { default as Britan } from "./Britan.svg"
+export { default as Japan } from "./Japan.svg"
+export { default as Argentina } from "./Argentina.svg"
+export { default as Czech } from "./Czech Republic.svg"

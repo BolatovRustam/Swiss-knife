@@ -2,21 +2,12 @@ import { useEffect, useState } from "react"
 import { useAuthStore } from "../store/authStore"
 import { supabase } from "../lib/supabase"
 import type { Task } from "./types"
-import Select from "../components/Select"
 import { options } from "./constants"
+import Select from "../components/Select"
+import { Loader2 } from "lucide-react"
 
-
-import CheckboxOn from "../assets/icons/checkbox-on.svg?react"
-import CheckboxOff from "../assets/icons/checkbox-off.svg?react"
-import Delete from "../assets/icons/delete.svg?react"
-import List from "../assets/icons/list.svg?react"
-import RectangleCheckboxOn from "../assets/icons/rectangle_checkbox-on.svg?react"
-import RectangleCheckboxOff from "../assets/icons/rectangle_checkbox-off.svg?react"
-import plus from "../assets/icons/plus.svg"
-import todoImg from "../assets/png/todoPngButton.png"
-import cross from "../assets/icons/cross.svg"
-import calendar from "../assets/icons/calendar.svg"
-
+import { CheckboxOff, CheckboxOn, Delete, List, RectangleCheckboxOn, 
+            RectangleCheckboxOff, plus, cross, calendar } from "@/assets/icons"
 
 
 
@@ -53,6 +44,19 @@ function Todo_List() {
 
         const today = new Date().toLocaleDateString('ru-RU')
 
+        const tempTask: Task = {
+            id: crypto.randomUUID(),
+            user_id: session.user?.id,
+            title: currentData.title,
+            priority: currentData.priority,
+            completed: false,
+            date: today,
+            isTemp: true
+        }
+
+        setData(prev => [...prev, tempTask])
+        setCurrentData({ ...currentData, title: "" })
+
         const { data: newTask, error } = await supabase
             .from('todo-list')
             .insert({
@@ -67,14 +71,20 @@ function Todo_List() {
 
             if (error) {
                 console.error('Ошибка создания', error)
+                setData( prev => prev.filter( t => t.id !== tempTask.id ) )
                 return
             }
 
-        setData([...data, newTask as Task])
-        setCurrentData({ ...currentData, title: ""})
+        setData(prev => prev.map( t => t.id === tempTask.id ? newTask : t ))
     }
 
     const handleDelete = async (id:string) => {
+        const deletedTask = data.find(el => el.id === id)
+        if (!deletedTask) return
+
+        setData(data.filter(el => el.id !== id))
+        
+
         const { error } = await supabase
             .from('todo-list')
             .delete()
@@ -82,14 +92,15 @@ function Todo_List() {
 
         if ( error ) {
             console.error('Ошибка удаления', error)
-            return
+            setData(prev => [...prev, deletedTask])
         }
-
-        setData(data?.filter(el => el.id !== id))
     }
 
     const handleAllDelete = async () => {
         if (!session) return
+        const prevData = data
+        setData([])
+
 
         const { error } = await supabase
             .from('todo-list')
@@ -98,14 +109,15 @@ function Todo_List() {
 
         if (error) {
             console.error('Ошибка очситки', error)
+            setData(prevData)
         }
-
-        setData([])
     }
 
     const handleCompleted = async (id:string) => {
         const task = data?.find(el => el.id === id)
         if (!task) return
+
+        setData(prev => prev.map(el => el.id === id ? {...el, completed: !el.completed}: el ))
 
         const { error } = await supabase
             .from('todo-list')
@@ -114,13 +126,9 @@ function Todo_List() {
 
         if (error) {
             console.error('Ошибка обновления', error)
-            return
+            setData(prev => prev.map(el => el.id === id ? {...el, completed: !el.completed}: el ))
         }
-
-        setData(data.map(el => el.id === id ? {...el, completed: !el.completed} : el))
     }
-
-    if (loading) return <div className="flex items-center justify-center h-full" >Загрузка..</div>
 
 
     return (
@@ -151,12 +159,7 @@ function Todo_List() {
                         />  
 
                     <button 
-                        className="h-15 px-10 rounded-lg flex items-center gap-5 transition hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer"
-                        style={{ 
-                            backgroundImage: `url(${todoImg})`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                        }}
+                        className="h-15 px-10 rounded-lg flex items-center gap-5 transition hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer gradient-btn-green"
                         onClick={handleCreate}
                     >
                         <span>Добавить</span>
@@ -167,39 +170,36 @@ function Todo_List() {
                 {/* Фильтры */}
                 <div className="h-10 flex gap-5 text-[18px]">
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "all" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} `}
-                        style={filter === "all" 
-                            ? { backgroundImage: `url(${todoImg})`,
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat", }
-                            : {}
-                        }
+                        className={`
+                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            ${filter=== "all" 
+                                ? "text-white gradient-btn-green" 
+                                : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} 
+                        `}
                         onClick={() => setFilter("all")}
                     >
                         <List className={filter==="all" ?"text-white" : "text-[#4C4C4C]"} />
                         Все
                     </button>
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "active" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
-                        style={filter === "active" 
-                            ? { backgroundImage: `url(${todoImg})`,
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat", }
-                            : {}
-                        }
+                        className={`
+                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            ${filter=== "active" 
+                                ? "text-white gradient-btn-green" 
+                                : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}
+                        `}
                         onClick={() => setFilter("active")}
                     >
                         <CheckboxOff className={filter==="active" ?"text-white" : "text-[#4C4C4C]"} />
                         Активные
                     </button>
                     <button 
-                        className={`flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition ${filter=== "completed" ? "text-white" : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}`}
-                        style={filter === "completed" 
-                            ? { backgroundImage: `url(${todoImg})`,
-                                backgroundSize: "cover",
-                                backgroundRepeat: "no-repeat", }
-                            : {}
-                        }
+                        className={`
+                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            ${filter=== "completed" 
+                                ? "text-white gradient-btn-green" 
+                                : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}
+                        `}
                         onClick={() => setFilter("completed")}
                     >
                         <CheckboxOn className={filter==="completed" ?"text-white" : "text-[#4C4C4C]"} />
@@ -208,61 +208,71 @@ function Todo_List() {
                 </div>
 
                 {/* Список задач */}
-                { filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-115.5">
-                    <table className="w-full bg-white border-collapse overflow-scroll transform ">
-                        <tbody>
-                            {filtetedData.map((obj, i)=> (
-                                <tr 
-                                    key={obj.id}
-                                    className={`[&>td:not(:last-child)]:px-9 [&>td]:py-6 animate-fade-slide-in text-neutral-700 text-xl ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}`}
-                                >
-                                    <td>
-                                        <div className={`flex gap-3 items-center ${obj.completed && "line-through"}`}>
-                                            <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
-                                                {
-                                                    obj.completed 
-                                                    ? <RectangleCheckboxOn />
-                                                    : <RectangleCheckboxOff />
-                                                }
+                { loading ? (
+                    <div className="flex items-center justify-center h-20">
+                        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                    </div>
+                ) :  
+                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-115.5">
+                        <table className="w-full bg-white border-collapse overflow-scroll transform ">
+                            <tbody>
+                                {filtetedData.map((obj, i)=> (
+                                    <tr 
+                                        key={obj.id}
+                                        className={`
+                                            [&>td:not(:last-child)]:px-9 [&>td]:py-6 text-neutral-700 text-xl 
+                                            ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}
+                                            ${ obj.isTemp && "animate-fade-slide-in"}
+                                            `}
+                                    >
+                                        <td>
+                                            <div className={`flex gap-3 items-center ${obj.completed && "line-through"}`}>
+                                                <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
+                                                    {
+                                                        obj.completed 
+                                                        ? <RectangleCheckboxOn />
+                                                        : <RectangleCheckboxOff />
+                                                    }
 
+                                                </div>
+                                                {obj.title}
                                             </div>
-                                            {obj.title}
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className={`w-4 h-4 rounded-full shrink-0 ${
-                                                obj.priority === "Высокий" ? "bg-[#FE3D3D]" :
-                                                obj.priority === "Средний" ? "bg-[#FE960A]" :
-                                                "bg-[#04B214]"
-                                            }`}></div>
-                                            {obj.priority}
-                                        </div>
-                                    </td>
+                                        
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className={`w-4 h-4 rounded-full shrink-0 ${
+                                                    obj.priority === "Высокий" ? "bg-[#FE3D3D]" :
+                                                    obj.priority === "Средний" ? "bg-[#FE960A]" :
+                                                    "bg-[#04B214]"
+                                                }`}></div>
+                                                {obj.priority}
+                                            </div>
+                                        </td>
 
-                                    <td >
-                                        <div className="flex gap-3">
-                                            <img src={calendar} alt="img" />
-                                            {obj.date}
-                                        </div>
-                                    </td>
+                                        <td >
+                                            <div className="flex gap-3">
+                                                <img src={calendar} alt="img" />
+                                                {obj.date}
+                                            </div>
+                                        </td>
 
-                                    <td className="px-2">
-                                        <button 
-                                            className="flex cursor-pointer "
-                                            onClick={() => handleDelete(obj.id)}
-                                        > 
-                                            <img src={cross} alt="img" />
-                                        </button>
-                                    </td>
+                                        <td className="px-2">
+                                            <button 
+                                                className="flex cursor-pointer "
+                                                onClick={() => handleDelete(obj.id)}
+                                            > 
+                                                <img src={cross} alt="img" />
+                                            </button>
+                                        </td>
 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div> }
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div> 
+                }
 
             </div>
 

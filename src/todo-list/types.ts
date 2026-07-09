@@ -4,5 +4,6 @@ export type Task = {
     completed: boolean,
     title: string,
     priority: string,
-    date: string
+    date: string,
+    isTemp?: boolean
 }
