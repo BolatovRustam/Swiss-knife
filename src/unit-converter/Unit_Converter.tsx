@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useAuthStore } from "../store/authStore"
 import { categories, popular_conversions } from "./data/constants"
 import { unitCategories, type CategoryName } from "./data/units"
-import { supabase } from "../lib/supabase"
 import { convertor } from "../utils/converter"
 import { Loader2 } from 'lucide-react'
 
 import { Delete, Info, button, change, eraser, recent, checkbox } from "@/assets/icons"
+import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 
 type Data = {
@@ -24,28 +24,11 @@ function Unit_Converter () {
     const [ toUnit, setToUnit ] = useState<string>( unitCategories["Длина"][1].value )
     const [ result, setResult ] = useState("")
 
-    const [data, setData] = useState<Data[]>([])
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        const fetchUnit = async () => {
-            const { data: unit, error } = await supabase
-                .from('unit-conversions')
-                .select('*')
-                .order('created_at', { ascending: true })
-
-            if (error) console.error('Ошибка загрузки', error) 
-            else setData(unit as Data[]) 
-            setLoading(false)
-        }
-
-        fetchUnit()
-        
-    }, [])
+    const { data, addEntry, clearAll, loading } = useSupabaseHistory<Data>('unit-conversions', session?.user.id)
 
     const units = unitCategories[activeCategory]
 
-    const handleClick = async () => {
+    const handleClick = () => {
         if (!session) return
 
         const num = parseFloat(inputValue)
@@ -74,22 +57,7 @@ function Unit_Converter () {
             time
         }
 
-        setData(prev => [...prev, tempUnitTask])
-
-        const { data: newUnitTask, error } = await supabase
-            .from('unit-conversions')
-            .insert({
-                user_id: session?.user.id,
-                title,
-                time 
-            })
-            .select()
-            .single()
-
-            if (error) {
-                console.error('Ошибка добавения', error)
-                setData(prev => prev.filter(el => el.id !== tempUnitTask.id))
-            } 
+        addEntry(tempUnitTask, { user_id: session?.user.id, title, time })
     }
 
     const handleClearInput = () => {
@@ -97,20 +65,8 @@ function Unit_Converter () {
         setResult("")
     }
 
-    const handleDataClear = async () => {
-        if (!session) return
-        const prevData = data
-        setData([])
-
-        const { error } = await supabase
-            .from('unit-conversions')
-            .delete()
-            .eq('user_id', session.user.id)
-
-        if ( error ) {
-            console.error('Ошибка очистки истории', error)
-            setData(prevData)
-        }
+    const handleDataClear = () => {
+        clearAll()
     }
 
     const handleCategoryChange = (cat: CategoryName) => {
@@ -259,14 +215,6 @@ function Unit_Converter () {
                                     ? "outline-indigo-400 outline-2 gradient-btn-purple shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
                                     : "bg-[#ECECEC]/25 hover:bg-[#ECECEC]/5  outline-[1.5px] outline-neutral-500/40"} `}
                         >
-                            {/* {obj.title === activeCategory && (
-                                <img 
-                                    src={unitConvPng} 
-                                    alt="" 
-                                    className="absolute inset-0 w-full h-full object-cover opacity-20"
-                                    draggable = "false"
-                                />
-                            )} */}
                             <img 
                                 src={obj.img} 
                                 alt="img" 

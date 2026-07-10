@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAuthStore } from "../store/authStore"
-import { supabase } from "../lib/supabase"
 import type { Task } from "./types"
 import { options } from "./constants"
 import Select from "../components/Select"
@@ -8,30 +7,17 @@ import { Loader2 } from "lucide-react"
 
 import { CheckboxOff, CheckboxOn, Delete, List, RectangleCheckboxOn, 
             RectangleCheckboxOff, plus, cross, calendar } from "@/assets/icons"
+import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 
 
 function Todo_List() {
     const { session } = useAuthStore()
-    const [data, setData] = useState<Task[]>([])
     const [currentData, setCurrentData] = useState({title: "", priority: "Низкий"})
     const [filter, setFilter] = useState<"all" | "active" | "completed">("all")
-    const [loading, setLoading] = useState(true)
 
-    useEffect(() =>{
-        const fetchTodos = async () => {
-            const { data: todos, error } = await supabase
-                .from('todo-list')
-                .select('*')
-                .order('created_at', { ascending: true })
+    const { data, addEntry, clearAll,loading, removeEntry, updateEntry  } = useSupabaseHistory<Task>('todo-list', session?.user.id)
 
-            if (error) console.error('Ошибка загрузки', error)
-            else setData(todos as Task[])
-            setLoading(false)
-        }
-
-        fetchTodos()
-    }, [])
 
     const filtetedData = data.filter(el => {
         if (filter === "active") return !el.completed
@@ -39,7 +25,7 @@ function Todo_List() {
         return true
     })
 
-    const handleCreate  = async () => {
+    const handleCreate  = () => {
         if (!currentData.title.trim() || !session) return
 
         const today = new Date().toLocaleDateString('ru-RU')
@@ -54,80 +40,24 @@ function Todo_List() {
             isTemp: true
         }
 
-        setData(prev => [...prev, tempTask])
         setCurrentData({ ...currentData, title: "" })
 
-        const { data: newTask, error } = await supabase
-            .from('todo-list')
-            .insert({
-                title: currentData.title,
-                priority: currentData.priority,
-                completed: false,
-                date: today,
-                user_id: session.user.id
-            })
-            .select()
-            .single()
-
-            if (error) {
-                console.error('Ошибка создания', error)
-                setData( prev => prev.filter( t => t.id !== tempTask.id ) )
-                return
-            }
-
-        setData(prev => prev.map( t => t.id === tempTask.id ? newTask : t ))
+        addEntry( tempTask, { title: currentData.title, priority: currentData.priority, completed: false, date: today, user_id: session.user.id } )
     }
 
-    const handleDelete = async (id:string) => {
-        const deletedTask = data.find(el => el.id === id)
-        if (!deletedTask) return
-
-        setData(data.filter(el => el.id !== id))
-        
-
-        const { error } = await supabase
-            .from('todo-list')
-            .delete()
-            .eq('id', id)
-
-        if ( error ) {
-            console.error('Ошибка удаления', error)
-            setData(prev => [...prev, deletedTask])
-        }
+    const handleDelete = (id:string) => {
+        removeEntry(id)
     }
 
-    const handleAllDelete = async () => {
-        if (!session) return
-        const prevData = data
-        setData([])
-
-
-        const { error } = await supabase
-            .from('todo-list')
-            .delete()
-            .eq('user_id', session.user.id)
-
-        if (error) {
-            console.error('Ошибка очситки', error)
-            setData(prevData)
-        }
+    const handleAllDelete = () => {
+        clearAll()
     }
 
-    const handleCompleted = async (id:string) => {
+    const handleCompleted = (id:string) => {
         const task = data?.find(el => el.id === id)
         if (!task) return
 
-        setData(prev => prev.map(el => el.id === id ? {...el, completed: !el.completed}: el ))
-
-        const { error } = await supabase
-            .from('todo-list')
-            .update({ completed: !task.completed })
-            .eq('id', id)
-
-        if (error) {
-            console.error('Ошибка обновления', error)
-            setData(prev => prev.map(el => el.id === id ? {...el, completed: !el.completed}: el ))
-        }
+        updateEntry(id, { completed: !task.completed })
     }
 
 
