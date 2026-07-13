@@ -4,20 +4,13 @@ import { popular_conversions } from "./data/constant"
 import { type Currency } from "./data/currencies"
 import { currencies } from "./data/currencies"
 import Select, { type Option } from "../components/Select"
+import type { Data } from './types'
 import { Loader2 } from 'lucide-react'
-
 
 import { Info, Delete, change, button, eraser, recent } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 
-type Data = {
-    id: string
-    user_id: string
-    title: string
-    time: string
-    info_text: string
-}
 
 const renderButton = (opt: Option) => (
     <div className="flex items-center gap-3">

@@ -3,18 +3,13 @@ import { useAuthStore } from "../store/authStore"
 import { categories, popular_conversions } from "./data/constants"
 import { unitCategories, type CategoryName } from "./data/units"
 import { convertor } from "../utils/converter"
+import type { Data } from "./types"
 import { Loader2 } from 'lucide-react'
 
 import { Delete, Info, button, change, eraser, recent, checkbox } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 
-type Data = {
-    id: string
-    user_id: string
-    title: string
-    time: string  
-}
 
 function Unit_Converter () {
     const { session } = useAuthStore()
