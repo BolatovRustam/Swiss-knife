@@ -6,14 +6,16 @@ import Todo_List from "./todo-list"
 import Unit_Converter from "./unit-converter"
 import Currency_Converter from "./currency-converter"
 import Cookies from "./cookies"
+import Weather from "./weather/Weather" 
 import { Loader2 } from "lucide-react"
 
-import { calculatorImg, convertImg1, convertImg2, cookiesImg, todoImg } from "@/assets/png"
+import { calculatorImg, convertImg1, convertImg2, cookiesImg, todoImg, weatherImg } from "@/assets/png"
 
 
   const tools = [
     { id: 'calculator', label: 'Калькулятор', img: calculatorImg, component: <Calculator /> },
     { id: 'todo', label: 'Todo-лист', img: todoImg, component: <Todo_List /> },
+    { id: 'weather', label: 'Погода', img: weatherImg, component: <Weather /> },
     { id: 'converter1', label: 'Конвертер единиц', img: convertImg1, component: <Unit_Converter /> },
     { id: 'converter2', label: 'Конвертер валют', img: convertImg2, component: <Currency_Converter /> },
     { id: 'cookies', label: 'Предсказания', img: cookiesImg, component: <Cookies /> },
