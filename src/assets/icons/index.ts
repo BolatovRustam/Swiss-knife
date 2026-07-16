@@ -16,6 +16,10 @@ export { default as eraser } from "./eraser.svg"
 export { default as recent } from "./recent.svg"
 export { default as checkbox } from "./checkbox-on ( var 2 ).svg" 
 export { default as Info } from "./info.svg?react"
+export { default as LocationOutline } from "./loaction ( ver 1 ).svg?react"
+export { default as LocationFill } from "./location ( ver 2 ).svg?react"
+export { default as Star } from "./star.svg?react"
+export { default as Visible } from "./visible.svg?react"
 
 
 
