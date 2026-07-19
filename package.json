@@ -12,6 +12,7 @@
   "dependencies": {
     "@fontsource/dseg7-classic": "^5.2.5",
     "@hookform/resolvers": "^5.4.0",
+    "@meteocons/svg": "^0.1.0",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/vite": "^4.3.0",
     "lucide-react": "^1.22.0",

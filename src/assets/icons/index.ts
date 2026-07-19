@@ -19,7 +19,15 @@ export { default as Info } from "./info.svg?react"
 export { default as LocationOutline } from "./loaction ( ver 1 ).svg?react"
 export { default as LocationFill } from "./location ( ver 2 ).svg?react"
 export { default as Star } from "./star.svg?react"
-export { default as Visible } from "./visible.svg?react"
+
+export { default as visible } from "./visible( animate ).svg"
+export { default as humidity } from "./humidity( animate ).svg"
+export { default as humidity2 } from "./humidity( animate ) var 2.svg"
+
+export { default as windy } from "@meteocons/svg/fill/wind.svg"
+export { default as barometr } from "@meteocons/svg/fill/barometer.svg" 
+export { default as thermometer } from "@meteocons/svg/fill/thermometer.svg"
+export { default as sunrise } from "@meteocons/svg/fill/sunrise.svg"
 
 
 
