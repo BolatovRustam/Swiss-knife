@@ -4,7 +4,7 @@ import { API_KEY } from "./key"
 import { iconMap } from "./iconMap"
 
 import { LocationFill } from "@/assets/icons"
-import { humidity, humidity2 , windy, visible, barometr, thermometer, sunrise } from "@/assets/icons"
+import { humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
 import { useGeocoding } from "./useGeocoding"
@@ -147,6 +147,13 @@ function Weather () {
                                         .join("")
                                     }</span>
                             </p>
+
+                            <button 
+                                className="self-start shrink-0 p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+
+                            >
+                                <img src={star} alt="img" />
+                            </button>
 
                         </div>  
 
