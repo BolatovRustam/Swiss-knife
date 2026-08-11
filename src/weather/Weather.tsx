@@ -8,6 +8,9 @@ import { humidity, humidity2 , windy, visible, barometr, thermometer, sunrise } 
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
 import { useGeocoding } from "./useGeocoding"
+import { useFavortites } from "./useFavorites"
+import { useSearchHistory } from "./useSearchHistory"
+
 
 import Modal from "./Modal"
 
@@ -53,6 +56,9 @@ function Weather () {
 
     const [weather, setWeather] = useState<Weather | null>(null)
 
+    // const { addFavorite, favorites, removeFavorite } = useFavortites()
+    const { history, addToHistory, clearHistory } = useSearchHistory()
+
     const suggestions = useGeocoding(query)
 
     const forecast = useForecast( selectedCity?.lat, selectedCity?.lon )
@@ -73,6 +79,13 @@ function Weather () {
 
     }, [selectedCity])
 
+    const handleSelectedCity = (city: {lat: number; lon: number; name: string; country: string}) => {
+        setSelectedCity(city)
+        setQuery(city.name)
+        setShowSuggestions(false)
+
+        addToHistory(city.name, city.country, city.lat, city.lon)
+    }
 
     return(
         <div className="flex flex-col h-full overflow-auto items-end pt-12.5 pb-3.5 px-21.5">
@@ -97,11 +110,7 @@ function Weather () {
                             <li
                                 key={i}
                                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => {
-                                    setSelectedCity( { lat:c.lat, lon:c.lon, name:c.name } )
-                                    setQuery(c.name)
-                                    setShowSuggestions(false)
-                                }}
+                                onClick={() => handleSelectedCity( {lat: c.lat, lon: c.lon, name: c.name, country: c.country} )}
                             >
                                 { `${c.name}, ${c.country}` }
                             </li>
@@ -341,7 +350,37 @@ function Weather () {
                 onClose={() => setActiveModal(null)}
                 title="История поиска"
             >
-                <p>История пока пуста</p>
+                {history.length === 0 ? ( 
+                    <p>История пока пуста</p> 
+                )
+                    : (
+                        <div className="flex flex-col gap-2">
+                            {history.map(h => (
+                                <div 
+                                    key={h.id} 
+                                    className="flex justify-between items-center p-3 border border-[#777777]/20 rounded-[10px] cursor-pointer hover:bg-gray-50"
+                                    onClick={() => {
+                                        setSelectedCity({ lat: h.lat, lon: h.lon, name: h.city })
+                                        setQuery(h.city)
+                                        setActiveModal(null)
+                                    }}
+                                >
+                                    <span>{h.city}, {h.country}</span>
+                                    <span className="text-[#919191] text-[13px]">
+                                        {new Date(h.searched_at).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                                    </span>
+                                </div>
+                            ))}
+
+                            <button 
+                                onClick={clearHistory}
+                                className="text-red-500 border border-red-200 rounded-[10px] py-2 mt-2 cursor-pointer"
+                            >
+                                Очистить историю
+                            </button>
+                        </div>
+                    )
+                }
             </Modal>
         </div>
     )
