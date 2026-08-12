@@ -9,3 +9,22 @@ export interface ForecastItem {
 export interface ForecastResponse {
     list: ForecastItem[]
 }
+
+
+export interface FavoriteCity {
+    id: string
+    city: string
+    country: string
+    lat: number
+    lon: number
+    created_at: string
+}
+
+export interface HistoryEntry {
+    id: string
+    city: string
+    country: string
+    lat: number
+    lon: number
+    searched_at: string
+}
