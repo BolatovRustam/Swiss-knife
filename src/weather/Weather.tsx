@@ -3,7 +3,7 @@ import { API_KEY } from "./key"
 
 import { iconMap } from "./iconMap"
 
-import { LocationFill } from "@/assets/icons"
+import { LocationFill, starFill } from "@/assets/icons"
 import { humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
@@ -56,7 +56,7 @@ function Weather () {
 
     const [weather, setWeather] = useState<Weather | null>(null)
 
-    // const { addFavorite, favorites, removeFavorite } = useFavortites()
+    const { favorites, addFavorite, removeFavorite } = useFavortites()
     const { history, addToHistory, clearHistory } = useSearchHistory()
 
     const suggestions = useGeocoding(query)
@@ -65,6 +65,8 @@ function Weather () {
 
     const hours = forecast ? useHourlyForecast( forecast ) : []
     const days = forecast ? useDailyForeCast( forecast ) : []
+
+    const starFav = favorites.some(el => el.city === weather?.name)
     
 
     useEffect(() => {
@@ -159,9 +161,13 @@ function Weather () {
 
                             <button 
                                 className="self-start shrink-0 p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
-
+                                onClick={() => addFavorite( weather.name, weather.sys.country, selectedCity.lat, selectedCity.lon )}
                             >
-                                <img src={star} alt="img" />
+                                <img 
+                                    src={ starFav ? starFill : star} 
+                                    alt="img" 
+
+                                />
                             </button>
 
                         </div>  
@@ -349,7 +355,39 @@ function Weather () {
                 onClose={() => setActiveModal(null)}
                 title="Избранные города"
             >
-                <p>Список пока пуст</p>
+                {favorites.length === 0 ? ( 
+                    <p>История пока пуста</p> 
+                )
+                    : (
+                        <div className="flex flex-col gap-2">
+                            {favorites.map(fav => (
+                                <div 
+                                    key={fav.id}
+                                    className="flex justify-between items-center p-3 border border-[#777777]/20 rounded-[10px] hover:bg-gray-50"
+                                >
+                                    <div 
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                            setSelectedCity({ lat: fav.lat, lon: fav.lon, name: fav.city })
+                                            setActiveModal(null)
+                                        }}
+                                    >
+                                        <span>{fav.city}, {fav.country}</span>
+                                    </div>
+
+                                    <button
+                                        className="cursor-pointer"
+                                        onClick={() => removeFavorite(fav.id)}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                                
+                            ))}
+
+                        </div>
+                    )
+                }
             </Modal>
 
             <Modal 
@@ -368,7 +406,6 @@ function Weather () {
                                     className="flex justify-between items-center p-3 border border-[#777777]/20 rounded-[10px] cursor-pointer hover:bg-gray-50"
                                     onClick={() => {
                                         setSelectedCity({ lat: h.lat, lon: h.lon, name: h.city })
-                                        setQuery(h.city)
                                         setActiveModal(null)
                                     }}
                                 >
