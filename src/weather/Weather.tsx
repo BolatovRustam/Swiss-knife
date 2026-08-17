@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { API_KEY } from "./key"
 
 import { iconMap } from "./iconMap"
 
 import { LocationFill, starFill } from "@/assets/icons"
-import { Delete ,humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
+import { Delete, LocationOutline, Cross, humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
 import { useGeocoding } from "./useGeocoding"
@@ -53,6 +53,7 @@ function Weather () {
     const [query, setQuery] = useState("")
     const [selectedCity, setSelectedCity] = useState<{ lat: number; lon: number; name: string } | null>( {lat: 51.1801, lon: 71.446, name: "Astana"} )
     const [ showSuggestions, setShowSuggestions ] = useState(false)
+    const wrapperRef = useRef<HTMLDivElement>(null) 
 
     const [ activeModal, setActiveModal ] = useState<"favorites" | "history" | null>(null)
 
@@ -83,6 +84,18 @@ function Weather () {
 
     }, [selectedCity])
 
+    useEffect(() => {
+        function handleClickOutside (e: MouseEvent) {
+            if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+                setShowSuggestions(false)
+            }
+        }
+
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+
+    }, [])
+
     const handleSelectedCity = (city: {lat: number; lon: number; name: string; country: string}) => {
         setSelectedCity(city)
         setQuery(city.name)
@@ -95,32 +108,55 @@ function Weather () {
         <div className="flex flex-col h-full overflow-auto items-end pt-12.5 pb-3.5 px-21.5">
 
             
-            <div className="relative flex w-1/4 items-center gap-4">
-                <input 
-                    type="text" 
-                    className="py-2 px-4 w-full bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)] outline-none" 
-                    value={query}
-                    placeholder="Введите город"
-                    onChange={(e) => {
-                        setQuery(e.target.value)
-                        setShowSuggestions(true)
-                    }} 
-                />            
+            <div ref={wrapperRef} className="relative flex w-1/4 items-center gap-4">
+                <div className="flex items-center w-full gap-1.5 py-2.5 px-4 bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+                    <LocationOutline/>
 
-                { showSuggestions && suggestions.length > 0 && (
-                    <ul 
-                        className={`absolute top-full left-0 w-full bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)] mt-1 overflow-hidden z-10 `}>
-                        { suggestions.map((c, i) => (
-                            <li
-                                key={i}
-                                className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                                onClick={() => handleSelectedCity( {lat: c.lat, lon: c.lon, name: c.name, country: c.country} )}
-                            >
-                                { `${c.name}, ${c.country}` }
-                            </li>
-                        )) }
-                    </ul>
-                ) }
+                    <input 
+                        type="text" 
+                        className=" w-full outline-none placeholder:text-[#9797A0]" 
+                        value={query}
+                        placeholder="Введите город"
+                        onChange={(e) => {
+                            setQuery(e.target.value)
+                            setShowSuggestions(true)
+                        }} 
+                    />
+
+                    {query && (
+                        <button 
+                            onClick={() => {
+                                setQuery("")
+                                setShowSuggestions(false)
+                            }}
+                            className="shrink-0 text-[#9797A0] hover:text-black active:scale-90 transition-all duration-150 cursor-pointer"
+                        >
+                            <Cross 
+                                width={20}
+                                height={20}
+                                className="fill-current"
+                            />
+                        </button>
+                    )}  
+
+
+
+                    { showSuggestions && suggestions.length > 0 && (
+                        <ul 
+                            className={`absolute top-full left-0 w-full bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)] mt-1 overflow-hidden z-10 `}>
+                            { suggestions.map((c, i) => (
+                                <li
+                                    key={i}
+                                    className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => handleSelectedCity( {lat: c.lat, lon: c.lon, name: c.name, country: c.country} )}
+                                >
+                                    { `${c.name}, ${c.country}` }
+                                </li>
+                            )) }
+                        </ul>
+                    ) }
+                </div>
+
             </div>
 
 

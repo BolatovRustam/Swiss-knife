@@ -6,7 +6,7 @@ import Select from "../components/Select"
 import { Loader2 } from "lucide-react"
 
 import { CheckboxOff, CheckboxOn, Delete, List, RectangleCheckboxOn, 
-            RectangleCheckboxOff, plus, cross, calendar } from "@/assets/icons"
+            RectangleCheckboxOff, Cross, plus, calendar } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 
@@ -193,7 +193,10 @@ function Todo_List() {
                                                 className="flex cursor-pointer "
                                                 onClick={() => handleDelete(obj.id)}
                                             > 
-                                                <img src={cross} alt="img" />
+                                                <Cross 
+                                                    width={26}
+                                                    height={26}
+                                                />
                                             </button>
                                         </td>
 
