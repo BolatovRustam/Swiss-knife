@@ -143,7 +143,7 @@ function Todo_List() {
                         <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
                     </div>
                 ) :  
-                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-115.5">
+                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-96">
                         <table className="w-full bg-white border-collapse overflow-scroll transform ">
                             <tbody>
                                 {filtetedData.map((obj, i)=> (

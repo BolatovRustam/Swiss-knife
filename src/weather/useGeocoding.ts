@@ -34,8 +34,8 @@ export function useGeocoding(query: string) {
 
         fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${debouncedQuery}&limit=5&appid=${API_KEY}`)
         .then(res => res.json())
-        .then(setCities)    
-          
+        .then(setCities)  
+
     }, [debouncedQuery])
 
     return cities

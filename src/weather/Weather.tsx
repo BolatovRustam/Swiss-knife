@@ -4,7 +4,7 @@ import { API_KEY } from "./key"
 import { iconMap } from "./iconMap"
 
 import { LocationFill, starFill } from "@/assets/icons"
-import { humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
+import { Delete ,humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
 import { useGeocoding } from "./useGeocoding"
@@ -13,6 +13,8 @@ import { useSearchHistory } from "./useSearchHistory"
 
 
 import Modal from "./Modal"
+import { HistoryCard } from "./HistoryCard"
+import { FavoriteCard } from "./FavoriteCard"
 
 
 interface Weather {
@@ -96,7 +98,7 @@ function Weather () {
             <div className="relative flex w-1/4 items-center gap-4">
                 <input 
                     type="text" 
-                    className="h-[32px] w-full bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" 
+                    className="py-2 px-4 w-full bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)] outline-none" 
                     value={query}
                     placeholder="Введите город"
                     onChange={(e) => {
@@ -159,16 +161,27 @@ function Weather () {
                                     }</span>
                             </p>
 
-                            <button 
-                                className="self-start shrink-0 p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
-                                onClick={() => addFavorite( weather.name, weather.sys.country, selectedCity.lat, selectedCity.lon )}
-                            >
-                                <img 
-                                    src={ starFav ? starFill : star} 
-                                    alt="img" 
+                            {
+                                weather && selectedCity && (
+                                    <button 
+                                        className="self-start shrink-0 p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                        onClick={  () => {
+                                                            const fav = favorites.find(el => el.city === weather.name)
+                                                                if ( fav ) removeFavorite( fav.id )   
+                                                            else {
+                                                                addFavorite( weather.name, weather?.sys.country, selectedCity.lat, selectedCity.lon )                                                                
+                                                            }         
+                                                        }}
+                                    >
+                                        <img 
+                                            src={ starFav ? starFill : star} 
+                                            alt="img" 
 
-                                />
-                            </button>
+                                        />
+                                    </button>
+                                )
+                            }
+
 
                         </div>  
 
@@ -336,14 +349,14 @@ function Weather () {
             {/* Кнопки */}
             <div className="flex w-full justify-end gap-4">
                 <button 
-                    className="bg-white py-2 px-4 border border-[#777777]/40 rounded-[10px] cursor-pointer"
+                    className="bg-white py-2 px-4 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
                     onClick={() => setActiveModal("favorites")}
                 >
                     Избранные
                 </button>
 
                 <button 
-                    className="bg-white  py-2 px-4 border border-[#777777]/40 rounded-[10px] cursor-pointer"
+                    className="bg-white  py-2 px-4 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
                     onClick={() => setActiveModal("history")}
                 >
                     История
@@ -361,28 +374,16 @@ function Weather () {
                     : (
                         <div className="flex flex-col gap-2">
                             {favorites.map(fav => (
-                                <div 
+                                <FavoriteCard 
                                     key={fav.id}
-                                    className="flex justify-between items-center p-3 border border-[#777777]/20 rounded-[10px] hover:bg-gray-50"
-                                >
-                                    <div 
-                                        className="cursor-pointer"
-                                        onClick={() => {
-                                            setSelectedCity({ lat: fav.lat, lon: fav.lon, name: fav.city })
-                                            setActiveModal(null)
-                                        }}
-                                    >
-                                        <span>{fav.city}, {fav.country}</span>
-                                    </div>
-
-                                    <button
-                                        className="cursor-pointer"
-                                        onClick={() => removeFavorite(fav.id)}
-                                    >
-                                        X
-                                    </button>
-                                </div>
-                                
+                                    entry={fav}
+                                    onRemove={() => removeFavorite(fav.id)}
+                                    onSelect={() => {
+                                        setSelectedCity({ lat: fav.lat, lon:fav.lon, name:fav.city})
+                                        setActiveModal(null)
+                                        addToHistory(fav.city, fav.country, fav.lat, fav.lon)
+                                    }}
+                                />
                             ))}
 
                         </div>
@@ -401,26 +402,26 @@ function Weather () {
                     : (
                         <div className="flex flex-col gap-2">
                             {history.map(h => (
-                                <div 
-                                    key={h.id} 
-                                    className="flex justify-between items-center p-3 border border-[#777777]/20 rounded-[10px] cursor-pointer hover:bg-gray-50"
-                                    onClick={() => {
-                                        setSelectedCity({ lat: h.lat, lon: h.lon, name: h.city })
-                                        setActiveModal(null)
-                                    }}
-                                >
-                                    <span>{h.city}, {h.country}</span>
-                                    <span className="text-[#919191] text-[13px]">
-                                        {new Date(h.searched_at).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                                    </span>
-                                </div>
+                                <HistoryCard 
+                                key={h.id}
+                                entry={h}
+                                onSelect={() => {
+                                    setSelectedCity({ lat: h.lat, lon: h.lon, name: h.city })
+                                    setActiveModal(null)
+                                }}
+                                />
                             ))}
 
                             <button 
                                 onClick={clearHistory}
-                                className="text-red-500 border border-red-200 rounded-[10px] py-2 mt-2 cursor-pointer"
+                                className="flex justify-center gap-2 py-2 mt-2 text-[#E84545] font-medium border border-[#E84545]/50 hover:bg-[#E84545] hover:text-[#FFFF] rounded-[10px] transition cursor-pointer"
                             >
-                                Очистить историю
+                                <Delete 
+                                    className="fill-[#8E381D]" 
+                                    width={22}
+                                    height={22}    
+                                />
+                                <span>Очистить историю</span>
                             </button>
                         </div>
                     )

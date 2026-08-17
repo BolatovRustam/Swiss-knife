@@ -29,12 +29,6 @@ export function useSearchHistory () {
         const { data: { user } } = await supabase.auth.getUser()
         if(!user) return
 
-        await supabase
-            .schema("weather")
-            .from("search_history")
-            .delete()
-            .eq("user_id", user.id)
-            .eq("city", city)
 
         const { error } = await supabase
             .schema("weather")

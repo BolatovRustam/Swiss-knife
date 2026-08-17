@@ -14,7 +14,7 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
             onClick={onClose}
         >
             <div 
-                className="bg-white rounded-2xl shadow-lg p-6 w-[400px] max-h-[80vh] overflow-auto"
+                className="bg-white rounded-2xl shadow-lg p-6 pr-4 w-[520px] max-h-[80vh] overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-4">

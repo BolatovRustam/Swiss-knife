@@ -36,7 +36,7 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
     }, [])
 
     return (
-        <div className="relative" ref={ref}>
+        <div className="relative " ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
                 className={`
@@ -56,7 +56,8 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
                     max-h-63.5 overflow-y-auto
                     absolute top-[calc(100%+8px)] left-0 w-full transi 
                     bg-white rounded-2xl shadow-[0px_4px_10px_2px_rgba(0,0,0,0.25)] 
-                    outline-1 outline-neutral-500/40 overflow-hidden z-10
+                    outline-1 outline-neutral-500/40 overflow-hidden z-10 
+                    scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent 
                     ${menuClassName ?? ""}
                     `}>
                     {options.map(opt => (
