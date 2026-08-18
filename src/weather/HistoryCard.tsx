@@ -1,7 +1,9 @@
 import { useLiveWeather } from "./useLiveWeather";
 import type { HistoryEntry } from "./types";
-import { Time } from "@/assets/icons";
 import { formateRelativeDate } from "@/utils/dateUtils";
+import { Time } from "@/assets/icons";
+import { Loader2 } from "lucide-react";
+
 
 interface HistoryCardProps {
     entry: HistoryEntry
@@ -32,7 +34,7 @@ export function HistoryCard( { entry, onSelect }: HistoryCardProps) {
 
 
 
-            <p className="font-medium">{live ? `+${Math.round(live.temp)}°` : '...'}</p>
+            <p className="font-medium">{live ? `+${Math.round(live.temp)}°` :  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />}</p>
         </div>
     )
 }

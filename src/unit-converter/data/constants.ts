@@ -5,7 +5,7 @@ import volume from "../../assets/icons/volume.svg"
 import square from "../../assets/icons/square.svg"
 import speed from "../../assets/icons/speed.svg"
 import pressure from "../../assets/icons/pressure.svg"
-import time from "../../assets/icons/time.svg"
+import time2 from "../../assets/icons/time.svg"
 
 export const categories = [
     { img: length, title: "Длина" },
@@ -15,7 +15,7 @@ export const categories = [
     { img: square, title: "Площадь" },
     { img: speed, title: "Скорость" },
     { img: pressure, title: "Давление" },
-    { img: time, title: "Время" },
+    { img: time2, title: "Время" },
 ]
 
 export const popular_conversions = [
@@ -24,6 +24,6 @@ export const popular_conversions = [
     { img: temperature, title: "°C → °F", category: "Температура", from: "c", to: "f" },
     { img: speed, title: "км/ч → м/с", category: "Скорость", from: "kmh", to: "ms" },
     { img: volume, title: "Литр → Миллилитр", category: "Объём", from: "l", to: "ml" },
-    { img: time, title: "Час → Минута", category: "Время", from: "h", to: "min" },
+    { img: time2, title: "Час → Минута", category: "Время", from: "h", to: "min" },
     { img: square, title: "м² → км²", category: "Площадь", from: "m2", to: "km2" },
 ]

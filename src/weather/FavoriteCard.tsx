@@ -1,19 +1,17 @@
-import { useLiveWeather } from "./useLiveWeather";
 import type { FavoriteCity } from "./types";
 import { star, starFill } from "@/assets/icons";
 import { iconMap } from "./iconMap";
 import { useState } from "react";
 
 
-
 interface FavoriteCardProps {
     entry: FavoriteCity
+    live: { temp:number; icon:string; description:string } | null
     onRemove: () => void
     onSelect: () => void
 }
 
-export function FavoriteCard({entry, onSelect, onRemove }: FavoriteCardProps) {
-    const live = useLiveWeather(entry.lat, entry.lon)
+export function FavoriteCard({entry, live, onSelect, onRemove }: FavoriteCardProps) {
     const [ isRemoving, setIsRemoving ] = useState(false)
 
     const handleRemove = () => {

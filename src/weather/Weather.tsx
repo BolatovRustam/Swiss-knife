@@ -15,6 +15,8 @@ import { useSearchHistory } from "./useSearchHistory"
 import Modal from "./Modal"
 import { HistoryCard } from "./HistoryCard"
 import { FavoriteCard } from "./FavoriteCard"
+import { useLiveWeatherList } from "./useLiveWeatherList"
+import { Loader2 } from "lucide-react"
 
 
 interface Weather {
@@ -60,6 +62,7 @@ function Weather () {
     const [weather, setWeather] = useState<Weather | null>(null)
 
     const { favorites, addFavorite, removeFavorite } = useFavortites()
+    const { results: favWeather, loading: favLoading } = useLiveWeatherList(favorites)
     const { history, addToHistory, clearHistory } = useSearchHistory()
 
     const suggestions = useGeocoding(query)
@@ -163,13 +166,20 @@ function Weather () {
             {/* Основная часть */}
             <div className="w-full flex-1 flex flex-col gap-5 mt-4 mb-4">
 
-                {/* Погода на текущий день с показателями */}
-                <div className="w-full flex-3 flex justify-between px-10 py-7 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+                {
+                    !weather ? (
+                            <div className="w-full flex items-center justify-center bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)] min-h-[275px]">
+                                <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+                            </div>
+                    ) : (
+                        
+                /* Погода на текущий день с показателями */
+                <div className="w-full flex justify-between px-10 py-9 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
 
                     {/* Сама погода */}
                     <div className="flex flex-col gap-8">
                         <div className="flex gap-3.5">
-                            {
+                            {   
                                 weather && 
                                 <img 
                                     src={ iconMap[weather.weather[0].icon] } 
@@ -282,11 +292,13 @@ function Weather () {
                     </div>
 
                 </div>
+                )}
 
                 {/* Почасовой прогноз */}
                 <div className="flex flex-col w-full gap-2">
-
-                    <p className="font-medium">Почасовой прогноз</p>
+                    {weather ? (
+                        <p className="font-medium">Почасовой прогноз</p>
+                    ) : "" }
                     <div className="flex-1 flex w-full gap-6">
                             {
                                 hours.map((el, i) => (
@@ -326,7 +338,10 @@ function Weather () {
                 {/* Прогноз на 5 дней */}
                 <div className="flex flex-col w-full gap-2">
 
-                    <p className="font-medium">Прогноз на 5 дней</p>
+                    {weather ? (
+                        <p className="font-medium">Прогноз на 5 дней</p>
+                    ) : "" }
+
                     <div className="flex flex-2 w-full gap-2">
                             {
                                 days.map( (el, i) => (
@@ -399,12 +414,19 @@ function Weather () {
                 </button>
             </div>
 
+            
             <Modal 
                 isOpen={activeModal === "favorites"} 
                 onClose={() => setActiveModal(null)}
                 title="Избранные города"
             >
-                {favorites.length === 0 ? ( 
+                {
+                favLoading ? (
+                    <div className="flex items-center justify-center py-10">
+                        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                    </div>
+                )
+                : favorites.length === 0 ? ( 
                     <p>История пока пуста</p> 
                 )
                     : (
@@ -412,6 +434,7 @@ function Weather () {
                             {favorites.map(fav => (
                                 <FavoriteCard 
                                     key={fav.id}
+                                    live={favWeather.get(fav) ?? null}
                                     entry={fav}
                                     onRemove={() => removeFavorite(fav.id)}
                                     onSelect={() => {

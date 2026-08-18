@@ -143,20 +143,21 @@ function Todo_List() {
                         <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
                     </div>
                 ) :  
-                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-96">
+                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
                         <table className="w-full bg-white border-collapse overflow-scroll transform ">
                             <tbody>
                                 {filtetedData.map((obj, i)=> (
                                     <tr 
                                         key={obj.id}
                                         className={`
-                                            [&>td:not(:last-child)]:px-9 [&>td]:py-6 text-neutral-700 text-xl 
+                                            [&>td:not(:last-child)]:px-9 [&>td]:py-6 text-xl 
                                             ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}
                                             ${ obj.isTemp && "animate-fade-slide-in"}
+                                             ${obj.completed ? "bg-neutral-200 text-neutral-500" : "text-neutral-700"}
                                             `}
                                     >
                                         <td>
-                                            <div className={`flex gap-3 items-center ${obj.completed && "line-through"}`}>
+                                            <div className={`flex gap-3 items-center `}>
                                                 <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
                                                     {
                                                         obj.completed 
@@ -196,6 +197,7 @@ function Todo_List() {
                                                 <Cross 
                                                     width={26}
                                                     height={26}
+                                                    className="text-[#404040]"
                                                 />
                                             </button>
                                         </td>
