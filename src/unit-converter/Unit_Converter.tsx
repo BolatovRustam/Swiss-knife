@@ -9,12 +9,21 @@ import { Loader2 } from 'lucide-react'
 import { Delete, Info, button, change, eraser, recent, checkbox } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
+interface Error {
+    title: string
+    from: string
+    fromU: string
+    to: string
+    toU: string
+}
+
 
 
 function Unit_Converter () {
     const { session } = useAuthStore()
     const [ activeCategory, setActiveCategory ] = useState<CategoryName>("Длина")
     const [ inputValue, setInputValue ] = useState("")
+    const [error, setError] = useState<Error | null>(null)
     const [ fromUnit, setFromUnit ] = useState<string>( unitCategories["Длина"][0].value )
     const [ toUnit, setToUnit ] = useState<string>( unitCategories["Длина"][1].value )
     const [ result, setResult ] = useState("")
@@ -39,8 +48,16 @@ function Unit_Converter () {
 
         const lastEntry = data[data.length - 1]
         if (lastEntry && lastEntry.title === title) {
+            setError({  title: "Это преобразование уже выполнялось",
+                        from: inputValue,
+                        fromU: fromUnit,
+                        to: res,
+                        toU: toUnit,
+             })
             return
         }
+
+        setError(null)
 
         const time = new Date().toLocaleString('ru-RU', {
             day: '2-digit',
@@ -123,7 +140,10 @@ function Unit_Converter () {
                             placeholder="Введите значение" 
                             className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"  
                             onChange={e => {
-                                if (e.target.value.length <= 10)  setInputValue(e.target.value)
+                                if (e.target.value.length <= 10) {
+                                    setInputValue(e.target.value)
+                                    setError(null)
+                                }
                             }}
                             onKeyDown={(e) => e.key === "Enter" && handleClick()}
                         />
@@ -197,10 +217,27 @@ function Unit_Converter () {
             </div>
 
             {/* Информация */}
-            <div className="flex h-18 text-[16px] px-4 gap-2.5 items-center bg-[#F1F2FB] rounded-2xl">
-                <Info className="text-[#5885EA]"/>
-                <span>{infoText}</span>
-            </div>
+            
+            { !error ? ( 
+                <div className="flex h-18 text-[16px] px-4 gap-4 items-center bg-[#F1F2FB] rounded-2xl">
+                    <Info className="text-[#5885EA]"/>
+                    <span>{infoText}</span>
+                </div> ) : (
+                <div className="flex py-4 text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                    <Info className="text-[#FF5E5E] mt-2"/>
+                    <p className="flex flex-col gap-0.5">
+                        <span className="font-semibold">
+                            {error.title}
+                        </span>
+                        <span className="text-[15px] text-[#505050]">
+                            {`Вы уже конвертировали ${error.from} ${error.fromU} в ${error.to} ${error.toU}.`}
+                            <br />
+                            Попробуйте изменить значения или выберите другие единицы измерения.
+                        </span>
+                    </p>
+                </div>
+            )}
+            
 
             {/* Категории */}
             <div className="flex flex-col gap-4">

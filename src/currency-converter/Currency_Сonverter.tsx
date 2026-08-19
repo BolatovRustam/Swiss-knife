@@ -10,7 +10,13 @@ import { Loader2 } from 'lucide-react'
 import { Info, Delete, change, button, eraser, recent } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
-
+interface Error {
+    title: string
+    from: string
+    fromV: string
+    to: string
+    toV: string
+}
 
 const renderButton = (opt: Option) => (
     <div className="flex items-center gap-3">
@@ -39,6 +45,7 @@ function Currency_Converter () {
     const [toCurrency, setToCurrency] = useState<Currency>(currencies[1])
     const [inputValue, setInputValue] = useState("")
     const [result, setResult] = useState("")
+    const [error, setError] = useState<Error | null>(null)
     const [rate, setRate] = useState<number | null>(null)
     const [loading, setLoading] = useState(false)
 
@@ -96,8 +103,16 @@ function Currency_Converter () {
 
         const lastEntry = data[data.length - 1]
         if (lastEntry && lastEntry.title === title) {
+            setError({  title: "Это преобразование уже выполнялось",
+                            from: inputValue,
+                            fromV: fromCurrency.value,
+                            to: res,
+                            toV: toCurrency.value,
+             })
             return
         }
+
+        setError(null)
 
         const time = new Date().toLocaleString('ru-RU', {
             day: '2-digit',
@@ -169,7 +184,10 @@ function Currency_Converter () {
                                     text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]
                                     `}  
                                 onChange={e => {
-                                    if (e.target.value.length <= 20)  setInputValue(e.target.value)
+                                    if (e.target.value.length <= 20) {
+                                        setInputValue(e.target.value)
+                                        setError(null)
+                                    }
                                 }}
                                 onKeyDown={(e) => e.key === "Enter" && handleClick()}
                             />
@@ -245,10 +263,30 @@ function Currency_Converter () {
                 </div>
 
                 {/* Информация */}
-                <p className="flex gap-3 font-medium">
-                    <Info />
-                    <span>{loading ? "Загрузка..." : infoText }</span>
-                </p>
+
+                { !error ? (
+                    <p className="flex gap-3 font-medium">
+                        <Info />
+                        <span>{loading ? "Загрузка..." : infoText }</span>
+                    </p>
+                ) : (
+                    <div className="flex py-4 text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                        <Info className="text-[#FF5E5E] mt-2"/>
+                        <p className="flex flex-col gap-0.5">
+                            <span className="font-semibold">
+                                {error.title}
+                            </span>
+                            <span className="text-[15px] text-[#505050]">
+                                {`Вы уже конвертировали ${error.from} ${error.fromV} в ${error.to} ${error.toV}.`}
+                                <br />
+                                Попробуйте изменить сумму или выбрать другие валюты.
+                            </span>
+                        </p>
+                    </div>
+                )}
+
+
+
 
             </div>
 
