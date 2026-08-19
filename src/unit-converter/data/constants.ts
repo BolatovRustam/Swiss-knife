@@ -5,7 +5,7 @@ import volume from "../../assets/icons/volume.svg"
 import square from "../../assets/icons/square.svg"
 import speed from "../../assets/icons/speed.svg"
 import pressure from "../../assets/icons/pressure.svg"
-import time2 from "../../assets/icons/time.svg"
+import time2 from "../../assets/icons/time2.svg"
 
 export const categories = [
     { img: length, title: "Длина" },

@@ -94,6 +94,11 @@ function Currency_Converter () {
 
         setResult(res)
 
+        const lastEntry = data[data.length - 1]
+        if (lastEntry && lastEntry.title === title) {
+            return
+        }
+
         const time = new Date().toLocaleString('ru-RU', {
             day: '2-digit',
             month: '2-digit', 

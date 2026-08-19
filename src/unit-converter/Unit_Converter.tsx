@@ -35,6 +35,13 @@ function Unit_Converter () {
 
         setResult(res)
 
+        const title = `${inputValue} ${fromUnit} → ${res} ${toUnit}`
+
+        const lastEntry = data[data.length - 1]
+        if (lastEntry && lastEntry.title === title) {
+            return
+        }
+
         const time = new Date().toLocaleString('ru-RU', {
             day: '2-digit',
             month: '2-digit', 
@@ -42,8 +49,6 @@ function Unit_Converter () {
             hour: '2-digit',
             minute: '2-digit'
         })
-
-        const title = `${inputValue} ${fromUnit} → ${res} ${toUnit}`
 
         const tempUnitTask: Data = {
             id: crypto.randomUUID(),

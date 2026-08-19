@@ -21,7 +21,10 @@ type SelectProps = {
 
 function Select ({value, onChange, options, renderButton, renderOption, buttonClassName, menuClassName, optionClassName}:SelectProps) {
     const [open, setOpen] = useState(false)
+    const [mounted, setMounted] = useState(false)
+
     const ref = useRef<HTMLDivElement>(null)
+    const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -34,6 +37,20 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
         document.addEventListener("mousedown", handleClickOutside)
         return () => document.removeEventListener("mousedown", handleClickOutside)
     }, [])
+
+    useEffect(() => {
+        if (open) {
+            if(closeTimeout.current) clearTimeout(closeTimeout.current)
+                setMounted(true)
+        } else if (mounted) {
+            closeTimeout.current = setTimeout(() => setMounted(false), 300)
+        }
+
+        return () => {
+            if (closeTimeout.current) clearTimeout(closeTimeout.current)
+        }
+
+    }, [open])
 
     return (
         <div className="relative " ref={ref}>
@@ -51,13 +68,14 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
                 <img src={down} alt="▾" className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
             </button>
 
-            {open && (
+            {mounted && (
                 <div className={`
                     max-h-63.5 overflow-y-auto
                     absolute top-[calc(100%+8px)] left-0 w-full transi 
                     bg-white rounded-2xl shadow-[0px_4px_10px_2px_rgba(0,0,0,0.25)] 
                     outline-1 outline-neutral-500/40 overflow-hidden z-10 
                     scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent 
+                    ${open ? "select-menu-enter" : "select-menu-exit"}
                     ${menuClassName ?? ""}
                     `}>
                     {options.map(opt => (

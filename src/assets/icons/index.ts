@@ -14,6 +14,7 @@ export { default as button } from "./change button.svg"
 export { default as change } from "./change.svg"
 export { default as eraser } from "./eraser.svg"
 export { default as recent } from "./recent.svg"
+export { default as time2 } from "./time2.svg"
 export { default as Time } from "./time.svg?react"
 export { default as checkbox } from "./checkbox-on ( var 2 ).svg" 
 export { default as star } from "./star.svg"
@@ -27,12 +28,12 @@ export { default as visible } from "./visible( animate ).svg"
 export { default as humidity } from "./humidity( animate ).svg"
 export { default as humidity2 } from "./humidity( animate ) var 2.svg"
 
-export { default as windy } from "@meteocons/svg/fill/wind.svg"
+export { default as windy } from "./windy.svg"
 export { default as barometr } from "@meteocons/svg/fill/barometer.svg" 
-export { default as thermometer } from "@meteocons/svg/fill/thermometer.svg"
+export { default as thermometer } from "./thermometer.svg"
 export { default as sunrise } from "@meteocons/svg/fill/sunrise.svg"
 
-
+// export { default as thermometer } from "@meteocons/svg/fill/thermometer.svg"
 
 
 
