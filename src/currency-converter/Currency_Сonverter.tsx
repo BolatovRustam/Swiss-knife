@@ -343,7 +343,7 @@ function Currency_Converter () {
                 <div className="w-full">
                     { historyLoading 
                     ? 
-                        <div className="flex justify-center items-center">
+                        <div className="flex mb-6 justify-center items-center">
                             <Loader2 className="w-7 h-7 animate-spin text-gray-400" />
                         </div>
 

@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react'
 
 import { Delete, Info, button, change, eraser, recent, checkbox } from "@/assets/icons"
 import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
+import Dropdown from "@/components/Dropdown"
 
 interface Error {
     title: string
@@ -125,7 +126,7 @@ function Unit_Converter () {
     <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-21.5"> 
 
         {/* Верхняя часть */}
-        <div className="flex flex-col h-[490px]  mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+        <div className="flex flex-col mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
             
             {/* Инпуты и кнопка */}
             <div className="flex items-end">
@@ -138,7 +139,7 @@ function Unit_Converter () {
                             type="number" 
                             value={inputValue}
                             placeholder="Введите значение" 
-                            className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"  
+                            className="outline- flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"  
                             onChange={e => {
                                 if (e.target.value.length <= 10) {
                                     setInputValue(e.target.value)
@@ -147,7 +148,7 @@ function Unit_Converter () {
                             }}
                             onKeyDown={(e) => e.key === "Enter" && handleClick()}
                         />
-                        <select 
+                        {/* <select 
                             value={fromUnit}
                             className="flex-1 outline-none text-[16px] font-medium cursor-pointer"
                             onChange={e => setFromUnit(e.target.value)}
@@ -155,7 +156,16 @@ function Unit_Converter () {
                             {units.map(u => (
                                 <option value={u.value} key={u.value}>{u.label}</option>
                             ))}
-                        </select>
+                        </select> */}
+
+                        <Dropdown 
+                            value={units.find(u => u.value === fromUnit)!}
+                            onChange={val => setFromUnit(val)}
+                            options={units}
+                            buttonClassName="flex justify-between w-full gap-4 items-center font-medium cursor-pointer outline-none"
+                            menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
+                            optionClassName="hover:bg-[#767676] hover:text-white pl-[6px] pr-[14px] cursor-pointer"
+                        /> 
                     </div>
                 </div>
 
@@ -202,7 +212,7 @@ function Unit_Converter () {
                                 className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
                                 readOnly
                             />
-                            <select 
+                            {/* <select 
                                 value={toUnit}
                                 className="flex-1 outline-none text-[16px] font-medium cursor-pointer"
                                 onChange={e => setToUnit(e.target.value)}
@@ -210,7 +220,15 @@ function Unit_Converter () {
                                 {units.map(u => (
                                     <option value={u.value} key={u.value}>{u.label}</option>
                                 ))}
-                            </select>
+                            </select> */}
+                            <Dropdown 
+                                value={units.find(u => u.value === toUnit)!}
+                                onChange={val => setToUnit(val)}
+                                options={units}
+                                buttonClassName="flex justify-between w-full gap-4 items-center font-medium cursor-pointer outline-none"
+                                menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
+                                optionClassName="hover:bg-[#767676] hover:text-white pl-[6px] pr-[14px] cursor-pointer"
+                            /> 
                     </div>
                 </div>
 
@@ -318,7 +336,7 @@ function Unit_Converter () {
                 <div className="w-full">
                     { loading 
                     ? 
-                        <div className="flex justify-center items-center">
+                        <div className="flex justify-center items-center mb-2">
                             <Loader2 className="w-7 h-7 animate-spin text-gray-400" />
                         </div>
                         

@@ -6,6 +6,7 @@ export { default as RectangleCheckboxOn } from "./rectangle_checkbox-on.svg?reac
 export { default as RectangleCheckboxOff } from "./rectangle_checkbox-off.svg?react"
 export { default as Cross } from "./cross.svg?react"
 export { default as plus } from "./plus.svg"
+export { default as down } from "./down.svg"
 export { default as calendar } from "./calendar.svg"
 export { default as cookie } from "./cookies.svg"
 export { default as arrow } from "./arrow.svg"
