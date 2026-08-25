@@ -1,35 +1,39 @@
 import { useState } from "react"
 import { evaluate } from "mathjs"
 
+const BTN_TEXT = "text-base sm:text-xl lg:text-[28px]"
+const BTN_TEXT_WIDE = "text-lg sm:text-2xl lg:text-3xl"
+const BTN_SPAN = "h-9 sm:h-11 lg:h-12"
+
 const buttons = [
-        {label: "MC", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "MR", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "M-", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "M+", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "√", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "Xʸ", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "←", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "7", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "8", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "9", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "÷", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "%", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "+/-", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "4", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "5", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "6", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "x", bg: "bg-[#ADD8E6]", text: "text-3xl", span: "h-12"},
-        {label: "-", bg: "bg-[#ADD8E6]", text: "text-3xl", span: "h-12"},
-        {label: "AC", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "1", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "2", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "3", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "+", bg: "bg-[#ADD8E6]", text: "text-3xl", span: "row-span-2"},
-        {label: "=", bg: "bg-[#ADD8E6]", text: "text-3xl", span: "row-span-2"},
-        {label: "C", bg: "bg-[#ADD8E6]", text: "text-[28px]", span: "h-12"},
-        {label: "0", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: "00", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
-        {label: ".", bg: "bg-[#F8F8FF]", text: "text-[28px]", span: "h-12"},
+        {label: "MC", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "MR", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "M-", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "M+", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "√", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "Xʸ", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "←", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "7", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "8", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "9", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "÷", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "%", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "+/-", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "4", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "5", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "6", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "x", bg: "bg-[#ADD8E6]", text: BTN_TEXT_WIDE, span: BTN_SPAN},
+        {label: "-", bg: "bg-[#ADD8E6]", text: BTN_TEXT_WIDE, span: BTN_SPAN},
+        {label: "AC", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "1", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "2", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "3", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "+", bg: "bg-[#ADD8E6]", text: BTN_TEXT_WIDE, span: "row-span-2"},
+        {label: "=", bg: "bg-[#ADD8E6]", text: BTN_TEXT_WIDE, span: "row-span-2"},
+        {label: "C", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "0", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: "00", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
+        {label: ".", bg: "bg-[#F8F8FF]", text: BTN_TEXT, span: BTN_SPAN},
 ]
 
 const operators = ["+", "-", "x", "÷"]
@@ -162,9 +166,9 @@ function DefaultCalculator() {
         }
     }
 
-
+// "h-110 w-155 px-6 pt-5 pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl"
     return (
-            <div className="h-110 w-155 px-6 pt-5 pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl">
+            <div className="w-full max-w-[380px] sm:max-w-[460px] lg:max-w-none lg:w-155 lg:h-110 px-3 pt-3 pb-4 sm:px-4 sm:pt-4 sm:pb-5 lg:px-6 lg:pt-5 lg:pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl mx-auto">
                 <div className="bg-[#EEEEEE] text-5xl pr-1.5 flex-2 items-center flex justify-end rounded-md">{display}</div>
 
                 
