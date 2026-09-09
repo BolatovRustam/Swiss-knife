@@ -10,6 +10,7 @@ import Weather from "./weather/Weather"
 import { Loader2 } from "lucide-react"
 
 import { calculatorImg, convertImg1, convertImg2, cookiesImg, todoImg, weatherImg } from "@/assets/png"
+import { Cross, List, LogOut } from "./assets/icons"
 
 
   const tools = [
@@ -29,10 +30,12 @@ function MainApp() {
 
   const { session } = useAuthStore()
   const [loggingOut, setLoggingOut] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const handlePageChange = (id:string) => {
     setActivePage(id)
     localStorage.setItem("activePage", id)
+    setIsMenuOpen(false)
   }
 
   const handleLogOut = async () => {
@@ -45,11 +48,34 @@ function MainApp() {
 
   return (
     <div className="flex h-screen">
+      { isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/40 z-40 hidden md:block lg:hidden" 
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+
+
       <aside 
-        className="w-82 border-r-2 border-[#777777] bg-[#F4F4F4] select-none">
-        <div className="border-b-2 border-[#777777] pl-7 py-7">
-          <h1 className="text-[22px] text-[#4D4E51] font-bold">SWISS KNIFE</h1>
-          <p className="text-lg text-[#76787B] font-medium">{tools.length} инструментов</p>
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50 
+          w-full md:w-82 border-r-2 border-[#777777] bg-[#F4F4F4] select-none
+          transition-transform duration-300
+          ${ isMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
+        `}>
+        <div className="flex items-center justify-between border-b-2 border-[#777777] pl-7 pr-5.5 py-7">
+          <div>
+            <h1 className="text-[20px] lg:text-[22px] text-[#4D4E51] font-bold">SWISS KNIFE</h1>
+            <p className="text-[16px] lg:text-lg text-[#76787B] font-medium">{tools.length} инструментов</p>
+          </div>
+
+          <button 
+            className="pb-8 md:hidden shrink-0 text-[#9797A0] hover:text-black active:scale-90 transition-all duration-150 cursor-pointer"
+            onClick={() => setIsMenuOpen(false)}>
+              <Cross 
+                  className="fill-current w-5.5 h-5.5"
+              />
+          </button>
         </div>
 
         <div>
@@ -71,7 +97,34 @@ function MainApp() {
       </aside>  
 
       <main className="flex-1 flex flex-col overflow-hidden">
-        <div className="flex items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
+        
+        <div className="flex lg:hidden items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-4 py-3">
+          <button
+            className="shrink-0 text-black hover:text-[#4D4E51] active:scale-90 transition-all duration-150 cursor-pointer"
+            onClick={() => setIsMenuOpen(true)}
+          >
+            <List 
+              className="w-5 h-5 md:w-6 md:h-6 fill-current"
+            />
+          </button>
+
+          <h2 className="text-lg md:text-[20px] font-semibold">{activeTool?.label}</h2>
+          <button
+            className="shrink-0 text-black hover:text-[#4D4E51] active:scale-90 transition-all duration-150 cursor-pointer"
+            onClick={handleLogOut}
+          >
+            {loggingOut ? (
+              <Loader2  className="w-5 h-5 animate-spin"/>
+            ) : (
+              <LogOut 
+                  className="w-5 h-5 md:w-6 md:h-6 fill-current"
+              />
+            )}
+          </button>
+        </div>
+
+
+        <div className="hidden lg:flex items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
           <h2 className="text-2xl font-semibold">{activeTool?.label}</h2>
           <div className="flex items-center gap-4.5 font-medium">
             <p>Добро пожаловать {session?.user?.user_metadata?.name}!</p>

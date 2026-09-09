@@ -62,15 +62,15 @@ function Todo_List() {
 
 
     return (
-        <div className="flex justify-between h-full flex-col pt-12.5 pb-12 px-21.5">
+        <div className="flex justify-between h-full flex-col pt-9.5 lg:pt-12.5 pb-12 px-6.5 md:px-12 lg:px-21.5">
 
             {/* Верхняя часть */}
-            <div className="flex flex-col gap-7">
+            <div className="flex flex-col gap-4 md:gap-5 lg:gap-7">
 
                 {/* Инпут + селект + кнопка */}
-                <div className="flex w-full gap-7">
+                <div className="flex flex-col lg:flex-row w-full gap-3 lg:gap-7">
                         <input 
-                            className="flex-10 h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] outline-1 outline-neutral-500/40 placeholder-stone-300 text-xl" 
+                            className="w-full lg:flex-10 h-12 md:h-13 lg:h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] outline-1 outline-neutral-500/40 placeholder-stone-300 text-base md:text-lg lg:text-xl" 
                             type="text" 
                             placeholder="Новая задача..." 
                             value={currentData.title}
@@ -89,19 +89,19 @@ function Todo_List() {
                         />  
 
                     <button 
-                        className="h-15 px-10 rounded-lg flex items-center gap-5 transition hover:brightness-110 active:brightness-85 text-white text-xl font-semibold cursor-pointer gradient-btn-green"
+                        className="w-full lg:w-auto h-12 md:h-13 lg:h-15 px-6 lg:px-10 rounded-lg flex items-center justify-center gap-3 lg:gap-5 transition hover:brightness-110 active:brightness-85 text-white text-base md:text-lg lg:text-xl font-semibold cursor-pointer gradient-btn-green"
                         onClick={handleCreate}
                     >
                         <span>Добавить</span>
-                        <img className="w-6 h-6 invert"src={plus} alt="img" />
+                        <img className="w-5 h-5 md:w-6 md:h-6 invert"src={plus} alt="img" />
                     </button>
                 </div>
 
                 {/* Фильтры */}
-                <div className="h-10 flex gap-5 text-[18px]">
+                <div className="h-9 md:h-9 lg:h-10 flex gap-2 md:gap-3 lg:gap-5 text-xs md:text-sm lg:text-[18px]">
                     <button 
                         className={`
-                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            flex-1 lg:flex-none flex items-center justify-center lg:justify-start h-full px-2 md:px-4 lg:px-6 gap-1.5 md:gap-2 lg:gap-2.5 rounded-lg cursor-pointer transition 
                             ${filter=== "all" 
                                 ? "text-white gradient-btn-green" 
                                 : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"} 
@@ -113,7 +113,7 @@ function Todo_List() {
                     </button>
                     <button 
                         className={`
-                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            flex-1 lg:flex-none flex items-center justify-center lg:justify-start h-full px-2 md:px-4 lg:px-6 gap-1.5 md:gap-2 lg:gap-2.5 rounded-lg cursor-pointer transition 
                             ${filter=== "active" 
                                 ? "text-white gradient-btn-green" 
                                 : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}
@@ -125,7 +125,7 @@ function Todo_List() {
                     </button>
                     <button 
                         className={`
-                            flex items-center h-full px-6 gap-2.5 rounded-lg cursor-pointer transition 
+                            flex-1 lg:flex-none flex items-center justify-center lg:justify-start h-full px-2 md:px-4 lg:px-6 gap-1.5 md:gap-2 lg:gap-2.5 rounded-lg cursor-pointer transition  
                             ${filter=== "completed" 
                                 ? "text-white gradient-btn-green" 
                                 : "bg-white/40 hover:bg-white text-[#4C4C4C] outline-1 outline-neutral-500/40"}
@@ -212,12 +212,12 @@ function Todo_List() {
             </div>
 
             {/* Нижняя панель */}
-            <div className="flex w-full h-15 justify-between">
+            <div className="flex flex-col md:flex-row w-full gap-3 md:gap-4 lg:gap-0 md:h-13 lg:h-15 md:justify-between">
 
-                <div className="flex h-full px-8 items-center gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl">
+                <div className="flex h-11 md:h-full px-4 md:px-6 lg:px-8 items-center gap-3 md:gap-4 lg:gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl overflow-x-auto">
                     <List className="text-[#5F915F]"/>
 
-                    <p className="flex gap-5 text-[20px] text-[#385538]">
+                    <p className="flex gap-3 md:gap-4 lg:gap-5 text-xs md:text-sm lg:text-[20px] text-[#385538] whitespace-nowrap">
                         <p>Всего: <span className="font-bold text-black">{data.length}</span></p>
                         <p>Активных: <span className="font-bold text-black">{data.filter(el=> !el.completed).length}</span></p>
                         <p>Выполненных: <span className="font-bold text-black">{data.filter(el=> el.completed).length}</span></p>
@@ -225,10 +225,10 @@ function Todo_List() {
                 </div>
 
                 <button 
-                    className="flex h-full px-8 items-center gap-5 transition bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
+                    className="flex h-11 md:h-full px-4 md:px-6 lg:px-8 items-center justify-center gap-3 lg:gap-5 transition bg-[#FDEDE8] hover:bg-[#FFF2EE] active:bg-[#FFD8CC] active:outline-[#8E381D] text-[#8E381D] text-xs md:text-sm lg:text-[20px] font-semibold outline-1 outline-[#E3CAC2] rounded-2xl cursor-pointer"
                     onClick={handleAllDelete}
                 >
-                    <Delete className="fill-[#8E381D]" />
+                    <Delete className="fill-[#8E381D] w-4 h-4 md:w-5 md:h-5" />
                     <p>Очистить список</p>
                 </button>
             </div>

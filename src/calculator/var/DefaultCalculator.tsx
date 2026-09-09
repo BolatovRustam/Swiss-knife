@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { evaluate } from "mathjs"
 
-const BTN_TEXT = "text-base sm:text-xl lg:text-[28px]"
-const BTN_TEXT_WIDE = "text-lg sm:text-2xl lg:text-3xl"
-const BTN_SPAN = "h-9 sm:h-11 lg:h-12"
+const BTN_TEXT = "text-base md:text-xl lg:text-[28px]"
+const BTN_TEXT_WIDE = "text-lg md:text-2xl lg:text-3xl"
+const BTN_SPAN = "h-9 md:h-11 lg:h-12"
 
 const buttons = [
         {label: "MC", bg: "bg-[#ADD8E6]", text: BTN_TEXT, span: BTN_SPAN},
@@ -166,18 +166,17 @@ function DefaultCalculator() {
         }
     }
 
-// "h-110 w-155 px-6 pt-5 pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl"
     return (
-            <div className="w-full max-w-[380px] sm:max-w-[460px] lg:max-w-none lg:w-155 lg:h-110 px-3 pt-3 pb-4 sm:px-4 sm:pt-4 sm:pb-5 lg:px-6 lg:pt-5 lg:pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl mx-auto">
-                <div className="bg-[#EEEEEE] text-5xl pr-1.5 flex-2 items-center flex justify-end rounded-md">{display}</div>
+            <div className="w-full max-w-[380px] md:max-w-[460px] lg:max-w-none lg:w-155 lg:h-110 px-4 pt-4 pb-4.5 md:px-4.5 md:pt-4 md:pb-5 lg:px-6 lg:pt-5 lg:pb-6 bg-[#333333] flex flex-col gap-2 rounded-2xl mx-auto">
+                <div className="bg-[#EEEEEE] text-2xl md:text-3xl lg:text-5xl pr-1.5 py-0.5 md:py-1 lg:py-0 flex-2 items-center flex justify-end rounded-md">{display}</div>
 
                 
-                <p className="flex-1 flex text-white text-xl pl-2.5 justify-between">
+                <p className="flex-1 flex text-white text-sm md:text-base lg:text-xl pl-2.5 justify-between">
                     <span>Mem: {memory}</span>
                     <span className="pr-2.5">{expression}</span>
                 </p>
 
-                <div className="flex-4 grid grid-cols-6 gap-y-3 gap-x-2">
+                <div className="flex-4 grid grid-cols-6 gap-y-2 gap-x-1 md:gap-y-2.5 md:gap-x-1.5 lg:gap-y-3 lg:gap-x-2">
                     {buttons.map(btn => (
                         <div
                             key={btn.label}
