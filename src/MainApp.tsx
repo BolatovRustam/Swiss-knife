@@ -59,7 +59,7 @@ function MainApp() {
       <aside 
         className={`
           fixed lg:static inset-y-0 left-0 z-50 
-          w-full md:w-82 border-r-2 border-[#777777] bg-[#F4F4F4] select-none
+          w-full md:w-82 border-r-2 md:rounded-r-3xl lg:rounded-none border-[#777777] bg-[#F4F4F4] select-none
           transition-transform duration-300
           ${ isMenuOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
         `}>

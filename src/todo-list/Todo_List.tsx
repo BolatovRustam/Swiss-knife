@@ -214,8 +214,8 @@ function Todo_List() {
             {/* Нижняя панель */}
             <div className="flex flex-col md:flex-row w-full gap-3 md:gap-4 lg:gap-0 md:h-13 lg:h-15 md:justify-between">
 
-                <div className="flex h-11 md:h-full px-4 md:px-6 lg:px-8 items-center gap-3 md:gap-4 lg:gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl overflow-x-auto">
-                    <List className="text-[#5F915F]"/>
+                <div className="flex h-11 md:h-full px-4 md:px-6 lg:px-8 items-center justify-center gap-3 md:gap-4 lg:gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl overflow-x-auto">
+                    <List className="text-[#5F915F] w-4 h-4 md:w-4.5 md:w-4.5 lg:w-6 lg:h-6"/>
 
                     <p className="flex gap-3 md:gap-4 lg:gap-5 text-xs md:text-sm lg:text-[20px] text-[#385538] whitespace-nowrap">
                         <p>Всего: <span className="font-bold text-black">{data.length}</span></p>
