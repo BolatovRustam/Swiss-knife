@@ -180,7 +180,7 @@ function Todo_List() {
                                     </div>
 
                                     {/* Дата — всегда видна, но сжата на мобилке */}
-                                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                                    <div className="flex items-center gap-1.5  md:gap-2 shrink-0">
                                         <img className="w-3.5 h-3.5 md:w-4 md:h-4" src={calendar} alt="img" />
                                         <span className="whitespace-nowrap text-xs md:text-base lg:text-xl">{obj.date}</span>
                                     </div>
@@ -208,11 +208,11 @@ function Todo_List() {
                 <div className="flex h-11 md:h-full px-4 md:px-6 lg:px-8 items-center justify-center gap-3 md:gap-4 lg:gap-6 bg-[#EFF4EF] outline-1 outline-[#C3D9C3] rounded-2xl overflow-x-auto">
                     <List className="text-[#5F915F] w-4 h-4 md:w-4.5 md:w-4.5 lg:w-6 lg:h-6"/>
 
-                    <p className="flex gap-3 md:gap-4 lg:gap-5 text-xs md:text-sm lg:text-[20px] text-[#385538] whitespace-nowrap">
+                    <div className="flex gap-3 md:gap-4 lg:gap-5 text-xs md:text-sm lg:text-[20px] text-[#385538] whitespace-nowrap">
                         <p>Всего: <span className="font-bold text-black">{data.length}</span></p>
                         <p>Активных: <span className="font-bold text-black">{data.filter(el=> !el.completed).length}</span></p>
                         <p>Выполненных: <span className="font-bold text-black">{data.filter(el=> el.completed).length}</span></p>
-                    </p>
+                    </div>
                 </div>
 
                 <button 
