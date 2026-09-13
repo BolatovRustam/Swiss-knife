@@ -143,70 +143,61 @@ function Todo_List() {
                         <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
                     </div>
                 ) :  
-                    filtetedData.length > 0 && <div className="flex flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
-                        <table className="w-full bg-white border-collapse overflow-scroll transform ">
-                            <tbody>
-                                {filtetedData.map((obj, i)=> (
-                                    <tr 
-                                        key={obj.id}
-                                        className={`
-                                            [&>td:not(:last-child)]:px-9 [&>td]:py-6 text-xl 
-                                            ${i !== data.length - 1 ? 'border-b border-neutral-500/40' : ''}
-                                            ${ obj.isTemp && "animate-fade-slide-in"}
-                                             ${obj.completed ? "bg-neutral-200 text-neutral-500" : "text-neutral-700"}
-                                            `}
-                                    >
-                                        <td>
-                                            <div className={`flex gap-3 items-center `}>
-                                                <div className="cursor-pointer relative" onClick={() => handleCompleted(obj.id)}>
-                                                    {
-                                                        obj.completed 
-                                                        ? <RectangleCheckboxOn />
-                                                        : <RectangleCheckboxOff />
-                                                    }
+                    filtetedData.length > 0 && (
+                        <div className="flex flex-col flex-1 shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] rounded-2xl outline outline-neutral-500/40 overflow-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-transparent">
+                            {filtetedData.map((obj, i) => (
+                                <div 
+                                    key={obj.id}
+                                    className={`
+                                        flex items-center justify-between gap-3 
+                                        px-4 py-3 md:px-6 md:py-4 lg:px-9 lg:py-6
+                                        bg-white text-sm md:text-base lg:text-xl
+                                        ${i !== filtetedData.length - 1 ? 'border-b border-neutral-500/40' : ''}
+                                        ${ obj.isTemp && "animate-fade-slide-in"}
+                                        ${obj.completed ? "bg-neutral-200 text-neutral-500" : "text-neutral-700"}
+                                        `}
+                                >
+                                    {/* Название задачи — растягивается, обрезается многоточием */}
+                                    <div className="flex gap-2 md:gap-3 items-center min-w-0 flex-1">
+                                        <div className="cursor-pointer relative shrink-0" onClick={() => handleCompleted(obj.id)}>
+                                            {
+                                                obj.completed 
+                                                ? <RectangleCheckboxOn />
+                                                : <RectangleCheckboxOff />
+                                            }
+                                        </div>
+                                        <span className="truncate">{obj.title}</span>
+                                    </div>
 
-                                                </div>
-                                                {obj.title}
-                                            </div>
-                                        </td>
+                                    {/* Приоритет — на мобилке только точка, текст скрыт */}
+                                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                                        <div className={`w-2.5 h-2.5 md:w-3 md:h-3 lg:w-4 lg:h-4 rounded-full shrink-0 ${
+                                            obj.priority === "Высокий" ? "bg-[#FE3D3D]" :
+                                            obj.priority === "Средний" ? "bg-[#FE960A]" :
+                                            "bg-[#04B214]"
+                                        }`}></div>
+                                        <span className="hidden md:inline">{obj.priority}</span>
+                                    </div>
 
-                                        
-                                        <td>
-                                            <div className="flex items-center gap-3">
-                                                <div className={`w-4 h-4 rounded-full shrink-0 ${
-                                                    obj.priority === "Высокий" ? "bg-[#FE3D3D]" :
-                                                    obj.priority === "Средний" ? "bg-[#FE960A]" :
-                                                    "bg-[#04B214]"
-                                                }`}></div>
-                                                {obj.priority}
-                                            </div>
-                                        </td>
+                                    {/* Дата — всегда видна, но сжата на мобилке */}
+                                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                                        <img className="w-3.5 h-3.5 md:w-4 md:h-4" src={calendar} alt="img" />
+                                        <span className="whitespace-nowrap text-xs md:text-base lg:text-xl">{obj.date}</span>
+                                    </div>
 
-                                        <td >
-                                            <div className="flex gap-3">
-                                                <img src={calendar} alt="img" />
-                                                {obj.date}
-                                            </div>
-                                        </td>
-
-                                        <td className="px-2">
-                                            <button 
-                                                className="flex cursor-pointer "
-                                                onClick={() => handleDelete(obj.id)}
-                                            > 
-                                                <Cross 
-                                                    width={26}
-                                                    height={26}
-                                                    className="text-[#404040]"
-                                                />
-                                            </button>
-                                        </td>
-
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div> 
+                                    {/* Удалить */}
+                                    <button 
+                                        className="flex cursor-pointer shrink-0"
+                                        onClick={() => handleDelete(obj.id)}
+                                    > 
+                                        <Cross 
+                                            className="w-4 h-4 md:w-5 md:h-5 lg:w-6.5 lg:h-6.5 text-[#404040]"
+                                        />
+                                    </button>
+                                </div>
+                            ))}
+                        </div> 
+                    )
                 }
 
             </div>
