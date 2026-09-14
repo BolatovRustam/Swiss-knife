@@ -123,13 +123,13 @@ function Unit_Converter () {
     
 
     return (
-    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-21.5"> 
+    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
 
         {/* Верхняя часть */}
         <div className="flex flex-col mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
             
             {/* Инпуты и кнопка */}
-            <div className="flex items-end">
+            <div className="flex flex-col flex-wrap lg:flex-row items-end">
 
                 {/* Из */}
                 <div className="flex flex-1 flex-col gap-6.5">
@@ -148,15 +148,6 @@ function Unit_Converter () {
                             }}
                             onKeyDown={(e) => e.key === "Enter" && handleClick()}
                         />
-                        {/* <select 
-                            value={fromUnit}
-                            className="flex-1 outline-none text-[16px] font-medium cursor-pointer"
-                            onChange={e => setFromUnit(e.target.value)}
-                        >
-                            {units.map(u => (
-                                <option value={u.value} key={u.value}>{u.label}</option>
-                            ))}
-                        </select> */}
 
                         <Dropdown 
                             value={units.find(u => u.value === fromUnit)!}
@@ -212,15 +203,7 @@ function Unit_Converter () {
                                 className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
                                 readOnly
                             />
-                            {/* <select 
-                                value={toUnit}
-                                className="flex-1 outline-none text-[16px] font-medium cursor-pointer"
-                                onChange={e => setToUnit(e.target.value)}
-                            >
-                                {units.map(u => (
-                                    <option value={u.value} key={u.value}>{u.label}</option>
-                                ))}
-                            </select> */}
+                            
                             <Dropdown 
                                 value={units.find(u => u.value === toUnit)!}
                                 onChange={val => setToUnit(val)}
@@ -260,12 +243,14 @@ function Unit_Converter () {
             {/* Категории */}
             <div className="flex flex-col gap-4">
                 <p className="text-[18px] font-bold">Категории</p>
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-4">
                     {categories.map(obj => (
                         <div
                             key={obj.title} 
                             onClick={() => handleCategoryChange(obj.title as CategoryName)}
-                            className={`relative flex w-full px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center transition select-none cursor-pointer
+                            className={`
+                                relative flex flex-1 basis-35 px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center 
+                                transition select-none cursor-pointer
                                 ${obj.title === activeCategory 
                                     ? "outline-indigo-400 outline-2 gradient-btn-purple shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
                                     : "bg-[#ECECEC]/25 hover:bg-[#ECECEC]/5  outline-[1.5px] outline-neutral-500/40"} `}
@@ -288,14 +273,14 @@ function Unit_Converter () {
         <div className="flex flex-col mb-13 gap-4.5">
             <p className="text-[18px] font-bold">Популярные преобразования</p>
             <div 
-                className="flex font-medium gap-4.5"
+                className="flex flex-wrap font-medium gap-4.5"
                 draggable = "false"
             >
                 {popular_conversions.map( obj => (
                     <div 
                         key={obj.title}
                         className={`
-                            flex w-full gap-2 px-4 py-3 bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
+                            flex flex-1 gap-2 px-4 py-3 bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
                             transition hover:-translate-y-2.5 active:translate-y-0 active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)] 
                             justify-center items-center cursor-pointer
                         `}

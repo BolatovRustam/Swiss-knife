@@ -57,7 +57,7 @@ function Select ({value, onChange, options, renderButton, renderOption, buttonCl
             <button
                 onClick={() => setOpen(!open)}
                 className={`
-                    h-15 px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] 
+                    px-4 bg-white rounded-2xl shadow-[0px_4px_10px_1px_rgba(0,0,0,0.25)] 
                     outline-1 outline-neutral-500/40 text-xl flex items-center gap-3 w-full cursor-pointer
                     ${buttonClassName ?? ""}
                     `}

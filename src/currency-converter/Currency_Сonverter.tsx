@@ -161,7 +161,7 @@ function Currency_Converter () {
 
     return (
 
-        <div className="flex max-h-full overflow-y-auto flex-col pt-12.5 pb-11 px-21.5 gap-8"> 
+        <div className="flex max-h-full overflow-y-auto flex-col pt-12.5 pb-11 px-6.5 md:px-12 lg:px-12 xl:px-21.5 gap-8"> 
 
             {/* Верхняя часть */}
             <div className="flex flex-col px-8 py-7 gap-6.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
