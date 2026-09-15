@@ -123,13 +123,87 @@ function Unit_Converter () {
     
 
     return (
-    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
+    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
 
         {/* Верхняя часть */}
         <div className="flex flex-col mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+
+        {/* Мобильная/планшетная версия — вертикальная, eraser+swap сверху, круглая кнопка посередине */}
+            <div className="flex flex-col lg:hidden gap-4">
+                <div className="flex justify-between items-center">
+                    <p className="text-base md:text-[16px] font-semibold">Из</p>
+                    <div className="flex gap-2 md:gap-3">
+                        <button 
+                            className="p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                            onClick={() => handleClearInput()}
+                        >
+                            <img src={eraser} alt="img" className="w-4 h-4 md:w-5 md:h-5" />
+                        </button>
+                        <button 
+                            className="p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                            onClick={() => handleSwap()}
+                        >
+                            <img src={change} alt="img" className="w-4 h-4 md:w-5 md:h-5" />
+                        </button>
+                    </div>
+                </div>
+
+                <div className="flex items-center h-16 md:h-20 px-3 md:px-4 bg-white/10 rounded-2xl outline-[1.5px] outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]">
+                    <input 
+                        type="number" 
+                        value={inputValue}
+                        placeholder="Введите значение" 
+                        className="flex-1 min-w-0 outline-none text-lg md:text-[22px] font-semibold placeholder:font-medium placeholder:text-sm md:placeholder:text-base"  
+                        onChange={e => {
+                            if (e.target.value.length <= 10) {
+                                setInputValue(e.target.value)
+                                setError(null)
+                            }
+                        }}
+                        onKeyDown={(e) => e.key === "Enter" && handleClick()}
+                    />
+                    <Dropdown 
+                        value={units.find(u => u.value === fromUnit)!}
+                        onChange={val => setFromUnit(val)}
+                        options={units}
+                        buttonClassName="flex justify-between items-center gap-2 font-medium text-sm md:text-[14px] cursor-pointer outline-none shrink-0"
+                        menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
+                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-sm md:text-[14px] hover:text-white cursor-pointer"
+                    /> 
+                </div>
+
+                <div className="flex justify-center mt-3">
+                    <button 
+                        className="h-10 w-10 md:h-11 md:w-11 p-2 bg-white hover:bg-[#F9F9F9] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 active:bg-white active:outline-2 active:outline-indigo-400 transition duration-200 ease-in-out flex justify-center items-center cursor-pointer"
+                        onClick={() => handleClick()}
+                    >
+                        <img src={button} alt="img" className="w-5 h-5 md:w-6 md:h-6" />
+                    </button>
+                </div>
+
+                <p className="text-base md:text-[16px] font-semibold">В</p>
+
+                <div className="flex items-center h-16 md:h-20 px-3 md:px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40">
+                    <input 
+                        type="text"
+                        value={result} 
+                        placeholder="Результат" 
+                        className="flex-1 min-w-0 outline-none text-lg md:text-[22px] font-semibold placeholder:font-medium placeholder:text-sm md:placeholder:text-base"
+                        readOnly
+                    />
+                    <Dropdown 
+                        value={units.find(u => u.value === toUnit)!}
+                        onChange={val => setToUnit(val)}
+                        options={units}
+                        buttonClassName="flex justify-between items-center gap-2 font-medium text-sm md:text-[14px] cursor-pointer outline-none shrink-0"
+                        menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
+                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-sm md:text-[14px] hover:text-white cursor-pointer"
+                    /> 
+                </div>
+            </div>
             
-            {/* Инпуты и кнопка */}
-            <div className="flex flex-col flex-wrap lg:flex-row items-end">
+            {/* Инпуты и кнопка */} {/* Десктопная версия — горизонтальная, как было изначально */}
+            <div className="hidden lg:flex flex-row  items-end">
 
                 {/* Из */}
                 <div className="flex flex-1 flex-col gap-6.5">
@@ -139,7 +213,7 @@ function Unit_Converter () {
                             type="number" 
                             value={inputValue}
                             placeholder="Введите значение" 
-                            className="outline- flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"  
+                            className="outline w-full outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"  
                             onChange={e => {
                                 if (e.target.value.length <= 10) {
                                     setInputValue(e.target.value)
@@ -200,7 +274,7 @@ function Unit_Converter () {
                                 type="text"
                                 value={result} 
                                 placeholder="Результат" 
-                                className="flex-3 outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
+                                className="w-full outline-none text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]"
                                 readOnly
                             />
                             
@@ -220,17 +294,17 @@ function Unit_Converter () {
             {/* Информация */}
             
             { !error ? ( 
-                <div className="flex h-18 text-[16px] px-4 gap-4 items-center bg-[#F1F2FB] rounded-2xl">
+                <div className="flex h-18 md:text-[14px] lg:text-[16px] px-4 gap-4 items-center bg-[#F1F2FB] rounded-2xl">
                     <Info className="text-[#5885EA]"/>
                     <span>{infoText}</span>
                 </div> ) : (
-                <div className="flex py-4 text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                <div className="flex py-4 md:text-[14px] lg:text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
                     <Info className="text-[#FF5E5E] mt-2"/>
                     <p className="flex flex-col gap-0.5">
                         <span className="font-semibold">
                             {error.title}
                         </span>
-                        <span className="text-[15px] text-[#505050]">
+                        <span className="md:text-[13px] lg:text-[15px] text-[#505050]">
                             {`Вы уже конвертировали ${error.from} ${error.fromU} в ${error.to} ${error.toU}.`}
                             <br />
                             Попробуйте изменить значения или выберите другие единицы измерения.
@@ -242,14 +316,14 @@ function Unit_Converter () {
 
             {/* Категории */}
             <div className="flex flex-col gap-4">
-                <p className="text-[18px] font-bold">Категории</p>
-                <div className="flex flex-wrap gap-4">
+                <p className="md:text-[16px] lg:text-[18px] font-bold">Категории</p>
+                <div className="grid grid-cols-2 md:grid-rows-2 md:grid-flow-col md:auto-cols-fr lg:flex lg:flex-wrap gap-4">
                     {categories.map(obj => (
                         <div
                             key={obj.title} 
                             onClick={() => handleCategoryChange(obj.title as CategoryName)}
                             className={`
-                                relative flex flex-1 basis-35 px-8 py-5.5 gap-2 rounded-[10px] text-[16px] font-medium justify-center items-center 
+                                relative flex w-full md:flex-1 px-8 py-5.5 gap-2 rounded-[10px] md:text-[14px] lg:text-[16px] font-medium justify-center items-center 
                                 transition select-none cursor-pointer
                                 ${obj.title === activeCategory 
                                     ? "outline-indigo-400 outline-2 gradient-btn-purple shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
@@ -271,16 +345,16 @@ function Unit_Converter () {
 
         {/* Блок с популярными преобразованиями */}
         <div className="flex flex-col mb-13 gap-4.5">
-            <p className="text-[18px] font-bold">Популярные преобразования</p>
+            <p className="md:text-[16px] lg:text-[18px] font-bold">Популярные преобразования</p>
             <div 
-                className="flex flex-wrap font-medium gap-4.5"
+                className="flex w-full py-3 pl-1 lg:pl-0 lg:py-0 overflow-x-auto lg:overflow-visible lg:flex-wrap font-medium gap-4.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 draggable = "false"
             >
                 {popular_conversions.map( obj => (
                     <div 
                         key={obj.title}
                         className={`
-                            flex flex-1 gap-2 px-4 py-3 bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
+                            flex flex-1 gap-2 px-4 py-3 md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
                             transition hover:-translate-y-2.5 active:translate-y-0 active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)] 
                             justify-center items-center cursor-pointer
                         `}
@@ -308,12 +382,12 @@ function Unit_Converter () {
                         ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
                         `}
                     >
-                    <p className="flex gap-2.5 text-[18px] font-bold select-none">
-                        <img src={recent} alt="img" className="h-6 w-6" />
+                    <p className="flex items-center gap-2.5 md:text-[16px] lg:text-[18px] font-bold select-none">
+                        <img src={recent} alt="img" className="md:h-5.5 md:w-5.5 lg:h-6 lg:w-6" />
                         <span>Недавние конверсии</span>
                     </p>
                     <Delete 
-                    className="text-[#777777] cursor-pointer transition hover:text-[#E84545] active:text-[#9A1F1F]" 
+                    className="md:h-5.5 md:w-5.5 lg:h-6 lg:w-6 text-[#777777] hover:text-[#E84545] active:text-[#9A1F1F] cursor-pointer transition" 
                     onClick={() => handleDataClear()}
                     />
                 </div>
@@ -328,13 +402,13 @@ function Unit_Converter () {
                     : data.map((obj, i) => (
                         <div
                             key={obj.id}
-                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                            className={`flex w-full justify-between items-center py-4 px-3.5 md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
                         >
-                            <div className="flex items-center gap-2.5 font-medium">
-                                <img src={checkbox} alt="img" className="h-6 w-6" />
+                            <div className="flex items-center md:gap-2 lg:gap-2.5 font-medium">
+                                <img src={checkbox} alt="img" className="md:h-5 md:w-5 lg:h-6 lg:w-6" />
                                 <span>{obj.title}</span>
                             </div>
-                            <span className="text-[#777777]/80 text-[16px] font-medium">{obj.time}</span>
+                            <span className="text-[#777777]/80 md:text-[14px] lg:text-[16px] font-medium">{obj.time}</span>
                         </div>
                     ))}
                 </div>
