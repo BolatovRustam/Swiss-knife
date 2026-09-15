@@ -126,12 +126,12 @@ function Unit_Converter () {
     <div className="flex h-full max-h-full overflow-y-auto flex-col pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
 
         {/* Верхняя часть */}
-        <div className="flex flex-col mb-8 px-8 py-7 gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+        <div className="flex flex-col mb-8 px-8 py-7 gap-7.5 lg:gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
 
         {/* Мобильная/планшетная версия — вертикальная, eraser+swap сверху, круглая кнопка посередине */}
-            <div className="flex flex-col lg:hidden gap-4">
+            <div className="flex flex-col lg:hidden gap-3">
                 <div className="flex justify-between items-center">
-                    <p className="text-base md:text-[16px] font-semibold">Из</p>
+                    <p className="text-[14px] md:text-[16px] font-semibold">Из</p>
                     <div className="flex gap-2 md:gap-3">
                         <button 
                             className="p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
@@ -166,9 +166,9 @@ function Unit_Converter () {
                         value={units.find(u => u.value === fromUnit)!}
                         onChange={val => setFromUnit(val)}
                         options={units}
-                        buttonClassName="flex justify-between items-center gap-2 font-medium text-sm md:text-[14px] cursor-pointer outline-none shrink-0"
+                        buttonClassName="flex justify-between items-center gap-2 font-medium text-[12px] md:text-[14px] cursor-pointer outline-none shrink-0"
                         menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
-                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-sm md:text-[14px] hover:text-white cursor-pointer"
+                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-[12px] md:text-[14px] hover:text-white cursor-pointer"
                     /> 
                 </div>
 
@@ -181,7 +181,7 @@ function Unit_Converter () {
                     </button>
                 </div>
 
-                <p className="text-base md:text-[16px] font-semibold">В</p>
+                <p className="text-[14px] md:text-[16px] font-semibold">В</p>
 
                 <div className="flex items-center h-16 md:h-20 px-3 md:px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40">
                     <input 
@@ -195,9 +195,9 @@ function Unit_Converter () {
                         value={units.find(u => u.value === toUnit)!}
                         onChange={val => setToUnit(val)}
                         options={units}
-                        buttonClassName="flex justify-between items-center gap-2 font-medium text-sm md:text-[14px] cursor-pointer outline-none shrink-0"
+                        buttonClassName="flex justify-between items-center gap-2 font-medium text-[12px] md:text-[14px] cursor-pointer outline-none shrink-0"
                         menuClassName="absolute whitespace-nowrap top-7.5 bg-white outline outline-grey-50"
-                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-sm md:text-[14px] hover:text-white cursor-pointer"
+                        optionClassName="pl-[6px] pr-[14px] hover:bg-[#767676] text-[12px] md:text-[14px] hover:text-white cursor-pointer"
                     /> 
                 </div>
             </div>
@@ -294,8 +294,8 @@ function Unit_Converter () {
             {/* Информация */}
             
             { !error ? ( 
-                <div className="flex h-18 md:text-[14px] lg:text-[16px] px-4 gap-4 items-center bg-[#F1F2FB] rounded-2xl">
-                    <Info className="text-[#5885EA]"/>
+                <div className="flex h-13 md:h-16 lg:h-18 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-2 md:gap-3 lg:gap-4 items-center bg-[#F1F2FB] rounded-xl md:rounded-2xl">
+                    <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6 text-[#5885EA]"/>
                     <span>{infoText}</span>
                 </div> ) : (
                 <div className="flex py-4 md:text-[14px] lg:text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
@@ -316,14 +316,14 @@ function Unit_Converter () {
 
             {/* Категории */}
             <div className="flex flex-col gap-4">
-                <p className="md:text-[16px] lg:text-[18px] font-bold">Категории</p>
+                <p className="text-[14px] md:text-[16px] lg:text-[18px] font-bold">Категории</p>
                 <div className="grid grid-cols-2 md:grid-rows-2 md:grid-flow-col md:auto-cols-fr lg:flex lg:flex-wrap gap-4">
                     {categories.map(obj => (
                         <div
                             key={obj.title} 
                             onClick={() => handleCategoryChange(obj.title as CategoryName)}
                             className={`
-                                relative flex w-full md:flex-1 px-8 py-5.5 gap-2 rounded-[10px] md:text-[14px] lg:text-[16px] font-medium justify-center items-center 
+                                relative flex w-full md:flex-1 py-3.5 md:py-4.5 lg:px-8 lg:py-5.5 gap-2 rounded-[10px] text-[12px] md:text-[14px] lg:text-[16px] font-medium justify-center items-center 
                                 transition select-none cursor-pointer
                                 ${obj.title === activeCategory 
                                     ? "outline-indigo-400 outline-2 gradient-btn-purple shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]" 
@@ -332,7 +332,7 @@ function Unit_Converter () {
                             <img 
                                 src={obj.img} 
                                 alt="img" 
-                                className="relative z-10 w-7.5 h-7.5"
+                                className="relative z-10 w-4.5 h-4.5 md:w-6 md:h-6 lg:w-7.5 lg:h-7.5"
                                 draggable="false"
                             />
                             <p className="relative z-10 whitespace-nowrap select-none">{obj.title}</p>
@@ -344,17 +344,17 @@ function Unit_Converter () {
         </div>
 
         {/* Блок с популярными преобразованиями */}
-        <div className="flex flex-col mb-13 gap-4.5">
-            <p className="md:text-[16px] lg:text-[18px] font-bold">Популярные преобразования</p>
+        <div className="flex flex-col mb-10 md:mb-13 gap-1.5 md:gap-2 lg:gap-4.5">
+            <p className="text-[14px] md:text-[16px] lg:text-[18px] font-bold">Популярные преобразования</p>
             <div 
-                className="flex w-full py-3 pl-1 lg:pl-0 lg:py-0 overflow-x-auto lg:overflow-visible lg:flex-wrap font-medium gap-4.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                className="flex py-3 px-1 lg:pl-0 lg:py-0 overflow-x-auto lg:overflow-visible lg:flex-wrap font-medium gap-3.5 md:gap-4.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 draggable = "false"
             >
                 {popular_conversions.map( obj => (
                     <div 
                         key={obj.title}
                         className={`
-                            flex flex-1 gap-2 px-4 py-3 md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
+                            flex flex-1 gap-2 px-4 py-2.5 md:px-4 md:py-2.5 lg:px-4 lg:py-3 text-[12px] md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] group shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
                             transition hover:-translate-y-2.5 active:translate-y-0 active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)] 
                             justify-center items-center cursor-pointer
                         `}
@@ -362,10 +362,10 @@ function Unit_Converter () {
                         draggable = "false"
                     >
                         <div 
-                            className="flex items-center justify-center h-10 w-10 rounded-4xl bg-[#ECECFD] group-active:bg-transparent group-active:transition"
+                            className="flex items-center justify-center h-6.5 w-6.5 md:h-8 md:w-8 lg:h-10 lg:w-10 rounded-4xl bg-[#ECECFD] group-active:bg-transparent group-active:transition"
                             draggable = "false"
                         >
-                            <img src={obj.img} alt="img" className="select-none" draggable="false" />
+                            <img src={obj.img} alt="img" className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 select-none" draggable="false" />
                         </div>
                         <p className="whitespace-nowrap select-none">{obj.title}</p>
                     </div>
@@ -382,12 +382,12 @@ function Unit_Converter () {
                         ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
                         `}
                     >
-                    <p className="flex items-center gap-2.5 md:text-[16px] lg:text-[18px] font-bold select-none">
-                        <img src={recent} alt="img" className="md:h-5.5 md:w-5.5 lg:h-6 lg:w-6" />
+                    <p className="flex items-center gap-2 md:gap-2.5 text-[14px] md:text-[16px] lg:text-[18px] font-bold select-none">
+                        <img src={recent} alt="img" className="h-5 w-5 md:h-5.5 md:w-5.5 lg:h-6 lg:w-6" />
                         <span>Недавние конверсии</span>
                     </p>
                     <Delete 
-                    className="md:h-5.5 md:w-5.5 lg:h-6 lg:w-6 text-[#777777] hover:text-[#E84545] active:text-[#9A1F1F] cursor-pointer transition" 
+                    className="h-5 w-5 md:h-5.5 md:w-5.5 lg:h-6 lg:w-6 text-[#777777] hover:text-[#E84545] active:text-[#9A1F1F] cursor-pointer transition" 
                     onClick={() => handleDataClear()}
                     />
                 </div>
@@ -402,13 +402,13 @@ function Unit_Converter () {
                     : data.map((obj, i) => (
                         <div
                             key={obj.id}
-                            className={`flex w-full justify-between items-center py-4 px-3.5 md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[12px] md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
                         >
-                            <div className="flex items-center md:gap-2 lg:gap-2.5 font-medium">
-                                <img src={checkbox} alt="img" className="md:h-5 md:w-5 lg:h-6 lg:w-6" />
+                            <div className="flex items-center gap-1.5 md:gap-2 lg:gap-2.5 font-medium">
+                                <img src={checkbox} alt="img" className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
                                 <span>{obj.title}</span>
                             </div>
-                            <span className="text-[#777777]/80 md:text-[14px] lg:text-[16px] font-medium">{obj.time}</span>
+                            <span className="text-[#777777]/80 text-[12px] md:text-[14px] lg:text-[16px] font-medium">{obj.time}</span>
                         </div>
                     ))}
                 </div>
