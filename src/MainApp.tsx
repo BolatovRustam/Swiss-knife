@@ -48,6 +48,8 @@ function MainApp() {
 
   return (
     <div className="flex h-screen">
+
+      {/* Затемнение — только мобилка/планшет */}
       { isMenuOpen && (
         <div 
           className="fixed inset-0 bg-black/40 z-40 hidden md:block lg:hidden" 
@@ -55,7 +57,7 @@ function MainApp() {
         />
       )}
 
-
+      {/* Сайдбар — ОДИН элемент, но ведёт себя по-разному через классы */}
       <aside 
         className={`
           fixed lg:static inset-y-0 left-0 z-50 
@@ -77,7 +79,6 @@ function MainApp() {
               />
           </button>
         </div>
-
         <div>
           {tools.map(el => (
             <div
@@ -96,8 +97,10 @@ function MainApp() {
         </div>
       </aside>  
 
+
       <main className="flex-1 flex flex-col overflow-hidden">
         
+        {/* Мобильный хедер */}
         <div className="flex lg:hidden items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-4 py-3">
           <button
             className="shrink-0 text-black hover:text-[#4D4E51] active:scale-90 transition-all duration-150 cursor-pointer"
@@ -123,8 +126,9 @@ function MainApp() {
           </button>
         </div>
 
-
-        <div className="hidden lg:flex items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
+      
+        {/* Десктопный хедер */}
+        <div className=" hidden lg:flex items-center justify-between border-b-2 border-[#777777] bg-[#F4F4F4] px-7 py-4">
           <h2 className="text-2xl font-semibold">{activeTool?.label}</h2>
           <div className="flex items-center gap-4.5 font-medium">
             <p>Добро пожаловать {session?.user?.user_metadata?.name}!</p>
@@ -148,6 +152,8 @@ function MainApp() {
           </div>
         </div>
 
+
+      {/* Контент  */}
         <div className="flex-1 overflow-hidden">
           {activeTool?.component}
         </div>

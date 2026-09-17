@@ -161,4 +161,9 @@
   animation: select-menu-out 0.3s ease-in forwards;
 }
 
+/* html, body {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+} */
 

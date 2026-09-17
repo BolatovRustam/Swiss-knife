@@ -20,20 +20,20 @@ interface Error {
 
 const renderButton = (opt: Option) => (
     <div className="flex items-center gap-3">
-        <img src={opt.img} alt={opt.value} className="w-9 h-9 rounded-full object-cover shrink-0" />
+        <img src={opt.img} alt={opt.value} className="w-6 h-6 md:w-7.5 md:h-7.5 lg:w-9 lg:h-9 rounded-full object-cover shrink-0" />
         <div className="flex flex-col items-start">
-            <span className="text-[20px] font-semibold">{opt.value}</span>
-            <span className="text-[13px] text-gray-400">{opt.label}</span>
+            <span className="text-[16px] md:text-[18px] lg:text-[20px] font-semibold">{opt.value}</span>
+            <span className="text-[9px] md:text-[11px] lg:text-[13px] text-gray-400">{opt.label}</span>
         </div>
     </div>
 )
 
 const renderOption = (opt: Option) => (
     <div className="flex items-center gap-3">
-        <img src={opt.img} alt={opt.value} className="w-7 h-7 rounded-full object-cover shrink-0" />
+        <img src={opt.img} alt={opt.value} className="w-4.5 h-4.5 md:w-6.5 md:h-6.5 lg:w-7 lg:h-7 rounded-full object-cover shrink-0" />
         <div className="flex flex-col">
-            <span className="text-[16px] font-semibold">{opt.value}</span>
-            <span className="text-[12px] text-gray-400">{opt.label}</span>
+            <span className="text-[12px] md:text-[14px] lg:text-[16px] font-semibold">{opt.value}</span>
+            <span className="text-[8px] md:text-[10px] lg:text-[12px] text-gray-400">{opt.label}</span>
         </div>
     </div>
 )
@@ -161,13 +161,106 @@ function Currency_Converter () {
 
     return (
 
-        <div className="flex max-h-full overflow-y-auto flex-col pt-12.5 pb-11 px-6.5 md:px-12 lg:px-12 xl:px-21.5 gap-8"> 
+        <div className="flex max-h-full overflow-y-auto flex-col pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
 
             {/* Верхняя часть */}
-            <div className="flex flex-col px-8 py-7 gap-6.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+            <div className="flex flex-col mb-8 px-8 py-7 gap-7.5 lg:gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
             
-                {/* Инпуты и кнопка */}
-                <div className="flex items-end">
+                {/* Мобильная/планшетная версия — вертикальная, eraser+swap сверху, круглая кнопка посередине */}
+                <div className="flex flex-col lg:hidden gap-4">
+
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-end justify-between">
+                            <p className="text-[14px] md:text-[16px] font-semibold">Из</p>
+
+                            <div className="flex gap-2">
+                                <button 
+                                    className="p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                    onClick={() => handleClearInput()}
+                                >
+                                    <img src={eraser} alt="img" className="w-4 h-4 md:w-5 md:h-5" />
+                                </button>
+                                <button 
+                                    className="p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                    onClick={() => handleSwap()}
+                                >
+                                    <img src={change} alt="img" className="w-4 h-4 md:w-5 md:h-5" />
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div className="flex flex-col gap-3">
+                            <input 
+                                type="number" 
+                                value={inputValue}
+                                placeholder="Введите значение" 
+                                className={`
+                                    flex items-center w-full h-16 md:h-20 px-3 md:px-4 bg-white/10 rounded-2xl outline-[1.5px] 
+                                    outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 
+                                    focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]
+                                    text-lg md:text-[22px] font-semibold placeholder:font-medium placeholder:text-sm md:placeholder:text-base
+                                    `}  
+                                onChange={e => {
+                                    if (e.target.value.length <= 20) {
+                                        setInputValue(e.target.value)
+                                        setError(null)
+                                    }
+                                }}
+                                onKeyDown={(e) => e.key === "Enter" && handleClick()}
+                            />
+
+                            <Select
+                                value={fromCurrency}
+                                onChange={(val) => setFromCurrency(val as Currency)}
+                                options={currencies}
+                                renderButton={renderButton}
+                                renderOption={renderOption}
+                                buttonClassName="w-full h-16 md:h-20 rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex justify-center mt-3">
+                        <button 
+                            className={`
+                                h-10 w-10 md:h-11 md:w-11 p-2 bg-white hover:bg-[#F9F9F9] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 active:bg-white active:outline-2 active:outline-indigo-400 transition duration-200 ease-in-out flex justify-center items-center cursor-pointer`}
+                            onClick={() => handleClick()}
+                        >
+                            <img src={button} alt="img" className="w-5 h-5 md:w-6 md:h-6"/>
+                        </button>
+                    </div>
+
+
+                    <div className="flex flex-col gap-3"> 
+                        <p className="flex text-[14px] md:text-[16px] font-semibold">В</p>
+
+                        <div className="flex flex-col gap-3">
+                            <input 
+                                type="text"
+                                value={result} 
+                                placeholder="Результат" 
+                                className={`
+                                    flex items-center w-full h-16 md:h-20 px-3 md:px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40
+                                    text-lg md:text-[22px] font-semibold placeholder:font-medium placeholder:text-sm md:placeholder:text-base
+                                    `}
+                                readOnly
+                            />
+
+                            <Select
+                                value={toCurrency}
+                                onChange={ (val) => setToCurrency(val as Currency)}
+                                options={currencies}
+                                renderButton={renderButton}
+                                renderOption={renderOption}
+                                buttonClassName="w-full h-16 md:h-20 rounded-2xl shadow-none outline-[1.5px] outline-neutral-500/40"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+
+                {/* Десктопная версия — горизонтальная, инпуты и кнопка */}
+                <div className="hidden lg:flex flex-row  items-end">
 
                     {/* Из */}
                     <div className="flex flex-1 flex-col gap-6.5">
@@ -178,7 +271,7 @@ function Currency_Converter () {
                                 value={inputValue}
                                 placeholder="Введите значение" 
                                 className={`
-                                    flex items-center h-[90px] px-4 bg-white/10 rounded-2xl outline-[1.5px] 
+                                    flex items-center w-full h-[90px] px-4 bg-white/10 rounded-2xl outline-[1.5px] 
                                     outline-neutral-500/40 focus-within:outline-2 transition focus-within:outline-indigo-400 
                                     focus-within:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]
                                     text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]
@@ -243,7 +336,7 @@ function Currency_Converter () {
                                 value={result} 
                                 placeholder="Результат" 
                                 className={`
-                                    flex items-center h-[90px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40
+                                    flex items-center w-full h-[90px] px-4 bg-gray-200/50 rounded-2xl outline-[1.5px] outline-neutral-500/40
                                     text-[26px] font-semibold placeholder:font-medium placeholder:text-[20px]
                                     `}
                                 readOnly
@@ -265,18 +358,18 @@ function Currency_Converter () {
                 {/* Информация */}
 
                 { !error ? (
-                    <p className="flex gap-3 font-medium">
-                        <Info />
+                    <p className="flex gap-3 text-[12px] md:text-[14px] lg:text-[16px] font-medium">
+                        <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6" />
                         <span>{loading ? "Загрузка..." : infoText }</span>
                     </p>
                 ) : (
-                    <div className="flex py-4 text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                    <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
                         <Info className="text-[#FF5E5E] mt-2"/>
                         <p className="flex flex-col gap-0.5">
                             <span className="font-semibold">
                                 {error.title}
                             </span>
-                            <span className="text-[15px] text-[#505050]">
+                            <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
                                 {`Вы уже конвертировали ${error.from} ${error.fromV} в ${error.to} ${error.toV}.`}
                                 <br />
                                 Попробуйте изменить сумму или выбрать другие валюты.
@@ -291,9 +384,9 @@ function Currency_Converter () {
             </div>
 
             {/* Блок с популярными преобразованиями */}
-            <div className="flex mb-5 flex-col gap-4.5">
-                <p className="text-[18px] font-bold">Популярные пары</p>
-                <div className="flex gap-4">
+            <div className="flex flex-col mb-9 md:mb-12 lg:mb-13 gap-1.5 md:gap-2 lg:gap-4.5">
+                <p className="text-[14px] md:text-[16px] lg:text-[18px] font-bold">Популярные пары</p>
+                <div className="flex lg:flex-wrap py-3 px-1 lg:px-0 lg:py-0 gap-4 overflow-x-auto lg:overflow-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {popular_conversions.map( obj => {  
                         const from = currencies.find(c => c.value === obj.from)
                         const to = currencies.find(c => c.value === obj.to)
@@ -302,7 +395,7 @@ function Currency_Converter () {
                             <div 
                                 key={`${obj.from}-${obj.to}`}
                                 className={`
-                                    flex w-full px-4 py-5.5 gap-2 bg-white/40 rounded-[10px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
+                                    flex flex-1 gap-2 px-4 py-4.5 md:px-4 md:py-4.5 lg:px-4 lg:py-5.5 text-[12px] md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
                                     transition hover:-translate-y-2.5 active:translate-y-0 font-medium 
                                     active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]
                                     justify-center items-center cursor-pointer
@@ -311,9 +404,9 @@ function Currency_Converter () {
                                     if (from && to) handlePopular(from, to)
                                 }}
                                 >
-                                <div className="flex gap-2">
-                                    <img src={from?.img} alt="img" className="h-6 w-6" />
-                                    <img src={to?.img} alt="img" className="h-6 w-6" />
+                                <div className="flex gap-1.5 md:gap-2">
+                                    <img src={from?.img} alt="img" className="w-4.5 h-4.5 md:w-5.5 md:h-5.5 lg:w-6 lg:h-6 select-none  shrink-0" />
+                                    <img src={to?.img} alt="img" className="w-4.5 h-4.5 md:w-5.5 md:h-5.5 lg:w-6 lg:h-6 select-none  shrink-0" />
                                 </div>
                                 <p className="whitespace-nowrap select-none">{`${obj.from}/${obj.to}`}</p>
                             </div>
@@ -323,19 +416,19 @@ function Currency_Converter () {
 
 
             {/* История конверсии */}
-            <div className="flex  flex-col px-8 pt-3 pb-1 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
+            <div className="flex flex-col px-6 md:px-8 pt-3 pb-2 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
                 <div 
                     className={`
                         flex w-full py-4 px-3.5 justify-between items-start 
                         ${ data.length > 0 ? "border-b border-[#777777]/40" : "" }
                         `}
                     >
-                    <p className="flex gap-2.5 text-[18px] font-bold select-none">
-                        <img src={recent} alt="img" className="h-6 w-6" />
+                    <p className="flex items-center gap-2 md:gap-2.5 text-[14px] md:text-[16px] lg:text-[18px] font-bold select-none">
+                        <img src={recent} alt="img" className="h-5 w-5 md:h-5.5 md:w-5.5 lg:h-6 lg:w-6" />
                         <span>Недавние конверсии</span>
                     </p>
                     <Delete 
-                    className="text-[#777777] cursor-pointer transition hover:text-[#E84545] active:text-[#9A1F1F]" 
+                    className="h-5 w-5 md:h-5.5 md:w-5.5 lg:h-6 lg:w-6 text-[#777777] cursor-pointer transition hover:text-[#E84545] active:text-[#9A1F1F]" 
                     onClick={() => handleDataClear()}
                     />
                 </div>
@@ -350,17 +443,17 @@ function Currency_Converter () {
                     : data.map((obj, i) => (
                         <div
                             key={obj.id}
-                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[12px] md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
                         >
                             <div className="flex gap-2.5 font-medium">
-                                <div className="w-2 h-2 mt-2 rounded-full bg-[#C4C4C4]"></div>
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 mt-2 rounded-full bg-[#C4C4C4]"></div>
                                 <p className="flex flex-col gap-2">
-                                    <span>{obj.title}</span>
+                                    <span className="max-w-22 md:max-w-none">{obj.title}</span>
                                     <span className="text-[#919191]">{obj.time}</span>
                                 </p>
 
                             </div>
-                            <span className="text-black text-[16px] font-medium">{obj.info_text}</span>
+                            <span className="text-black text-[12px] md:text-[14px] lg:text-[16px] font-medium">{obj.info_text}</span>
                         </div>
                     ))}
                 </div>

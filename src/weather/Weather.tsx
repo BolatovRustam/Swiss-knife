@@ -108,10 +108,10 @@ function Weather () {
     }
 
     return(
-        <div className="flex flex-col h-full overflow-auto items-end pt-12.5 pb-3.5 px-21.5">
+        <div className="flex flex-col h-full overflow-auto items-end pt-12.5 pb-3.5 px-6.5 md:px-12 xl:px-21.5">
 
             
-            <div ref={wrapperRef} className="relative flex w-1/3 items-center gap-4">
+            <div ref={wrapperRef} className="relative flex w-full lg:w-1/3 items-center gap-4">
                 <div className="flex items-center w-full gap-2 py-2.5 px-3.5 bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
                     <LocationOutline/>
 
@@ -174,29 +174,28 @@ function Weather () {
                     ) : (
                         
                 /* Погода на текущий день с показателями */
-                <div className="w-full flex justify-between items-center px-10 py-9 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+                <div className="flex flex-col lg:flex-row between items-center  xl:flex-nowrap w-full lg:gap-28 xl:gap-44  lg:px-9 xl:px-10 py-9 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
 
                     {/* Сама погода */}
-                    <div className="flex flex-col gap-8">
+                    <div className="flex flex-col md:flex-row lg:flex-col gap-8">
                         <div className="flex gap-3.5">
                             {   
                                 weather && 
                                 <img 
                                     src={ iconMap[weather.weather[0].icon] } 
                                     alt={ weather.weather[0].description }
-                                    width={120}
-                                    height={120} 
+                                    className="w-20 h-20 md:w-24 md:h-24 xl:w-30 xl:h-30"
                                 />
                             }
 
                             <p className="flex flex-col">
-                                <span className="text-[50px] font-semibold ">
+                                <span className="lg:text-[40px] xl:text-[50px] font-semibold ">
                                     {weather 
                                         ? `${ weather?.main.temp > 0 ? "+" : "-"  }${Math.floor(weather?.main.temp)}°`
                                         : ""
                                     }
                                 </span>
-                                <span className="text-[20px] font-medium">
+                                <span className="text-[18px] lg:text-[20px] font-medium">
 
                                     { weather?.weather[0].description
                                         .split("")
@@ -210,7 +209,7 @@ function Weather () {
                             {
                                 weather && selectedCity && (
                                     <button 
-                                        className="self-start shrink-0 p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                        className="self-start shrink-0 p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
                                         onClick={  () => {
                                                             const fav = favorites.find(el => el.city === weather.name)
                                                                 if ( fav ) removeFavorite( fav.id )   
@@ -222,7 +221,7 @@ function Weather () {
                                         <img 
                                             src={ starFav ? starFill : star} 
                                             alt="img" 
-
+                                            
                                         />
                                     </button>
                                 )
@@ -236,8 +235,8 @@ function Weather () {
                             <LocationFill className="w-6 h-6"/>        
                             
                             <p className="flex flex-col">
-                                <span className="font-medium text-[18px]">{ `${weather?.name}, ${ weather?.sys.country} `  }</span>
-                                <span className="font-medium text-[16px] text-[#919191] ">{ weather && new Date(weather.dt * 1000).toLocaleDateString('ru-RU', {
+                                <span className="font-medium lg:text-[16px] xl:text-[18px]">{ `${weather?.name}, ${ weather?.sys.country} `  }</span>
+                                <span className="font-medium lg:text-[14px] xl:text-[16px] text-[#919191] ">{ weather && new Date(weather.dt * 1000).toLocaleDateString('ru-RU', {
                                                                                                             weekday: 'long',
                                                                                                             day: 'numeric',
                                                                                                             month: 'long',
@@ -251,16 +250,15 @@ function Weather () {
                     </div>
 
                     {/* Данные о погоде */}
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-1  flex-col gap-5">
 
                         <div className="flex gap-4">
                         { weather_data.up.map(el => (
-                            <div key={el.title} className="flex  gap-2.5 p-2.5 w-[220px] bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
+                            <div key={el.title} className="flex flex-wrap gap-2.5 p-2.5 flex-1 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
                                 <img 
                                     src={el.icon} 
                                     alt="icon"
-                                    width={44}
-                                    height={44} 
+                                    className="w-8 h-8 md:w-9 md:h-9  xl:w-11 xl:h-11"
                                 />
 
                                 <p className="flex flex-col gap-1">
@@ -273,12 +271,11 @@ function Weather () {
 
                         <div className="flex gap-4">
                         { weather_data.down.map(el => (
-                            <div key={el.title} className="flex gap-2.5 w-full p-2.5 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
+                            <div key={el.title} className="flex flex-wrap gap-2.5 flex-1 p-2.5 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
                                 <img 
                                     src={el.icon} 
                                     alt="icon"
-                                    width={44}
-                                    height={44} 
+                                    className="w-8 h-8 md:w-9 md:h-9  xl:w-11 xl:h-11"
                                 />
 
                                 <p className="flex flex-col gap-1">
@@ -299,10 +296,13 @@ function Weather () {
                     {weather ? (
                         <p className="font-medium">Почасовой прогноз</p>
                     ) : "" }
-                    <div className="flex-1 flex w-full justify-between">
+                    <div className="flex w-full gap-3 lg:flex-wrap overflow-x-auto lg:overflow-visible py-1.5 px-1 lg:px-0 lg:py-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             {
                                 hours.map((el, i) => (
-                                    <div className="flex flex-col px-10 py-2.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" key={i}>
+                                    <div 
+                                        className="flex flex-1 flex-col items-center px-10 py-2.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" 
+                                        key={i}
+                                    >
                                         <p className="font-medium text-center text-[14px]">{el.dt_txt.slice(11, 16)}</p>
                                         <img 
                                             src={iconMap[el.weather[0].icon]} 
@@ -342,32 +342,39 @@ function Weather () {
                         <p className="font-medium">Прогноз на 5 дней</p>
                     ) : "" }
 
-                    <div className="flex flex-2 w-full gap-4.5">
+                    <div className="flex flex-2 flex-col lg:flex-row gap-4.5 lg:flex-wrap w-full">
                             {
                                 days.map( (el, i) => (
-                                    <div className="flex-1 flex flex-col items-center px-4 pt-2 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" key={i}>
+                                    <div className="flex-1 flex flex-row lg:flex-col justify-between items-center px-5.5 lg:px-4 pt-2 lg:gap-0 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" key={i}>
 
-                                        <div className="flex flex-col gap-0.5 pb-2 items-center border-b-1 border-[#777777]/20 w-full">
-                                            <p className="font-medium">
-                                                {new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).at(0)?.toUpperCase() + new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).slice(1)}
-                                            </p>
-                                            <p className="font-medium text-[#9797A0] text-[14px]">{new Date(el.date).toLocaleDateString('ru-RU', { day: "numeric", month: "long" }) }</p>
+                                        <div className="flex flex-row w-full items-center justify-between border-[#777777]/20 lg:contents">
 
+                                        <div className=" lg:flex lg:flex-col lg:items-center lg:w-full lg:gap-0.5 lg:pb-2  lg:border-b-1 lg:border-[#777777]/20 contents">
 
-                                            <img 
-                                                src={iconMap[el.icon]} 
-                                                alt={iconMap[el.description]} 
-                                                width={90}
-                                                height={90} 
-                                            />
+                                            <div className="flex flex-col lg:contents">
+                                                <p className="font-medium">
+                                                    {new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).at(0)?.toUpperCase() + new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).slice(1)}
+                                                </p>
+                                                <p className="font-medium text-[#9797A0] text-[14px]">{new Date(el.date).toLocaleDateString('ru-RU', { day: "numeric", month: "long" }) }</p>
+                                            </div>
+
+                                            <div className="flex items-center gap-2 lg:contents">
+                                                <img 
+                                                    src={iconMap[el.icon]} 
+                                                    alt={iconMap[el.description]} 
+                                                    width={90}
+                                                    height={90} 
+                                                />
                                             
-                                            <p className="flex gap-1 flex-col items-center">
-                                                <span className="font-semibold">{ `${el.temp > 0 ? "+" : ""}${el.min}° / ${el.max}°` }</span>
-                                                <span className="text-[#9797A0] font-medium">{el.description}</span>
-                                            </p>
+                                                <p className="flex gap-1 flex-col items-center">
+                                                    <span className="font-semibold">{ `${el.temp > 0 ? "+" : ""}${el.min}° / ${el.max}°` }</span>
+                                                    <span className="hidden lg:inline text-[#9797A0] font-medium">{el.description}</span>
+                                                </p>
+                                            </div>
+
                                         </div>
 
-                                        <div className="flex gap-11.5 py-2 ">
+                                        <div className="flex gap-4 lg:gap-11.5 py-2 ">
                                             <p className="flex gap-1.5 items-center">
                                                 <img 
                                                     src={humidity2} 
@@ -387,6 +394,7 @@ function Weather () {
                                                 />
                                                 <span className="text-[#9797A0] font-medium">{`${Math.floor(el.windy)} км/ч`}</span>
                                             </p>
+                                        </div>
                                         </div>
                                     </div>
                                 ))

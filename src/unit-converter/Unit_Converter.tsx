@@ -12,10 +12,10 @@ import Dropdown from "@/components/Dropdown"
 
 interface Error {
     title: string
-    from: string
-    fromU: string
-    to: string
-    toU: string
+    from?: string
+    fromU?: string
+    to?: string
+    toU?: string
 }
 
 
@@ -56,6 +56,12 @@ function Unit_Converter () {
                         toU: toUnit,
              })
             return
+        }
+
+        if (inputValue === "") {
+            setError({
+                title:"Введите значение"
+            })
         }
 
         setError(null)
@@ -118,19 +124,19 @@ function Unit_Converter () {
 
         const rate = convertor(1, f.value, t.value, activeCategory)
 
-        return `1 ${f.label} = ${parseFloat(rate.toPrecision(6))} ${t.label}`
+        return `1 ${f.label.toLowerCase()} = ${parseFloat(rate.toPrecision(6))} ${t.label.toLowerCase()}`
     }, [fromUnit, toUnit, activeCategory, units])
     
 
     return (
-    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 lg:px-12 xl:px-21.5"> 
+    <div className="flex h-full max-h-full overflow-y-auto flex-col pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 xl:px-21.5"> 
 
         {/* Верхняя часть */}
         <div className="flex flex-col mb-8 px-8 py-7 gap-7.5 lg:gap-8.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
 
         {/* Мобильная/планшетная версия — вертикальная, eraser+swap сверху, круглая кнопка посередине */}
             <div className="flex flex-col lg:hidden gap-3">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-end">
                     <p className="text-[14px] md:text-[16px] font-semibold">Из</p>
                     <div className="flex gap-2 md:gap-3">
                         <button 
@@ -202,7 +208,7 @@ function Unit_Converter () {
                 </div>
             </div>
             
-            {/* Инпуты и кнопка */} {/* Десктопная версия — горизонтальная, как было изначально */}
+            {/*Десктопная версия — горизонтальная, инпуты и кнопка */}
             <div className="hidden lg:flex flex-row  items-end">
 
                 {/* Из */}
@@ -294,23 +300,23 @@ function Unit_Converter () {
             {/* Информация */}
             
             { !error ? ( 
-                <div className="flex h-13 md:h-16 lg:h-18 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-2 md:gap-3 lg:gap-4 items-center bg-[#F1F2FB] rounded-xl md:rounded-2xl">
+                <div className="flex items-center h-13 md:h-16 lg:h-18 px-4 gap-2 md:gap-3 lg:gap-4 text-[12px] md:text-[14px] lg:text-[16px] bg-[#F1F2FB] rounded-xl md:rounded-2xl">
                     <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6 text-[#5885EA]"/>
                     <span>{infoText}</span>
                 </div> ) : (
-                <div className="flex py-4 md:text-[14px] lg:text-[16px] px-4 gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
                     <Info className="text-[#FF5E5E] mt-2"/>
                     <p className="flex flex-col gap-0.5">
                         <span className="font-semibold">
                             {error.title}
                         </span>
-                        <span className="md:text-[13px] lg:text-[15px] text-[#505050]">
+                        <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
                             {`Вы уже конвертировали ${error.from} ${error.fromU} в ${error.to} ${error.toU}.`}
                             <br />
                             Попробуйте изменить значения или выберите другие единицы измерения.
                         </span>
                     </p>
-                </div>
+                </div> 
             )}
             
 
@@ -344,10 +350,10 @@ function Unit_Converter () {
         </div>
 
         {/* Блок с популярными преобразованиями */}
-        <div className="flex flex-col mb-10 md:mb-13 gap-1.5 md:gap-2 lg:gap-4.5">
+        <div className="flex flex-col mb-9 md:mb-12 lg:mb-13 gap-1.5 md:gap-2 lg:gap-4.5">
             <p className="text-[14px] md:text-[16px] lg:text-[18px] font-bold">Популярные преобразования</p>
             <div 
-                className="flex py-3 px-1 lg:pl-0 lg:py-0 overflow-x-auto lg:overflow-visible lg:flex-wrap font-medium gap-3.5 md:gap-4.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+                className="flex py-3 px-1 lg:px-0 lg:py-0 overflow-x-auto lg:overflow-visible lg:flex-wrap font-medium gap-3.5 md:gap-4.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 draggable = "false"
             >
                 {popular_conversions.map( obj => (
@@ -375,7 +381,7 @@ function Unit_Converter () {
 
 
         {/* История конверсии */}
-        <div className="flex flex-col px-8 pt-3 pb-2 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
+        <div className="flex flex-col px-6 md:px-8 pt-3 pb-2 bg-white rounded-2xl shadow-[0px_1px_6.599999904632568px_0px_rgba(0,0,0,0.25)] justify-center items-center">
                 <div 
                     className={`
                         flex w-full py-4 px-3.5 justify-between items-start 
@@ -404,7 +410,7 @@ function Unit_Converter () {
                             key={obj.id}
                             className={`flex w-full justify-between items-center py-4 px-3.5 text-[12px] md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
                         >
-                            <div className="flex items-center gap-1.5 md:gap-2 lg:gap-2.5 font-medium">
+                            <div className="flex items-center max-w-28 md:max-w-none gap-1.5 md:gap-2 lg:gap-2.5 font-medium">
                                 <img src={checkbox} alt="img" className="h-4 w-4 md:h-5 md:w-5 lg:h-6 lg:w-6" />
                                 <span>{obj.title}</span>
                             </div>
