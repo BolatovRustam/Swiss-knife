@@ -38,7 +38,12 @@ function Unit_Converter () {
 
         const num = parseFloat(inputValue)
 
-        if (isNaN(num) || inputValue === "") return ""
+        if (isNaN(num) || inputValue === "") {
+            setError({
+                title:"Не указано значение"
+            })
+            return
+        }
 
         const converted = convertor(num, fromUnit, toUnit, activeCategory)
         const res = parseFloat(converted.toPrecision(8)).toString()
@@ -56,12 +61,6 @@ function Unit_Converter () {
                         toU: toUnit,
              })
             return
-        }
-
-        if (inputValue === "") {
-            setError({
-                title:"Введите значение"
-            })
         }
 
         setError(null)
@@ -303,7 +302,19 @@ function Unit_Converter () {
                 <div className="flex items-center h-13 md:h-16 lg:h-18 px-4 gap-2 md:gap-3 lg:gap-4 text-[12px] md:text-[14px] lg:text-[16px] bg-[#F1F2FB] rounded-xl md:rounded-2xl">
                     <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6 text-[#5885EA]"/>
                     <span>{infoText}</span>
-                </div> ) : (
+                </div> ) : error && inputValue.length === 0 ? (
+                    <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                        <Info className="text-[#FF5E5E] mt-2"/>
+                        <p className="flex flex-col gap-0.5">
+                            <span className="font-semibold">
+                                {error.title}
+                            </span>
+                            <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
+                                Заполните поле числовым значением и попробуйте выполнить преобразование ещё раз.
+                            </span>
+                        </p>
+                    </div> 
+                ) : (
                 <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
                     <Info className="text-[#FF5E5E] mt-2"/>
                     <p className="flex flex-col gap-0.5">

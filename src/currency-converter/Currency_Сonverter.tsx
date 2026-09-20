@@ -12,10 +12,10 @@ import { useSupabaseHistory } from "@/hooks/useSupabaseHistory"
 
 interface Error {
     title: string
-    from: string
-    fromV: string
-    to: string
-    toV: string
+    from?: string
+    fromV?: string
+    to?: string
+    toV?: string
 }
 
 const renderButton = (opt: Option) => (
@@ -92,7 +92,9 @@ function Currency_Converter () {
 
         const num = parseFloat(inputValue)
         if (isNaN(num) || inputValue === "" || rate === null) {
-            setResult("")
+            setError({
+                title:"Не указано значение"
+            })
             return
         }
 
@@ -362,20 +364,32 @@ function Currency_Converter () {
                         <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6" />
                         <span>{loading ? "Загрузка..." : infoText }</span>
                     </p>
+                ) : error && inputValue.length === 0 ? (
+                        <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                            <Info className="text-[#FF5E5E] mt-2"/>
+                            <p className="flex flex-col gap-0.5">
+                                <span className="font-semibold">
+                                    {error.title}
+                                </span>
+                                <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
+                                    Заполните поле числовым значением и попробуйте выполнить преобразование ещё раз.
+                                </span>
+                            </p>
+                        </div> 
                 ) : (
-                    <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
-                        <Info className="text-[#FF5E5E] mt-2"/>
-                        <p className="flex flex-col gap-0.5">
-                            <span className="font-semibold">
-                                {error.title}
-                            </span>
-                            <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
-                                {`Вы уже конвертировали ${error.from} ${error.fromV} в ${error.to} ${error.toV}.`}
-                                <br />
-                                Попробуйте изменить сумму или выбрать другие валюты.
-                            </span>
-                        </p>
-                    </div>
+                        <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
+                            <Info className="text-[#FF5E5E] mt-2"/>
+                            <p className="flex flex-col gap-0.5">
+                                <span className="font-semibold">
+                                    {error.title}
+                                </span>
+                                <span className="text-[11px] md:text-[13px] lg:text-[15px] text-[#505050]">
+                                    {`Вы уже конвертировали ${error.from} ${error.fromV} в ${error.to} ${error.toV}.`}
+                                    <br />
+                                    Попробуйте изменить сумму или выбрать другие валюты.
+                                </span>
+                            </p>
+                        </div>
                 )}
 
 
