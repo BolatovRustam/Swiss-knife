@@ -30,19 +30,18 @@ export function FavoriteCard({entry, live, onSelect, onRemove }: FavoriteCardPro
                 <img 
                     src={live ? iconMap[live.icon] : undefined} 
                     alt="icon" 
-                    width={56}
-                    height={56}
+                    className="w-11 h-11 md:w-14 md:h-14"
                 />
 
-                <p className="flex flex-col gap-1.5">
+                <p className="flex flex-col gap-1 md:gap-1.5 text-[12px] md:text-[16px]">
                 <span className="font-medium">{`${entry.city}, ${entry.country}`}</span>
                 <span className="text-[#9797A0] font-medium">{live?.description}</span>    
                 </p> 
                 
             </div>
 
-            <div className="flex gap-3.5">
-            <p className="font-medium">{live ? `${live.temp > 0 ? "+" : "-"}${Math.floor(live?.temp)}°` : " "}</p>
+            <div className="flex gap-3.5 items-center">
+            <p className="font-medium text-[14px] md:text-[16px]">{live ? `${live.temp > 0 ? "+" : "-"}${Math.floor(live?.temp)}°` : " "}</p>
             <img 
                 src={isRemoving ? star : starFill} 
                 alt="remove" 

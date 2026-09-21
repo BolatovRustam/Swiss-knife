@@ -304,7 +304,7 @@ function Unit_Converter () {
                     <span>{infoText}</span>
                 </div> ) : error && inputValue.length === 0 ? (
                     <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
-                        <Info className="text-[#FF5E5E] mt-2"/>
+                        <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6 mt-2 shrink-0 text-[#FF5E5E]"/>
                         <p className="flex flex-col gap-0.5">
                             <span className="font-semibold">
                                 {error.title}
@@ -316,7 +316,7 @@ function Unit_Converter () {
                     </div> 
                 ) : (
                 <div className="flex py-4 text-[12px] md:text-[14px] lg:text-[16px] px-4 gap-3 lg:gap-4 items-start bg-[#FFE4E4]/65 border border-[#FE9292] rounded-2xl">
-                    <Info className="text-[#FF5E5E] mt-2"/>
+                    <Info className="w-4.5 h-4.5 md:w-5 h-5 lg:w-6 lg:h-6 mt-2 shrink-0 text-[#FF5E5E]"/>
                     <p className="flex flex-col gap-0.5">
                         <span className="font-semibold">
                             {error.title}

@@ -70,7 +70,7 @@ function LoginForm () {
                     <button 
                       type="submit"
                       disabled={isSubmitting}
-                      className='mt-6 px-21.5 py-2.5 bg-[#2E86FA]  rounded-lg text-white font-semibold cursor-pointer'
+                      className='mt-6 px-21.5 py-2.5 bg-[#2E86FA] hover:bg-[#5a9ffa] active:bg-[#1d7cf8] transition rounded-lg text-white font-semibold cursor-pointer'
                     >
                       {isSubmitting ? 'Загрузка...' : 'Войти'}
                     </button>

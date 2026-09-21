@@ -4,7 +4,7 @@ import { API_KEY } from "./key"
 import { iconMap } from "./iconMap"
 
 import { LocationFill, starFill } from "@/assets/icons"
-import { Delete, LocationOutline, Cross, humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star } from "@/assets/icons"
+import { Delete, LocationOutline, Cross, Star, humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star, recent } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
 import { useGeocoding } from "./useGeocoding"
@@ -108,7 +108,7 @@ function Weather () {
     }
 
     return(
-        <div className="flex flex-col h-full overflow-auto items-end pt-12.5 pb-3.5 px-6.5 md:px-12 xl:px-21.5">
+        <div className="flex flex-col h-full overflow-auto items-end pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 xl:px-21.5">
 
             
             <div ref={wrapperRef} className="relative flex w-full lg:w-1/3 items-center gap-4">
@@ -174,11 +174,11 @@ function Weather () {
                     ) : (
                         
                 /* Погода на текущий день с показателями */
-                <div className="flex flex-col lg:flex-row between items-center xl:flex-nowrap w-full gap-8 lg:gap-28 xl:gap-44 px-8 lg:px-9 xl:px-10 py-9 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
+                <div className="flex flex-col lg:flex-row between items-center xl:flex-nowrap w-full gap-8 lg:gap-28 xl:gap-44 px-8 lg:px-9 xl:px-10 py-7 lg:py-9 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
 
                     {/* Сама погода */}
-                    <div className="flex flex-col w-full md:flex-row lg:flex-col justify-between lg:justify-start gap-3.5 lg:gap-8">
-                        <div className="flex gap-3.5">
+                    <div className="flex flex-col w-full lg:w-fit md:flex-row lg:flex-col justify-between lg:justify-start gap-4.5 lg:gap-8">
+                        <div className="flex gap-2.5 md:gap-3.5">
                             {   
                                 weather && 
                                 <img 
@@ -195,7 +195,7 @@ function Weather () {
                                         : ""
                                     }
                                 </span>
-                                <span className="text-[18px] lg:text-[20px] font-medium">
+                                <span className="max-w-25 lg:max-w-none text-[14px] md:text-[16px] lg:text-[20px] font-medium">
 
                                     { weather?.weather[0].description
                                         .split("")
@@ -209,7 +209,7 @@ function Weather () {
                             {
                                 weather && selectedCity && (
                                     <button 
-                                        className="self-start ml-auto md:ml-0 shrink-0 p-2 md:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                        className="self-start ml-auto md:ml-0 shrink-0 p-2 lg:p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
                                         onClick={  () => {
                                                             const fav = favorites.find(el => el.city === weather.name)
                                                                 if ( fav ) removeFavorite( fav.id )   
@@ -251,15 +251,15 @@ function Weather () {
                     </div>
 
                     {/* Данные о погоде */}
-                    <div className="flex flex-1 w-full  flex-col gap-5">
+                    <div className="grid grid-cols-2 md:flex md:flex-1 w-full  flex-col gap-5">
 
-                        <div className="flex gap-4">
+                        <div className="grid md:flex gap-4">
                         { weather_data.up.map(el => (
-                            <div key={el.title} className="flex flex-wrap gap-2.5 p-2.5 flex-1 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
+                            <div key={el.title} className="flex flex-1 items-center flex-nowra md:flex-wrap gap-1 md:gap-2.5 p-2.5  bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
                                 <img 
                                     src={el.icon} 
                                     alt="icon"
-                                    className="w-8 h-8 md:w-9 md:h-9  xl:w-11 xl:h-11"
+                                    className="w-7.5 h-7.5 md:w-9 md:h-9  xl:w-11 xl:h-11"
                                 />
 
                                 <p className="flex flex-col gap-1">
@@ -270,9 +270,9 @@ function Weather () {
                         )) }
                         </div>
 
-                        <div className="flex gap-4">
+                        <div className="grid md:flex gap-4">
                         { weather_data.down.map(el => (
-                            <div key={el.title} className="flex flex-wrap gap-2.5 flex-1 p-2.5 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
+                            <div key={el.title} className="flex flex-1 items-center flex-nowrap md:flex-wrap gap-1 md:gap-2.5  p-2.5 bg-[#ECECEC]/25 border border-[#777777]/40 rounded-[10px]">
                                 <img 
                                     src={el.icon} 
                                     alt="icon"
@@ -301,28 +301,26 @@ function Weather () {
                             {
                                 hours.map((el, i) => (
                                     <div 
-                                        className="flex flex-1 flex-col items-center px-10 py-2.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" 
+                                        className="flex flex-1 flex-col items-center px-8 md:px-10 py-2.5 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" 
                                         key={i}
                                     >
-                                        <p className="font-medium text-center text-[14px]">{el.dt_txt.slice(11, 16)}</p>
+                                        <p className="font-medium text-center text-[13px] lg:text-[14px]">{el.dt_txt.slice(11, 16)}</p>
                                         <img 
                                             src={iconMap[el.weather[0].icon]} 
                                             alt={iconMap[el.weather[0].description]} 
-                                            width={70}
-                                            height={70} 
+                                            className="w-14 h-14 md:w-21 md:h-21 lg:w-17.5 lg:h-17.5"
                                         />
 
-                                        <div className="flex flex-col mt-1 gap-1.5">
-                                            <p className="font-semibold text-center">{
+                                        <div className="flex flex-col mt-1 gap-1 md:gap-1.5">
+                                            <p className="font-semibold text-center text-[14px] md:text-[15px] lg:text-[16px]">{
                                                 `${el.main.temp > 0 ? "+" : "-"}${Math.floor(el.main.temp)}°`  
                                                 }
                                             </p>
-                                            <p className="flex gap-1 px-1.5 text-[14px]">
+                                            <p className="flex justify-center items-center gap-0.5 md:gap-1 px-1.5 text-[12px] lg:text-[14px]">
                                                 <img 
                                                     src={humidity2} 
                                                     alt="icon" 
-                                                    width={20}
-                                                    height={20} 
+                                                    className="w-3 h-3 md:w-4.5 md:h-4.5 lg:w-5 lg:h-5"
                                                 />
                                                 <span className="text-[#9797A0] font-medium">{`${el.main.humidity}%`}</span>
                                             </p>
@@ -343,30 +341,30 @@ function Weather () {
                         <p className="font-medium text-[14px] md:text-[16px] lg:text-[18px]">Прогноз на 5 дней</p>
                     ) : "" }
 
-                    <div className="flex flex-2 flex-col lg:flex-row gap-4.5 lg:flex-wrap w-full">
+                    <div className="flex flex-2 flex-col lg:flex-row gap-2 md:gap-4.5 lg:flex-wrap w-full">
                             {
                                 days.map( (el, i) => (
-                                    <div className="flex-1 flex flex-row lg:flex-col justify-between items-center px-5.5 lg:px-4 pt-2 lg:gap-0 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" key={i}>
+                                    <div className="flex-1 flex flex-row lg:flex-col justify-between items-center px-5.5 lg:px-4 py-2 md:pt-2 md:py-0 lg:gap-0 bg-white rounded-2xl shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]" key={i}>
 
                                         <div className="flex flex-row w-full items-center justify-between border-[#777777]/20 lg:contents">
 
                                         <div className=" lg:flex lg:flex-col lg:items-center lg:w-full lg:gap-0.5 lg:pb-2  lg:border-b-1 lg:border-[#777777]/20 contents">
 
                                             <div className="flex flex-col lg:contents">
-                                                <p className="font-medium text-[13px] md:text-[14px] lg:text-[16px]">
+                                                <p className="font-medium text-[12px] md:text-[14px] lg:text-[16px]">
                                                     {new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).at(0)?.toUpperCase() + new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).slice(1)}
                                                 </p>
                                                 <p className="font-medium text-[#9797A0] text-[11px] md:text-[12px] lg:text-[14px]">{new Date(el.date).toLocaleDateString('ru-RU', { day: "numeric", month: "long" }) }</p>
                                             </div>
 
-                                            <div className="flex items-center gap-1 md:gap-2 lg:contents">
+                                            <div className="flex items-center gap-0.5 md:gap-2 lg:contents">
                                                 <img 
                                                     src={iconMap[el.icon]} 
                                                     alt={iconMap[el.description]} 
-                                                    className="w-15 h-15 md:w-21 md:h-21 lg:w-22.5 lg:h-22.5"
+                                                    className="w-13 h-13 md:w-21 md:h-21 lg:w-22.5 lg:h-22.5"
                                                 />
                                             
-                                                <p className="flex gap-1 flex-col items-center text-[13px] md:text-[14px] lg:text-[16px]">
+                                                <p className="flex gap-1 flex-col items-center text-[12px] md:text-[14px] lg:text-[16px]">
                                                     <span className="font-semibold">{ `${el.temp > 0 ? "+" : ""}${el.min}° / ${el.max}°` }</span>
                                                     <span className="hidden lg:inline text-[#9797A0] font-medium">{el.description}</span>
                                                 </p>
@@ -374,24 +372,23 @@ function Weather () {
 
                                         </div>
 
-                                        <div className="flex gap-3 md:gap-4 lg:gap-11.5 py-2 text-[13px] md:text-[14px] lg:text-[16px]">
-                                            <p className="flex gap-1.5 items-center">
+                                        <div className="flex gap-2 md:gap-4 lg:gap-11.5 py-2 text-[11px] md:text-[14px] lg:text-[16px]">
+                                            <p className="flex gap-0.5 md:gap-1.5 items-center">
                                                 <img 
                                                     src={humidity2} 
                                                     alt="icon" 
-                                                    width={22}
-                                                    height={22}
-                                                    className="w-4.5 h-4.5 md:w-5 md:h-5 lg:w-5.5 lg:h-5.5"
+                                                    className="w-3.5 3.5 md:w-5 md:h-5 lg:w-5.5 lg:h-5.5"
                                                 />
                                                 <span className="text-[#9797A0] font-medium">{`${el.humidity}%`}</span>
                                             </p>
 
-                                            <p className="flex gap-1.5 items-center">
+                                            <p className="flex gap-0.5 md:gap-1.5 items-center">
                                                 <img 
                                                     src={windy} 
                                                     alt="icon" 
                                                     width={28}
                                                     height={28}
+                                                    className="w-4.5 h-4.5 md:w-6 md:h-6 lg:w-7 lg:h-7"
                                                 />
                                                 <span className="text-[#9797A0] font-medium">{`${Math.floor(el.windy)} км/ч`}</span>
                                             </p>
@@ -407,19 +404,27 @@ function Weather () {
             </div>
             
             {/* Кнопки */}
-            <div className="flex w-full justify-end gap-4">
+            <div className="flex w-full md:justify-end gap-4 text-[12px] md:text-[14px] lg:text-[16]">
                 <button 
-                    className="bg-white py-2 px-4 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
+                    className="flex flex-1 md:flex-0 items-center justify-center gap-1.5 bg-white py-2 md:px-6 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
                     onClick={() => setActiveModal("favorites")}
                 >
-                    Избранные
+                    <Star  
+                        className="w-4 h-4 lg:w-5 lg:h-5 [&_path]:fill-black"
+                    />
+                    <span>Избранные</span>
                 </button>
 
                 <button 
-                    className="bg-white  py-2 px-4 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
+                    className="flex flex-1 md:flex-0 items-center justify-center gap-1.5 bg-white  py-2 md:px-6 border border-[#777777]/40 hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] cursor-pointer"
                     onClick={() => setActiveModal("history")}
                 >
-                    История
+                    <img 
+                        src={recent} 
+                        alt="recent" 
+                        className="w-4 h-4 lg:w-5 lg:h-5"
+                    />
+                    <span>История</span>
                 </button>
             </div>
 
@@ -482,12 +487,13 @@ function Weather () {
 
                             <button 
                                 onClick={clearHistory}
-                                className="flex justify-center gap-2 py-2 mt-2 text-[#E84545] font-medium border border-[#E84545]/50 hover:bg-[#E84545] hover:text-[#FFFF] rounded-[10px] transition cursor-pointer"
+                                className={`
+                                    flex justify-center items-center gap-2 py-2 mt-2 text-[14px] md:text-[16px] text-[#E84545] font-medium border border-[#E84545]/50 
+                                    hover:bg-[#E84545] hover:text-[#FFFF] rounded-[10px] transition cursor-pointer
+                                `}
                             >
                                 <Delete 
-                                    className="fill-[#8E381D]" 
-                                    width={22}
-                                    height={22}    
+                                    className="w-4 h-4 md:w-5.5 md:h-5.5 fill-[#8E381D]" 
                                 />
                                 <span>Очистить историю</span>
                             </button>

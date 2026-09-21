@@ -6,7 +6,7 @@ interface ModalProps {
 }
 
 function Modal({ isOpen, onClose, title, children }: ModalProps) {
-    if (!isOpen) return null
+    if (!isOpen) return null  
 
     return (
         <div 
@@ -14,14 +14,17 @@ function Modal({ isOpen, onClose, title, children }: ModalProps) {
             onClick={onClose}
         >
             <div 
-                className="bg-white rounded-2xl shadow-lg p-6 pr-4 w-[520px] max-h-[80vh] overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+                className={`
+                    bg-white rounded-2xl shadow-lg p-6 pr-4 w-[460px] md:w-[480px] lg:w-[520px] max-h-[68vh] md:max-h-[74vh] lg:max-h-[80vh] 
+                    overflow-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent
+                `}
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-4 pr-1.5">
-                    <p className="font-semibold text-[18px]">{title}</p>
+                    <p className="font-semibold text-[16px] lg:text-[18px]">{title}</p>
                     <button 
                         onClick={onClose}
-                        className="text-[#919191] font-extrabold hover:text-black cursor-pointer text-[20px]"
+                        className="text-[#919191] font-extrabold hover:text-black cursor-pointer text-[16px] lg:text-[20px]"
                     >
                         ✕
                     </button>
