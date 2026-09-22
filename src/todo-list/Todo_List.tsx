@@ -166,10 +166,10 @@ function Todo_List() {
                                     className={`
                                         flex items-center justify-between gap-5 
                                         px-4 py-3 md:px-6 md:py-4 lg:px-9 lg:py-6
-                                        bg-white text-sm md:text-base lg:text-[18px] xl:text-xl
+                                        text-sm md:text-base lg:text-[18px] xl:text-xl
                                         ${i !== filtetedData.length - 1 ? 'border-b border-neutral-500/40' : ''}
                                         ${ obj.isTemp && "animate-fade-slide-in"}
-                                        ${obj.completed ? "bg-neutral-200 text-neutral-500" : "text-neutral-700"}
+                                        ${obj.completed ? "bg-neutral-200 text-neutral-500" : "bg-white text-neutral-700"}
                                         `}
                                 >
                                     {/* Название задачи — растягивается, обрезается многоточием */}

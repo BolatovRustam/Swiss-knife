@@ -154,7 +154,7 @@ function MainApp() {
 
 
       {/* Контент  */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-y-auto lg:overscroll-contain">
           {activeTool?.component}
         </div>
         

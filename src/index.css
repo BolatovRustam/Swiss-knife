@@ -161,9 +161,13 @@
   animation: select-menu-out 0.3s ease-in forwards;
 }
 
-/* html, body {
-    height: 100%;
-    overflow: hidden;
-    overscroll-behavior: none;
-} */
+body {
+    height: 100dvh;
+}
 
+@media (min-width: 1024px) {
+    body {
+        overflow: hidden;
+        overscroll-behavior: none;
+    }
+}

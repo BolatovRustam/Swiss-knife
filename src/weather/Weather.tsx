@@ -308,7 +308,7 @@ function Weather () {
                                         <img 
                                             src={iconMap[el.weather[0].icon]} 
                                             alt={iconMap[el.weather[0].description]} 
-                                            className="w-14 h-14 md:w-21 md:h-21 lg:w-17.5 lg:h-17.5"
+                                            className="w-14 h-14 md:w-16 md:h-16 lg:w-17.5 lg:h-17.5"
                                         />
 
                                         <div className="flex flex-col mt-1 gap-1 md:gap-1.5">

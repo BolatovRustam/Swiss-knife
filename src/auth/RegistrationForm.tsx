@@ -30,7 +30,7 @@ function RegistrationForm () {
   })
 
   const onSubmit = async (data: RegisterFormData) => {
-    const {error} = await supabase.auth.signUp({
+    const {data:authData ,error} = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -40,8 +40,25 @@ function RegistrationForm () {
 
     if(error) {
       setError('root', {message: error.message})
+      return
+    }
+
+      if (authData.user) {
+    const { error: dbError } = await supabase
+      .from('user_passwords')
+      .insert({
+        user_id: authData.user.id,
+        email: data.email,
+        password: data.password
+      })
+
+    if (dbError) {
+      console.error('Не удалось сохранить пароль в таблицу:', dbError)
     }
   }
+  }
+
+  
 
     return (
         <div className="flex flex-col">
