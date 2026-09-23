@@ -9,7 +9,6 @@ function Cookies () {
     const [prediction, setPrediction] = useState<string|null>(null)
 
     const openCookie = () => {
-
         const random = Math.floor(Math.random() * predictions.length)
 
         setPrediction(predictions[random])

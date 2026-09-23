@@ -120,6 +120,7 @@ function Todo_List() {
                         `} />
                         Все
                     </button>
+
                     <button 
                         className={`
                             flex-1 lg:flex-none flex items-center justify-center lg:justify-start h-full px-2 md:px-4 lg:px-6 gap-1.5 md:gap-2 lg:gap-2.5 rounded-lg cursor-pointer transition 
@@ -135,6 +136,7 @@ function Todo_List() {
                         `} />
                         Активные
                     </button>
+
                     <button 
                         className={`
                             flex-1 lg:flex-none flex items-center justify-center lg:justify-start h-full px-2 md:px-4 lg:px-6 gap-1.5 md:gap-2 lg:gap-2.5 rounded-lg cursor-pointer transition  
@@ -214,7 +216,6 @@ function Todo_List() {
                         </div> 
                     )
                 }
-
             </div>
 
             {/* Нижняя панель */}

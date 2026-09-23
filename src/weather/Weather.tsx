@@ -4,6 +4,7 @@ import { API_KEY } from "./key"
 import { iconMap } from "./iconMap"
 
 import { LocationFill, starFill } from "@/assets/icons"
+import { Loader2 } from "lucide-react"
 import { Delete, LocationOutline, Cross, Star, humidity, humidity2 , windy, visible, barometr, thermometer, sunrise, star, recent } from "@/assets/icons"
 import { useForecast } from "./useForecast"
 import { useDailyForeCast, useHourlyForecast } from "./weatherHooks"
@@ -16,7 +17,6 @@ import Modal from "./Modal"
 import { HistoryCard } from "./HistoryCard"
 import { FavoriteCard } from "./FavoriteCard"
 import { useLiveWeatherList } from "./useLiveWeatherList"
-import { Loader2 } from "lucide-react"
 
 
 interface Weather {
@@ -107,10 +107,11 @@ function Weather () {
         addToHistory(city.name, city.country, city.lat, city.lon)
     }
 
+
     return(
         <div className="flex flex-col h-full overflow-auto items-end pt-9.5 lg:pt-12.5 pb-3.5 px-6.5 md:px-12 xl:px-21.5">
 
-            
+
             <div ref={wrapperRef} className="relative flex w-full lg:w-1/3 items-center gap-4">
                 <div className="flex items-center w-full gap-2 py-2.5 px-3.5 bg-white rounded-[10px] shadow-[0px_1px_9px_0px_rgba(0,0,0,0.25)]">
                     <LocationOutline/>
@@ -141,7 +142,6 @@ function Weather () {
                             />
                         </button>
                     )}  
-
 
 
                     { showSuggestions && suggestions.length > 0 && (
@@ -222,14 +222,13 @@ function Weather () {
                                             src={ starFav ? starFill : star} 
                                             alt="img"
                                             className="w-5.5 h-5.5 md:w-6 md:h-6" 
-                                            
                                         />
                                     </button>
                                 )
                             }
 
-
                         </div>  
+
 
                         <div className="flex gap-4 items-center">
                             
@@ -292,6 +291,7 @@ function Weather () {
                 </div>
                 )}
 
+
                 {/* Почасовой прогноз */}
                 <div className="flex flex-col w-full gap-2 lg:gap-2.5">
                     {weather ? (
@@ -330,7 +330,6 @@ function Weather () {
                                 ))
                             }
                     </div>
-
                 </div>
 
                 
@@ -348,51 +347,51 @@ function Weather () {
 
                                         <div className="flex flex-row w-full items-center justify-between border-[#777777]/20 lg:contents">
 
-                                        <div className=" lg:flex lg:flex-col lg:items-center lg:w-full lg:gap-0.5 lg:pb-2  lg:border-b-1 lg:border-[#777777]/20 contents">
+                                            <div className=" lg:flex lg:flex-col lg:items-center lg:w-full lg:gap-0.5 lg:pb-2  lg:border-b-1 lg:border-[#777777]/20 contents">
 
-                                            <div className="flex flex-col lg:contents">
-                                                <p className="font-medium text-[12px] md:text-[14px] lg:text-[16px]">
-                                                    {new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).at(0)?.toUpperCase() + new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).slice(1)}
-                                                </p>
-                                                <p className="font-medium text-[#9797A0] text-[11px] md:text-[12px] lg:text-[14px]">{new Date(el.date).toLocaleDateString('ru-RU', { day: "numeric", month: "long" }) }</p>
+                                                <div className="flex flex-col lg:contents">
+                                                    <p className="font-medium text-[12px] md:text-[14px] lg:text-[16px]">
+                                                        {new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).at(0)?.toUpperCase() + new Date(el.date).toLocaleDateString('ru-RU', { weekday: "long" }).slice(1)}
+                                                    </p>
+                                                    <p className="font-medium text-[#9797A0] text-[11px] md:text-[12px] lg:text-[14px]">{new Date(el.date).toLocaleDateString('ru-RU', { day: "numeric", month: "long" }) }</p>
+                                                </div>
+
+                                                <div className="flex items-center gap-0.5 md:gap-2 lg:contents">
+                                                    <img 
+                                                        src={iconMap[el.icon]} 
+                                                        alt={iconMap[el.description]} 
+                                                        className="w-13 h-13 md:w-21 md:h-21 lg:w-22.5 lg:h-22.5"
+                                                    />
+                                                
+                                                    <p className="flex gap-1 flex-col items-center text-[12px] md:text-[14px] lg:text-[16px]">
+                                                        <span className="font-semibold">{ `${el.temp > 0 ? "+" : ""}${el.min}° / ${el.max}°` }</span>
+                                                        <span className="hidden lg:inline text-[#9797A0] font-medium">{el.description}</span>
+                                                    </p>
+                                                </div>
+
                                             </div>
 
-                                            <div className="flex items-center gap-0.5 md:gap-2 lg:contents">
-                                                <img 
-                                                    src={iconMap[el.icon]} 
-                                                    alt={iconMap[el.description]} 
-                                                    className="w-13 h-13 md:w-21 md:h-21 lg:w-22.5 lg:h-22.5"
-                                                />
-                                            
-                                                <p className="flex gap-1 flex-col items-center text-[12px] md:text-[14px] lg:text-[16px]">
-                                                    <span className="font-semibold">{ `${el.temp > 0 ? "+" : ""}${el.min}° / ${el.max}°` }</span>
-                                                    <span className="hidden lg:inline text-[#9797A0] font-medium">{el.description}</span>
+                                            <div className="flex gap-2 md:gap-4 lg:gap-11.5 py-2 text-[11px] md:text-[14px] lg:text-[16px]">
+                                                <p className="flex gap-0.5 md:gap-1.5 items-center">
+                                                    <img 
+                                                        src={humidity2} 
+                                                        alt="icon" 
+                                                        className="w-3.5 3.5 md:w-5 md:h-5 lg:w-5.5 lg:h-5.5"
+                                                    />
+                                                    <span className="text-[#9797A0] font-medium">{`${el.humidity}%`}</span>
+                                                </p>
+
+                                                <p className="flex gap-0.5 md:gap-1.5 items-center">
+                                                    <img 
+                                                        src={windy} 
+                                                        alt="icon" 
+                                                        width={28}
+                                                        height={28}
+                                                        className="w-4.5 h-4.5 md:w-6 md:h-6 lg:w-7 lg:h-7"
+                                                    />
+                                                    <span className="text-[#9797A0] font-medium">{`${Math.floor(el.windy)} км/ч`}</span>
                                                 </p>
                                             </div>
-
-                                        </div>
-
-                                        <div className="flex gap-2 md:gap-4 lg:gap-11.5 py-2 text-[11px] md:text-[14px] lg:text-[16px]">
-                                            <p className="flex gap-0.5 md:gap-1.5 items-center">
-                                                <img 
-                                                    src={humidity2} 
-                                                    alt="icon" 
-                                                    className="w-3.5 3.5 md:w-5 md:h-5 lg:w-5.5 lg:h-5.5"
-                                                />
-                                                <span className="text-[#9797A0] font-medium">{`${el.humidity}%`}</span>
-                                            </p>
-
-                                            <p className="flex gap-0.5 md:gap-1.5 items-center">
-                                                <img 
-                                                    src={windy} 
-                                                    alt="icon" 
-                                                    width={28}
-                                                    height={28}
-                                                    className="w-4.5 h-4.5 md:w-6 md:h-6 lg:w-7 lg:h-7"
-                                                />
-                                                <span className="text-[#9797A0] font-medium">{`${Math.floor(el.windy)} км/ч`}</span>
-                                            </p>
-                                        </div>
                                         </div>
                                     </div>
                                 ))
@@ -458,7 +457,6 @@ function Weather () {
                                     }}
                                 />
                             ))}
-
                         </div>
                     )
                 }

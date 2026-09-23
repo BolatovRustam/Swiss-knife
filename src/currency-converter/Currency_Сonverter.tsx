@@ -141,7 +141,6 @@ function Currency_Converter () {
     }
 
     const handleDataClear = () => {
-
         clearAll()
     }
 
@@ -225,7 +224,9 @@ function Currency_Converter () {
                     <div className="flex justify-center mt-3">
                         <button 
                             className={`
-                                h-10 w-10 md:h-11 md:w-11 p-2 bg-white hover:bg-[#F9F9F9] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 active:bg-white active:outline-2 active:outline-indigo-400 transition duration-200 ease-in-out flex justify-center items-center cursor-pointer`}
+                                h-10 w-10 md:h-11 md:w-11 p-2 bg-white hover:bg-[#F9F9F9] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 
+                                active:bg-white active:outline-2 active:outline-indigo-400 transition duration-200 ease-in-out flex 
+                                justify-center items-center cursor-pointer`}
                             onClick={() => handleClick()}
                         >
                             <img src={button} alt="img" className="w-5 h-5 md:w-6 md:h-6"/>
@@ -260,6 +261,7 @@ function Currency_Converter () {
                     </div>
 
                 </div>
+
 
                 {/* Десктопная версия — горизонтальная, инпуты и кнопка */}
                 <div className="hidden lg:flex flex-row  items-end">
@@ -316,20 +318,20 @@ function Currency_Converter () {
                         <div className="flex items-end justify-between text-[18px] font-semibold">
                             <span>В</span>
                             <div className="flex gap-3">
-                            <button 
-                                className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
-                                onClick={() => handleClearInput()}
-                            >
-                                <img src={eraser} alt="img" />
-                            </button>
+                                <button 
+                                    className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                    onClick={() => handleClearInput()}
+                                >
+                                    <img src={eraser} alt="img" />
+                                </button>
 
-                            <button 
-                                className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
-                                onClick={() => handleSwap()}
-                            >
-                                <img src={change} alt="img" />
-                            </button>
-                        </div>
+                                <button 
+                                    className="p-2.5 bg-white hover:bg-[#F5F5F5] active:bg-[#E7E7E7] rounded-[10px] outline-[1.5px] outline-offset-[-1px] outline-neutral-500/40 cursor-pointer"
+                                    onClick={() => handleSwap()}
+                                >
+                                    <img src={change} alt="img" />
+                                </button>
+                            </div>
                         </div>
 
                         <div className="flex flex-col gap-3">
@@ -392,10 +394,8 @@ function Currency_Converter () {
                         </div>
                 )}
 
-
-
-
             </div>
+
 
             {/* Блок с популярными преобразованиями */}
             <div className="flex flex-col mb-9 md:mb-12 lg:mb-13 gap-1.5 md:gap-2 lg:gap-4.5">
@@ -409,8 +409,8 @@ function Currency_Converter () {
                             <div 
                                 key={`${obj.from}-${obj.to}`}
                                 className={`
-                                    flex flex-1 gap-2 px-4 py-4.5 md:px-4 md:py-4.5 lg:px-4 lg:py-5.5 text-[12px] md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] 
-                                    transition hover:-translate-y-2.5 active:translate-y-0 font-medium 
+                                    flex flex-1 gap-2 px-4 py-4.5 md:px-4 md:py-4.5 lg:px-4 lg:py-5.5 text-[12px] md:text-[14px] lg:text-[16px] bg-white/40 rounded-[10px] 
+                                    shadow-[0px_1px_5px_0px_rgba(0,0,0,0.25)] transition hover:-translate-y-2.5 active:translate-y-0 font-medium 
                                     active:bg-[#7B7BF6]/40 active:shadow-[0px_1px_8px_0px_rgba(123,123,246,0.80)]
                                     justify-center items-center cursor-pointer
                                 `}
@@ -457,7 +457,9 @@ function Currency_Converter () {
                     : data.map((obj, i) => (
                         <div
                             key={obj.id}
-                            className={`flex w-full justify-between items-center py-4 px-3.5 text-[12px] md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}`}
+                            className={`
+                                flex w-full justify-between items-center py-4 px-3.5 text-[12px] md:text-[14px] lg:text-[16px] ${i !== data.length - 1 ? "border-b border-[#777777]/40" : ""}
+                            `}
                         >
                             <div className="flex gap-2.5 font-medium">
                                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 mt-2 rounded-full bg-[#C4C4C4]"></div>
@@ -465,13 +467,13 @@ function Currency_Converter () {
                                     <span className="max-w-22 md:max-w-none">{obj.title}</span>
                                     <span className="text-[#919191]">{obj.time}</span>
                                 </p>
-
                             </div>
+
                             <span className="text-black text-[12px] md:text-[14px] lg:text-[16px] font-medium">{obj.info_text}</span>
                         </div>
                     ))}
                 </div>
-        </div>
+            </div>
         </div>
     )
 }

@@ -6,7 +6,7 @@ import Todo_List from "./todo-list"
 import Unit_Converter from "./unit-converter"
 import Currency_Converter from "./currency-converter"
 import Cookies from "./cookies"
-import Weather from "./weather/Weather" 
+import Weather from "./weather" 
 import { Loader2 } from "lucide-react"
 
 import { calculatorImg, convertImg1, convertImg2, cookiesImg, todoImg, weatherImg } from "@/assets/png"

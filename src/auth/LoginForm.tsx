@@ -77,8 +77,6 @@ function LoginForm () {
                   </form>
 
 
-
-
         </div>
                 
     )
